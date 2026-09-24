@@ -1,6 +1,8 @@
 # FlexHand
 
-**Area:** BioMedical · **Status:** Concept · **Prototype budget:** about $500 USD · **Difficulty:** 4 of 5
+![TRL 2](https://img.shields.io/badge/TRL-2%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
+
+**Area:** BioMedical · **TRL:** 2 of 9 (concept formulated) · **Prototype budget:** about $500 USD · **Difficulty:** 4 of 5
 
 Soft-actuated finger exoskeleton for continuous passive motion, driven by tendons from a wrist-mounted motor pack.
 
