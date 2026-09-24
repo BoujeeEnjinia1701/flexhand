@@ -1,0 +1,17 @@
+# Card metadata consumed by https://amishchadha.com
+name: FlexHand
+slug: flexhand
+area: BioMedical
+status: concept          # concept | design | prototype | tested | released
+shortlisted: false
+pitch: >-
+  Soft-actuated finger exoskeleton for continuous passive motion, driven by tendons from a wrist-mounted motor pack.
+problem: >-
+  Post-stroke hand rehab needs many repetitions, but therapist time is limited.
+budget_usd: 500
+difficulty: 4  # 1 easiest, 5 hardest
+hero_image: media/hero.png
+licenses:
+  hardware: CERN-OHL-S-2.0
+  software: MIT
+tags: [biomedical, open-hardware, cern-ohl-s]
