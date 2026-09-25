@@ -1,20 +1,21 @@
-item,qty,spec,supplier,unit_cost_usd,make_buy,notes
-1 Forearm cuff,1,"3D-printed PETG half shell, EVA foam liner, two 38 mm hook-and-loop straps",Self and online retailer,10.00,make,Indicative; material and straps
-2 Pack base,1,"3D-printed PETG, about 147 x 90 x 42 mm",Self,4.00,make,Material cost only
-3 Gearmotor with encoder,2,"25 mm 227:1 metal gearmotor, 12 V rated, 48 CPR encoder (Pololu 4869 class), run at 7.4 V",Pololu or distributor,53.95,buy,Indicative single-unit price; motor choice proposed awaiting Amish
-4 Antagonistic spool,2,"Two-groove spool, 10 mm core, 18 mm flanges, 4 mm D-bore with set screw; aluminum or printed PA12",Self,4.00,make,Indicative
-5 Li-ion pack 2S,1,"2S1P 18650, about 2500 mAh, with 2S protection board and holder",Battery distributor,22.00,buy,Indicative; use protected pack
+Item,qty,spec,supplier,unit_cost_usd,make_buy,notes
+1 Forearm cuff,1,"3D-printed PETG half shell 2 mm, 4 mm EVA foam liner, two 38 mm hook-and-loop straps",Self (print); strap and foam from online retailer,10.00,make,Indicative; material and straps
+2 Pack base,1,"3D-printed PETG, 160 x 76 mm, 2 mm walls, saddle ribs, two tendon exit slots",Self (print),4.00,make,Material cost only
+3 Gearmotor with encoder,2,"227:1 metal gearmotor 25D x 71L mm MP 12 V, 48 CPR encoder (Pololu 4869), run at 7.2 V",Pololu or distributor,53.95,buy,Pololu single-unit price checked 2026-09-25; D1 decided by Amish 2026-09-25
+4 Antagonistic spool,2,"Two-groove spool, 10 mm core, 20 mm flanges, 12 mm wide, 4 mm D-bore with set screw; printed PA12",Online print service or self,4.00,make,Indicative
+5 Li-ion pack 2S,1,"2 x 18650 cells, 2,500 mAh each, with 2S protection board; cells held in the pack base",Battery distributor,22.00,buy,Indicative; use cells and BMS from a reputable source
 6 Controller,1,"ESP32-S3 module (Seeed XIAO ESP32S3 class)",Seeed Studio or distributor,8.00,buy,Indicative
-7 Motor driver with current sense,2,"DRV8874 single H-bridge carrier with current-sense output",Pololu or distributor,10.00,buy,Indicative
-8 Pack lid,1,"3D-printed PETG with LED window",Self,3.00,make,Material cost only
-9 Emergency stop button,1,"16 mm latching mushroom switch, NC contact in motor supply",Electronics distributor,6.00,buy,Indicative
-10 Sheath anchor block,1,"Printed block with 8 sheath stops, 8 magnetic breakaway couplings, slack springs and quick-release lever",Self and online retailer,15.00,make,Indicative; magnets and springs bought
-11 Bowden sheath set,1,"8 x about 350 mm PTFE-lined 4 mm housing with ferrules",Bicycle parts retailer,15.00,buy,Indicative
+7 Motor driver with current sense,2,"DRV8874 single H-bridge carrier with current-sense output (Pololu 4035 class)",Pololu or distributor,10.00,buy,Indicative
+8 Pack lid,1,"3D-printed PETG 2 mm with emergency stop opening and LED window",Self (print),3.00,make,Material cost only
+9 Emergency stop button,1,"16 mm latching mushroom switch, NC contact in the motor supply, 18 mm deep",Electronics distributor,6.00,buy,Indicative
+10 Sheath anchor block,1,"Printed block with 8 sheath stops, 8 magnetic breakaway couplings (12 x 5 mm N52 disc and steel cup), 8 slack springs, quick-release lever",Self (print); magnets and springs from online retailer,18.00,make,Indicative; breakaway force to be set at TRL 4
+11 Bowden sheath set,1,"2 m of 4 mm PTFE-lined shift housing cut to 8 lengths of about 100 mm, 16 ferrules",Bicycle parts retailer,11.00,buy,Indicative
 12 Base glove,1,"Fingerless breathable glove, sizes S, M, L",Online retailer,12.00,buy,Indicative
-13 Dorsal plate,1,"TPU 95A print, 4 extensor sheath stops",Self,2.00,make,Material cost only
-14 Palmar plate,1,"TPU 95A print, 4 flexor sheath stops",Self,2.00,make,Material cost only
-15 Finger cuff set,1,"8 TPU 95A rings, 12 mm wide, with padded liner; wider cuffs under review (R11)",Self,6.00,make,Material cost only
-16 Tendon line,1,"0.8 mm braided UHMWPE line, about 10 m",Fishing or outdoor retailer,8.00,buy,Indicative
-17 Thumb spacer,1,"TPU 95A ring and web block",Self,2.00,make,Material cost only
-18 USB-C charger,1,"2S Li-ion charger module with USB-C input and port",Online retailer,8.00,buy,Indicative; not modeled
-19 Wiring and consumables,1,"Wire, connectors, fasteners, foam, heat shrink, adhesive",Self,20.00,buy,Indicative; not modeled
+13 Dorsal plate,1,"TPU 95A print, 50 x 60 x 2.5 mm, 4 extensor sheath stops",Self (print),2.00,make,Material cost only
+14 Palmar plate,1,"TPU 95A print, 34 x 60 x 2.5 mm, 4 flexor sheath stops",Self (print),2.00,make,Material cost only
+15 Finger cuff set,1,"4 guide cuffs 12 mm wide and 4 anchor cuffs 12 to 19 mm wide, TPU 95A with 2 mm padded liner",Self (print); liner foam from online retailer,6.00,make,Material cost only; R11 not met (see FXH-CAL-001)
+16 Tendon line,1,"0.8 mm braided UHMWPE line, 10 m spool",Fishing or outdoor retailer,8.00,buy,Indicative
+17 Thumb spacer,1,"TPU 95A ring and web block",Self (print),2.00,make,Material cost only
+18 USB-C charger,1,"2S Li-ion charger module with USB-C input, mounted in the pack",Online retailer,8.00,buy,Indicative
+19 Wiring and consumables,1,"Wire, connectors, fasteners, heat shrink, adhesive",Electronics distributor and hardware store,20.00,buy,Indicative; not modeled
+20 Idler bearing,4,"623ZZ-class ball bearing 3 x 10 x 4 mm on a 3 mm pin, tendon idler",Bearing supplier or online retailer,1.00,buy,Indicative

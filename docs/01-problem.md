@@ -3,7 +3,7 @@ doc_id: FXH-PRB-001
 title: FlexHand problem statement
 project: FlexHand
 doc_type: Problem statement
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Populate to TRL 2 (problem, users, context, constraints, prior work)
+- version: "0.3"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Record decisions of FXH-DDR-001 (passive motion only, design load); complete the passive-mobilization citation; severity band finding from FXH-CAL-001
 ---
 
 # FlexHand problem statement
@@ -37,7 +41,7 @@ Devices that move the hand exist, but they are costly, clinic-bound or closed:
 
 No open, garage-buildable, wearable design exists that a clinic, a research group or a family can build, inspect and adapt for daily repetitive finger movement at home.
 
-A caution sits at the center of this problem. Robotic passive mobilization has been studied mainly for short-term effects on spasticity and limb perfusion ([Hand Passive Mobilization Performed with Robotic Assistance, PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC5637828/)). Whether passive repetitions alone improve hand function is not established. FlexHand therefore starts as a passive-motion device that can later add active or intent-triggered modes, and it makes no therapeutic claim.
+A caution sits at the center of this problem. Robotic passive mobilization has been studied mainly for short-term effects on spasticity and limb perfusion ([Gobbo et al., "Hand Passive Mobilization Performed with Robotic Assistance: Acute Effects on Upper Limb Perfusion and Spasticity in Stroke Survivors," *BioMed Research International*, 2017](https://onlinelibrary.wiley.com/doi/10.1155/2017/2796815); [PMC5637828](https://pmc.ncbi.nlm.nih.gov/articles/PMC5637828/)). Whether passive repetitions alone improve hand function is not established. FlexHand is a passive-motion device (decided by Amish, 2026-09-25, FXH-DDR-001, D3); active or intent-triggered modes are a later option, and it makes no therapeutic claim.
 
 ## Users and context
 
@@ -68,5 +72,6 @@ A caution sits at the center of this problem. Robotic passive mobilization has b
 ## Open questions
 
 - Which clinical partner to co-design with first (a stroke unit occupational therapy team, a community rehabilitation service, or a university rehabilitation lab)? Proposed, awaiting Amish.
-- Passive motion only, or plan from the start for an active-assist mode triggered by the user's own effort? This affects the pitch. Proposed, awaiting Amish.
-- Which severity band to design for first (mild to moderate flexor tone is assumed)? Proposed, awaiting Amish.
+- Which severity band to design for first? The 30 N design load was kept (FXH-DDR-001, D5), and the check against published finger stiffness in FXH-CAL-001 shows it covers mild flexor tone (MAS 1 to 1+), not moderate tone. Recommendation: design for mild tone first and reword R2 to match (FXH-DDR-001, N1). Proposed, awaiting Amish.
+
+Decided on 2026-09-25 by Amish (FXH-DDR-001): passive motion only for this design, with active assist recorded as a later option (D3). The pitch is unchanged.

@@ -1,14 +1,14 @@
 # FlexHand
 
-![TRL 2](https://img.shields.io/badge/TRL-2%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
 
-**Area:** BioMedical · **TRL:** 2 of 9 (concept formulated) · **Prototype budget:** about $500 USD · **Difficulty:** 4 of 5
+**Area:** BioMedical · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** about $500 USD · **Difficulty:** 4 of 5
 
 Soft-actuated finger exoskeleton for continuous passive motion, driven by tendons from a wrist-mounted motor pack.
 
 ![FlexHand concept](media/hero.png)
 
-[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/FXH-DWG-001.pdf) · [Sizing calculations](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
 
 ## Problem
 
@@ -20,19 +20,19 @@ Problem statement: [docs/01-problem.md](docs/01-problem.md)
 
 Soft-actuated finger exoskeleton for continuous passive motion, driven by tendons from a wrist-mounted motor pack.
 
-A fingerless glove carries TPU cuffs on the four fingers. Two gearmotors in a pack strapped to the forearm each turn a two-groove spool that pulls the flexor tendons of a finger pair while paying out the extensor tendons, through Bowden sheaths that cross the wrist. First-order estimates: about 385 finger cycles per hour at the design load, about three 60 min sessions per charge and about $280 in parts. Two requirements are not yet met (forearm pack mass and cuff contact pressure); see the [review note](docs/REVIEW.md).
+A fingerless glove carries TPU cuffs on the four fingers. Two gearmotors lying along the forearm in a strapped-on pack each turn a two-groove spool that pulls the flexor tendons of a finger pair while paying out the extensor tendons, through Bowden sheaths that cross the wrist. The TRL 3 calculations give about 448 finger cycles per hour at the design load, about 3.9 sessions of 60 min per charge and $281.90 in parts. Two requirements are not met (forearm pack mass, about 675 g against 450 g, and cuff contact pressure), and three are at risk; see the [sizing calculations](docs/04-calcs/01-sizing.md) and the [review note](docs/REVIEW.md).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
 ## Key components
 
-- Two 25 mm gearmotors with encoders and antagonistic spools (motor choice proposed, awaiting Amish)
+- Two 25 mm 227:1 gearmotors with encoders, antagonistic spools and idlers
 - Bowden sheaths and UHMWPE tendons, with breakaway couplings and a quick-release
 - Fingerless glove, TPU finger cuffs, dorsal and palmar plates, thumb spacer
 - Motor drivers with current sensing for force limiting
 - ESP32-S3 controller, 2S Li-ion pack, emergency stop
 
-The working bill of materials is in [bom/bom.csv](bom/bom.csv).
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv). The parametric model is `cad/src/model.py` (STEP and STL in `cad/step` and `cad/stl`).
 
 ## Safety
 
