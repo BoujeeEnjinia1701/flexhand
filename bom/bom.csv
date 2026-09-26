@@ -1,5 +1,5 @@
 Item,qty,spec,supplier,unit_cost_usd,make_buy,notes
-1 Forearm cuff,1,"3D-printed PETG half shell 2 mm, 4 mm EVA foam liner, two 38 mm hook-and-loop straps",Self (print); strap and foam from online retailer,10.00,make,Indicative; material and straps
+1 Forearm cuff,1,"3D-printed PETG half shell 2 mm perforated with 12 mm holes, 4 mm EVA foam liner perforated to match, two 38 mm hook-and-loop straps",Self (print); strap and foam from online retailer,10.00,make,Indicative; material and straps; perforation per FXH-DDR-002 (N4)
 2 Pack base,1,"3D-printed PETG, 160 x 76 mm, 2 mm walls, saddle ribs, two tendon exit slots",Self (print),4.00,make,Material cost only
 3 Gearmotor with encoder,2,"227:1 metal gearmotor 25D x 71L mm MP 12 V, 48 CPR encoder (Pololu 4869), run at 7.2 V",Pololu or distributor,53.95,buy,Pololu single-unit price checked 2026-09-25; D1 decided by Amish 2026-09-25
 4 Antagonistic spool,2,"Two-groove spool, 10 mm core, 20 mm flanges, 12 mm wide, 4 mm D-bore with set screw; printed PA12",Online print service or self,4.00,make,Indicative
@@ -8,7 +8,7 @@ Item,qty,spec,supplier,unit_cost_usd,make_buy,notes
 7 Motor driver with current sense,2,"DRV8874 single H-bridge carrier with current-sense output (Pololu 4035 class)",Pololu or distributor,10.00,buy,Indicative
 8 Pack lid,1,"3D-printed PETG 2 mm with emergency stop opening and LED window",Self (print),3.00,make,Material cost only
 9 Emergency stop button,1,"16 mm latching mushroom switch, NC contact in the motor supply, 18 mm deep",Electronics distributor,6.00,buy,Indicative
-10 Sheath anchor block,1,"Printed block with 8 sheath stops, 8 magnetic breakaway couplings (12 x 5 mm N52 disc and steel cup), 8 slack springs, quick-release lever",Self (print); magnets and springs from online retailer,18.00,make,Indicative; breakaway force to be set at TRL 4
+10 Sheath anchor block,1,"Printed block 44 mm long with 8 sheath stops, 4 balance pulley channels, 8 ball-detent breakaway couplings (4 mm steel ball and spring), 8 slack springs, 8 crimped tendon stop beads, quick-release lever",Self (print); balls springs and crimps from online retailer,18.00,make,Indicative; ball-detent couplings per FXH-DDR-002 (N4); breakaway force to be set at TRL 4
 11 Bowden sheath set,1,"2 m of 4 mm PTFE-lined shift housing cut to 8 lengths of about 100 mm, 16 ferrules",Bicycle parts retailer,11.00,buy,Indicative
 12 Base glove,1,"Fingerless breathable glove, sizes S, M, L",Online retailer,12.00,buy,Indicative
 13 Dorsal plate,1,"TPU 95A print, 50 x 60 x 2.5 mm, 4 extensor sheath stops",Self (print),2.00,make,Material cost only
@@ -19,3 +19,5 @@ Item,qty,spec,supplier,unit_cost_usd,make_buy,notes
 18 USB-C charger,1,"2S Li-ion charger module with USB-C input, mounted in the pack",Online retailer,8.00,buy,Indicative
 19 Wiring and consumables,1,"Wire, connectors, fasteners, heat shrink, adhesive",Electronics distributor and hardware store,20.00,buy,Indicative; not modeled
 20 Idler bearing,4,"623ZZ-class ball bearing 3 x 10 x 4 mm on a 3 mm pin, tendon idler",Bearing supplier or online retailer,1.00,buy,Indicative
+21 Fingertip thimble set,1,"4 open-tip thimbles 13 to 19 mm wide on the distal phalanges, TPU 95A 2 mm with 2 mm padded liner",Self (print); liner foam from online retailer,4.00,make,Material cost only; FXH-DDR-002 (N2)
+22 Balance pulley bearing,4,"693ZZ-class ball bearing 3 x 8 x 4 mm on a 3 mm pin, floating balance pulley",Bearing supplier or online retailer,1.00,buy,Indicative; FXH-DDR-002 (N3)

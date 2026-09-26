@@ -10,6 +10,45 @@ Soft-actuated finger exoskeleton for continuous passive motion, driven by tendon
 
 [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/FXH-DWG-001.pdf) · [Sizing calculations](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
 
+## Concept rationale
+
+Repetition is the scarce input in hand rehabilitation after stroke, and the scarce resource that delivers it is therapist time. A device that moves the fingers slowly through a therapist-set range, hundreds of times per session, can add dose at home without adding therapist hours. Tendons pulled through Bowden sheaths from a forearm pack keep the hand side light (about 115 g) and put the motors, cells and electronics where their mass matters least, which is why FlexHand uses tendons rather than a pneumatic glove or motors on the hand.
+
+FlexHand is open and garage-buildable because the users who most need low-cost dose are least served by clinic-bound robotic gloves. Two off-the-shelf gearmotors, carrier-board electronics, 3D-printed TPU and PETG parts and bicycle shift housing keep the parts cost near $290 and let a research group, a clinic workshop or a makerspace build, inspect and adapt it. Openness also lets others check the safety layers (current limit, breakaway couplings, hardware stop and tool-free release) rather than trusting them. It is a research and educational prototype, not a medical device.
+
+## Burning platform
+
+Stroke is common, rising and concentrated where rehabilitation is thinnest. The Global Burden of Disease study counted 11.9 million new strokes and 93.8 million people living after a stroke in 2021, up 70 % and 86 % since 1990, with more than three-quarters of those affected living in low- and middle-income countries ([IHME, on the GBD 2021 stroke analysis in *The Lancet Neurology*, 2024](https://www.healthdata.org/news-events/newsroom/news-releases/lancet-neurology-air-pollution-high-temperatures-and-metabolic)). In many of those settings there are fewer than 10 skilled rehabilitation practitioners per million people ([WHO rehabilitation fact sheet](https://www.who.int/news-room/fact-sheets/detail/rehabilitation)).
+
+Even where therapists are available, the dose is small. An observational study of 312 therapy sessions found an average of 32 repetitions of upper-limb functional movement per session, against the hundreds used in animal models of recovery ([Lang et al., *Archives of Physical Medicine and Rehabilitation*, 2009](https://www.archives-pmr.org/article/S0003-9993(09)00353-0/abstract)). Hand function is slow to return: in one cohort with a flaccid arm soon after stroke, only about 38 % had regained some dexterity at six months ([Kwakkel et al., *Stroke*, 2003](https://www.ahajournals.org/doi/full/10.1161/01.STR.0000087172.16305.CD)).
+
+## Where it could be used
+
+### By industry
+
+| Industry | Use |
+| --- | --- |
+| Rehabilitation research | An open, instrumented platform for studies of passive-motion dose, speed and dwell, with logged cycle counts and motor current |
+| Community and home rehabilitation services | A research prototype for supervised home programs, set up by a therapist and run by a care partner |
+| Occupational and physical therapy education | A teaching device for tendon mechanics, joint range and the safety layers of powered orthoses |
+| Assistive technology makerspaces | A documented build that local workshops can adapt to a hand, a glove size or local parts |
+| Wearable robotics and medical device R&D | A low-cost reference design for tendon routing, balance pulleys and cuff pressure checks |
+
+### By country or region
+
+| Country or region | Why it matters there |
+| --- | --- |
+| United States | More than 795,000 people have a stroke each year, and stroke is a leading cause of serious long-term disability ([CDC](https://www.cdc.gov/stroke/data-research/facts-stats/index.html)); home programs could extend short outpatient courses. |
+| Canada | Continuous passive motion was conceived at the Hospital for Sick Children in Toronto ([Canadian Medical Hall of Fame](https://www.cdnmedhall.ca/laureates/robertsalter)); long distances between rural homes and rehabilitation centers favor home devices. |
+| China | An upper-middle-income country among the low- and middle-income countries that carry more than three-quarters of the global stroke burden ([IHME](https://www.healthdata.org/news-events/newsroom/news-releases/lancet-neurology-air-pollution-high-temperatures-and-metabolic)); a large domestic electronics and motor supply base suits locally built open devices. |
+| India | A lower-middle-income country in the same group; supervised home dose could stretch a rehabilitation workforce that is mostly found in hospitals and cities. |
+| Sub-Saharan Africa (for example Nigeria or Kenya) | Many low- and middle-income settings have fewer than 10 skilled rehabilitation practitioners per million people ([WHO](https://www.who.int/news-room/fact-sheets/detail/rehabilitation)), so each therapist's time must go further. |
+| Brazil | A public health system serving a large, ageing population, with university engineering and rehabilitation groups able to build and study open devices. |
+
+## What sparked the idea
+
+The idea traces back to continuous passive motion, the concept Robert Salter developed in 1978 at the Hospital for Sick Children in Toronto after seeing how immobilization after surgery prolonged pain and recovery ([Canadian Medical Hall of Fame](https://www.cdnmedhall.ca/laureates/robertsalter); [Salter et al., *Journal of Bone and Joint Surgery*, 1980](https://pubmed.ncbi.nlm.nih.gov/7440603/)). His concept has since been translated into clinical use around the world, but continuous passive motion machines are typically bedside or clinic units built around a single joint such as the knee. FlexHand asks what that principle looks like as a light, open, wearable device that moves four fingers at home, within limits a therapist sets.
+
 ## Problem
 
 Post-stroke hand rehab needs many repetitions, but therapist time is limited.
@@ -20,15 +59,15 @@ Problem statement: [docs/01-problem.md](docs/01-problem.md)
 
 Soft-actuated finger exoskeleton for continuous passive motion, driven by tendons from a wrist-mounted motor pack.
 
-A fingerless glove carries TPU cuffs on the four fingers. Two gearmotors lying along the forearm in a strapped-on pack each turn a two-groove spool that pulls the flexor tendons of a finger pair while paying out the extensor tendons, through Bowden sheaths that cross the wrist. The TRL 3 calculations give about 448 finger cycles per hour at the design load, about 3.9 sessions of 60 min per charge and $281.90 in parts. Two requirements are not met (forearm pack mass, about 675 g against 450 g, and cuff contact pressure), and three are at risk; see the [sizing calculations](docs/04-calcs/01-sizing.md) and the [review note](docs/REVIEW.md).
+A fingerless glove carries TPU cuffs on the four fingers. Two gearmotors lying along the forearm in a strapped-on pack each turn a two-groove spool that pulls the flexor tendons of a finger pair while paying out the extensor tendons, through Bowden sheaths that cross the wrist. A floating balance pulley shares each spool line equally between the two fingers of a pair, and an open-tip fingertip thimble shares the extensor load with the finger cuff. The TRL 3 calculations give about 445 finger cycles per hour at full speed, about 3.8 sessions of 60 min per charge, cuff pressures of 40 kPa or less on a medium hand and $289.90 in parts. One requirement is not met (forearm pack mass, about 639 g against 450 g), and two are at risk (gearbox rating and force-limit friction spread); see the [sizing calculations](docs/04-calcs/01-sizing.md) and the [review note](docs/REVIEW.md).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
 ## Key components
 
 - Two 25 mm 227:1 gearmotors with encoders, antagonistic spools and idlers
-- Bowden sheaths and UHMWPE tendons, with breakaway couplings and a quick-release
-- Fingerless glove, TPU finger cuffs, dorsal and palmar plates, thumb spacer
+- Bowden sheaths and UHMWPE tendons, with balance pulleys, ball-detent breakaway couplings, stop beads and a quick-release
+- Fingerless glove, TPU finger cuffs and fingertip thimbles, dorsal and palmar plates, thumb spacer
 - Motor drivers with current sensing for force limiting
 - ESP32-S3 controller, 2S Li-ion pack, emergency stop
 
@@ -63,4 +102,4 @@ Controlled documents follow the portfolio [documentation standard](.kit/STANDARD
 - **Hardware** (CAD, drawings, BOM, electronics): [CERN-OHL-S v2](LICENSE)
 - **Software** (firmware, scripts, notebooks): [MIT](LICENSE-SOFTWARE)
 
-Part of the open hardware portfolio at [amishchadha.com](https://amishchadha.com).
+A project of the [Design Molecule](https://designmolecule.com) lab.

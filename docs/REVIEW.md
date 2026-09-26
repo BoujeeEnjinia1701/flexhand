@@ -36,6 +36,8 @@ Requirements not met or at risk:
 
 ### Proposed, awaiting Amish
 
+Status update: items 1 to 7 and 9 were decided by Amish on 2026-09-25 (go with recommendation, FXH-DDR-001, D1 to D8). Item 8 has no recommendation and stays proposed, awaiting Amish (O1).
+
 1. **Motor route (drives R2 and R7).** (a) 25 mm 227:1 gearmotors on the forearm, about 510 g pack; (b) micro (N20) gearmotors with the force target cut to 20 N per finger, lighter but weaker than moderate tone may need; (c) a bench-top motor unit with longer sheaths, very light on the arm but departs from the wrist-mounted pitch. Recommendation: (a) for the first build and revisit the 450 g target with a therapist, since the forearm rests on a support during sessions.
 2. **Motor count.** One motor for four fingers, two motors (one per finger pair) or four motors. Recommendation: two.
 3. **Passive only or plan for active assist (pitch-level).** Evidence for passive motion alone improving function is weak; an active-assist mode triggered by the user's effort would strengthen the case but adds sensing and scope. Recommendation: keep the pitch as passive motion for TRL 3 and record active assist as a later option.
@@ -101,11 +103,11 @@ Decided by Amish, 2026-09-25, going with the TRL 2 recommendations: D1 25 mm 227
 ### Still awaiting Amish
 
 - O1: first clinical co-design partner (no recommendation).
-- N1: reword R2 to mild flexor tone (MAS 1 to 1+) or raise the design load. Recommendation: reword.
-- N2: fingertip thimble sharing the extensor load (23 to 40 kPa). Recommendation: add it.
-- N3: balance pulley so the current limit acts per finger. Recommendation: add it.
-- N4: pack mass: lighter breakaways, perforated cuff, therapist-agreed target. Recommendation: the first two, then the target review.
-- N5: relax the lower stroke-time limit to 4 s at design load. Recommendation: relax.
+- N1: reword R2 to mild flexor tone (MAS 1 to 1+) or raise the design load. Recommendation: reword. Decided by Amish, 2026-09-25: go with recommendation (FXH-DDR-002).
+- N2: fingertip thimble sharing the extensor load (23 to 40 kPa). Recommendation: add it. Decided by Amish, 2026-09-25: go with recommendation (FXH-DDR-002).
+- N3: balance pulley so the current limit acts per finger. Recommendation: add it. Decided by Amish, 2026-09-25: go with recommendation (FXH-DDR-002).
+- N4: pack mass: lighter breakaways, perforated cuff, therapist-agreed target. Recommendation: the first two, then the target review. Decided by Amish, 2026-09-25: go with recommendation (FXH-DDR-002); the target review waits on O1.
+- N5: relax the lower stroke-time limit to 4 s at design load. Recommendation: relax. Decided by Amish, 2026-09-25: go with recommendation (FXH-DDR-002).
 
 ### Safety concerns
 
@@ -131,3 +133,65 @@ Decided by Amish, 2026-09-25, going with the TRL 2 recommendations: D1 25 mm 227
 ### Recommended next step
 
 Decide N1 to N5 and name a co-design partner (O1). If Amish accepts N2 to N4, a further TRL 3 pass would add the fingertip thimble and balance pulley to the model and recalculate R3, R7 and R11. TRL 4 is on hold by Amish's instruction. For reference only, TRL 4 would need: a bench build of one finger-pair drive, a finger model with calibrated stiffness, measurements of tendon force against motor current, cuff pressure mapping, breakaway and release tests, and a TST report with `environment: lab`.
+
+## Session 2026-09-25: recommendations accepted
+
+Amish wrote on 2026-09-25: "i accept all your recommendations, go with them across all repos." Every open item with a recommendation (N1 to N5) is now decided as recommended and applied at TRL 3; the co-design partner (O1) has no recommendation and stays open.
+
+### What was done
+
+- `docs/decisions/0002-recommendations-accepted.md` (FXH-DDR-002 v0.1): N1 to N5 recorded as "Decided by Amish, 2026-09-25: go with recommendation", with what changed; O1 left open.
+- `docs/decisions/0001-trl2-review-decisions.md` to v0.2: N1 to N5 marked decided.
+- `cad/src/model.py`: fingertip thimbles (`thimbles`, BOM 21), four floating balance pulleys (`balance_pulleys`, BOM 22) in channels in an anchor block lengthened from 12 to 44 mm, perforated forearm cuff shell and liner (12 mm holes, 33 % open), flexor sheath route adjusted to the longer block. STEP and STL re-exported, including `flexhand-thimbles.step` and `.stl`.
+- `cad/src/sheets.py` and `cad/drawings/FXH-DWG-001.*`: Rev P1 to P2 (balance pulleys, anchor block length, perforation, thimble widths, parts list item 22).
+- `docs/04-calcs/sizing.py` and `docs/04-calcs/01-sizing.md` (FXH-CAL-001 v0.1 to v0.2): balance pulley loss and per-finger limit, stop beads, thimble load sharing, new masses, R2 and R5 restated; all tables recomputed.
+- `bom/bom.csv`: lines 1 and 10 updated, lines 21 and 22 added; `bom/bom-notes.md` updated.
+- `docs/01-problem.md` (v0.4), `docs/02-concept.md` (v0.4), `docs/03-requirements.md` (v0.4) updated; `project.yaml` trl_evidence lists DDR-002; budget, pitch and problem lines unchanged.
+- `README.md`: concept paragraph and key components updated; new sections "Concept rationale", "Burning platform", "Where it could be used" and "What sparked the idea" (continuous passive motion, Salter, Toronto, 1978).
+- All media regenerated from the model (`cad/src/concept_media.py`), checked by eye; all PDFs re-rendered with the designmolecule.com footer.
+
+### Decisions applied (before and after)
+
+| Item | Change | Before | After |
+| --- | --- | --- | --- |
+| N1 | R2 wording | "moderate flexor tone" | "mild flexor tone (MAS 1 to 1+)"; 30 N covers the 18 N needed |
+| N2 | Fingertip thimbles | Cuff pressure 46 to 84 kPa (96 kPa small hand) | 23 to 40 kPa (46 kPa small hand); hand side 103 to 115 g |
+| N3 | Balance pulleys | One finger up to 80 N at the pair trip | 40 N per finger; efficiency 0.694 to 0.659; peak torque 0.467 to 0.492 N·m |
+| N4 | Ball-detent couplings, perforated cuff | Pack 675 g | Pack 639 g (40 g and 25 g saved, about 32 g added by the longer block and pulleys) |
+| N5 | R5 lower limit | 3 to 15 s | 4 to 15 s at design load; fastest 3.3 s (3.9 s pessimistic) |
+| Budget | No change recommended | $500; parts $281.90 | $500; parts $289.90 |
+
+### Requirement status (FXH-CAL-001 v0.2), not met first
+
+| ID | Status | Value against target |
+| --- | --- | --- |
+| R7 | **Not met** | Pack 639 g against 450 g; hand 115 g against 120 g (met) |
+| R2 | At risk | 0.492 N·m peak, 125 % of the gearbox's continuous rating (RMS 68 %) |
+| R3 | At risk | 40 N per finger with balance pulleys; friction spread 27 to 47 N at a 40 N setting |
+| R1, R4, R5, R6, R10, R11, R12 | Met | 29.8 mm stroke; 445 cycles per hour (360 at 4 s strokes); 3.3 s fastest stroke; 3.8 sessions; three sizes; 40 kPa worst (on paper); $289.90 |
+| R8, R9, R13 | Not verifiable at TRL 3 | Donning time; release time; limit lock |
+
+Counts: 7 met, 2 at risk, 1 not met, 3 not verifiable at TRL 3 (was 5, 3, 2, 3).
+
+### Still awaiting Amish
+
+- O1: first clinical co-design partner (no recommendation). The therapist review of the 450 g pack target (D1, N4 (c)) and of the 50 kPa pressure limit waits on it.
+
+### Cross-repo actions
+
+- None. FlexHand does not share parts or interfaces with another repo.
+
+### Safety concerns
+
+- Not a medical device; every document still says so.
+- R11 is met only on paper, under an assumed load split between cuff and thimble, and R3 is at risk. Nothing may be worn until pressure is mapped and the force limit is checked on a bench.
+- New hazard from N3: with a balance pulley, a free finger can travel up to twice its range if its partner is held back. The stop bead on each finger tendon must be set to that finger's range before any use.
+- The gearboxes hold position when unpowered: the tool-free release lever and a care partner within reach remain essential. Protected 2S lithium-ion pack: no charging while worn.
+
+### TRL 4
+
+TRL 4 remains on hold by Amish's instruction. No build, test, purchasing, PCB or firmware work was done. For reference only, TRL 4 would need a bench build of one finger-pair drive with its balance pulley, pressure mapping under cuff and thimble, breakaway, stop-bead and release tests, and a TST report.
+
+### Recommended next step
+
+Name a clinical co-design partner (O1) so that the pack-mass target and the pressure limit can be reviewed with a therapist. The design is otherwise complete at TRL 3.

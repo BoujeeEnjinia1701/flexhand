@@ -1,7 +1,7 @@
 """FlexHand drawing sheets.
 
 Run from the repo root:  python cad/src/sheets.py
-Builds FXH-DWG-001 (general arrangement, Rev P1) in cad/drawings/ from cad/src/model.py.
+Builds FXH-DWG-001 (general arrangement, Rev P2) in cad/drawings/ from cad/src/model.py.
 FXH-DWG-010 is the concept sheet made by cad/src/concept_media.py.
 """
 import copy
@@ -19,7 +19,7 @@ import model  # noqa: E402
 M = model.build_parts()
 P, d = M["parts"], M["d"]
 FOREARM_UNIT = ["forearm_cuff", "pack_base", "pack_lid", "gearmotors", "spools", "idlers", "cells", "controller",
-                "drivers", "charger", "estop", "anchor_block"]
+                "drivers", "charger", "estop", "anchor_block", "balance_pulleys"]
 unit = Compound(children=[copy.copy(P[k]) for k in FOREARM_UNIT])
 device = mirror(Compound(children=[copy.copy(s) for s in P.values()]), Plane.XZ)   # left hand, as in the media
 
@@ -27,11 +27,12 @@ work = ROOT / "cad" / "drawings" / "_views"
 views = project_views(unit, work / "unit")
 iso = project_views(device, work / "device")["iso"]
 
-s = Sheet(project="FlexHand", title="Forearm unit general arrangement", dwg_no="FXH-DWG-001", rev="P1",
+s = Sheet(project="FlexHand", title="Forearm unit general arrangement", dwg_no="FXH-DWG-001", rev="P2",
           author="Amish Chadha", date="2026-09-25", scale=0.5, concept=True,
           material="Pack and cuff PETG; plates and cuffs TPU 95A; bought parts per bom/bom.csv. "
                    "PRELIMINARY, NOT FOR FABRICATION",
-          revisions=[("P1", "General arrangement for TRL 3 (FXH-CAL-001)", "2026-09-25", "AC")])
+          revisions=[("P1", "General arrangement for TRL 3 (FXH-CAL-001)", "2026-09-25", "AC"),
+                     ("P2", "FXH-DDR-002: balance pulleys, 44 mm anchor block, perforated cuff, thimbles", "2026-09-25", "AC")])
 s.add_ortho(views, ["front", "top", "right"])
 s.add_svg(iso, 276, 32, 140, 70, label="Isometric view, whole device",
           sublabel="Left hand shown (mirror of the modeled right hand); not to scale")
@@ -43,8 +44,10 @@ s.add_notes("Main dimensions (mm)", [
     f"Spools: core {d['spool_core_d']:.0f} dia, flanges {d['spool_flange_d']:.0f} dia, {d['spool_w']:.0f} wide",
     f"Tendon exits at y = +/-31; idlers {d['idler_d']:.0f} dia (623ZZ class)",
     f"Cells 2 x 18650 across the pack at x = {d['cell_x'][0]:.0f}, {d['cell_x'][1]:.0f}",
-    f"Forearm cuff {d['cuff_x'][1] - d['cuff_x'][0]:.0f} long; shell {d['cuff_t']:.0f}, liner {d['liner_t']:.0f}; straps {d['strap_w']:.0f} wide",
+    f"Forearm cuff {d['cuff_x'][1] - d['cuff_x'][0]:.0f} long; shell {d['cuff_t']:.0f}, liner {d['liner_t']:.0f}; {d['cuff_hole_d']:.0f} dia holes; straps {d['strap_w']:.0f} wide",
+    f"Anchor block {d['anchor_l']:.0f} long; balance pulleys {d['balance_d']:.0f} dia at y = +/-{d['balance_y']:.0f}, {d['balance_travel']:.0f} travel",
     "Anchor cuffs (index, middle, ring, little): " + ", ".join(f"{f['anchor_w']:.1f}" for f in fg),
+    "Thimbles (index, middle, ring, little): " + ", ".join(f"{f['thimble_w']:.1f}" for f in fg),
     f"Guide cuffs {d['guide_cuff_w']:.0f} wide; plates TPU {d['plate_t']:.1f} thick",
 ], x=276, y=118, width=140)
 s.add_notes("Parts list (items match bom/bom.csv)", [
@@ -61,10 +64,11 @@ s.add_notes("Parts list (items match bom/bom.csv)", [
 ], x=20, y=204, width=80)
 s.add_notes("Parts list, continued", [
     "11 Bowden sheaths (8)",
-    "12 to 17 Hand side (iso only)",
+    "12 to 17, 21 Hand side (iso only)",
     "18 USB-C charger",
     "19 Wiring (not shown)",
     "20 Idler bearings (4)",
+    "22 Balance pulleys (4)",
     "Not a medical device.",
     "Research use under supervision.",
     "Never charge while worn.",

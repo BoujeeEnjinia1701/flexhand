@@ -8,7 +8,8 @@ the wrist at X = 0, Y is across the forearm with +Y on the thumb (radial) side, 
 A left-hand device is the mirror image about the XZ plane.
 
 Detail level: correct interfaces and main dimensions (pack envelope, gearmotor and spool
-positions, tendon exits and idlers, sheath stops, finger cuff widths, plates) with the forearm
+positions, tendon exits and idlers, balance pulleys, sheath stops, finger cuff and thimble widths,
+plates) with the forearm
 and hand as context. Not fabrication detail. PRELIMINARY, NOT FOR FABRICATION.
 """
 from math import pi
@@ -25,6 +26,8 @@ PARAMS = {
     "thumb_o": (15.0, 38.0, -6.0), "thumb_d": (0.83, 0.5, -0.25), "thumb_l": 62.0, "thumb_r": 10.5,
     # ---- forearm cuff (item 1) ----
     "cuff_x": (-222.0, -48.0), "cuff_t": 2.0, "liner_t": 4.0, "strap_w": 38.0, "strap_x": (-200.0, -75.0),
+    # N4 (DDR-002): perforated cuff shell and liner, radial holes on a grid (x step, angles from dorsal)
+    "cuff_hole_d": 12.0, "cuff_hole_x": (-212.0, -58.0, 17.0), "cuff_hole_ang": (-75.0, -50.0, -25.0, 0.0, 25.0, 50.0, 75.0),
     # ---- motor pack (items 2 to 10, 18, 20) ----
     "pack_x": (-215.0, -55.0),    # rear and front wall outer faces
     "pack_w": 76.0,               # outer width across the forearm
@@ -39,12 +42,16 @@ PARAMS = {
     "cell_d": 18.4, "cell_l": 65.0, "cell_x": (-201.0, -181.0),   # two 18650 cells, axes across (Y)
     "estop_x": -161.0, "estop_d": 18.0, "estop_depth": 18.0, "estop_cap_d": 24.0,
     # ---- anchor block (item 10) and sheaths (item 11) ----
-    "anchor_l": 12.0, "anchor_h": 26.0,
+    "anchor_l": 44.0, "anchor_h": 26.0,         # N3 (DDR-002): lengthened from 12 mm to house the balance pulleys
+    "balance_d": 8.0, "balance_w": 4.0,         # 693ZZ-class bearings used as floating balance pulleys, axis Z
+    "balance_y": 25.0,                          # balance pulley channels at y = +/- balance_y
     "sheath_od": 4.0, "sheath_slack": 1.2,      # cut length = neutral path x slack factor
     # ---- hand side (items 12 to 17) ----
     "glove_t": 2.5, "plate_t": 2.5,
     "guide_cuff_w": 12.0,                       # proximal (guide) cuff width
     "anchor_cuff_w_max": 20.0,                  # D4: 20 mm anchor cuffs where the phalanx allows
+    "thimble_w_max": 20.0,                      # N2 (DDR-002): open-tip fingertip thimble on the distal phalanx
+    "thimble_t": 2.0,                           # thimble TPU wall (liner as for the cuffs)
     "joint_clear": 3.0,                         # clearance from each joint crease to a cuff edge
     "cuff_t": 2.5, "cuff_liner_t": 2.0,
     "contact_arc_frac": 0.62,                   # share of finger circumference in contact under load
@@ -71,11 +78,14 @@ def derived(p=None):
         lp, lm, ld = fP * L, fM * L, fD * L
         usable = lm - 2 * p["joint_clear"]
         w = min(p["anchor_cuff_w_max"], usable)
+        tw = min(p["thimble_w_max"], ld - p["joint_clear"])        # band from the DIP crease clearance to the tip
         fingers.append(dict(y=y, L=L, r=r, lp=lp, lm=lm, ld=ld, mcp_x=mcp, pip_x=mcp + lp, dip_x=mcp + lp + lm,
                             guide_x=mcp + lp / 2, anchor_x=mcp + lp + lm / 2, anchor_w=w, usable=usable,
+                            thimble_w=tw, thimble_x=mcp + L - tw / 2,
                             arc=p["contact_arc_frac"] * 2 * pi * r))
     d["finger_geom"] = fingers
     d["hand_length"] = p["palm_l"] - 4.0 + max(L for _, L, _ in p["fingers"])
+    d["balance_travel"] = p["anchor_l"] - 2 * p["wall"] - p["balance_d"]   # free travel of each floating pulley
     return d
 
 
@@ -138,7 +148,16 @@ def build_parts(params=None):
     liner = (cone_x(cx0, cx1, arm_r(cx0) + lt, arm_r(cx1) + lt)
              - cone_x(cx0 - 1, cx1 + 1, arm_r(cx0 - 1) + 0.2, arm_r(cx1 + 1) + 0.2))
     keep_top = Pos(0, 0, 60 - 8) * Box(1000, 200, 120)
-    sub = {"cuff_shell": shell & keep_top, "cuff_liner": liner & keep_top}
+    hx0, hx1, hstep = p["cuff_hole_x"]
+    holes = None
+    xh = hx0
+    while xh <= hx1 + 1e-6:
+        for a in p["cuff_hole_ang"]:
+            h = Pos(xh, 0, 0) * Rot(a, 0, 0) * Pos(0, 0, 50) * Cylinder(p["cuff_hole_d"] / 2, 60)
+            holes = h if holes is None else holes + h
+        xh += hstep
+    sub = {"cuff_shell": (shell & keep_top) - holes, "cuff_liner": (liner & keep_top) - holes,
+           "cuff_shell_solid": shell & keep_top}
     cuff = sub["cuff_shell"] + sub["cuff_liner"]
     sw = p["strap_w"]
     straps = None
@@ -219,8 +238,19 @@ def build_parts(params=None):
     ax0 = x1; ax1 = x1 + p["anchor_l"]
     az0 = fz; az1 = fz + p["anchor_h"]
     anchor = Pos((ax0 + ax1) / 2, 0, (az0 + az1) / 2) * Box(p["anchor_l"], W - 4, p["anchor_h"])
+    # N3: one channel per spool line (extensor above, flexor below) on each side; a floating balance
+    # pulley rides in each channel and splits the spool line to the two finger tendons of the pair
+    by, bd, bw = p["balance_y"], p["balance_d"], p["balance_w"]
+    chan_l = p["anchor_l"] - 2 * p["wall"]
+    balance = None
+    for sgn in (1, -1):
+        for zc in (mz + 6.0, mz - 6.0):
+            anchor = anchor - Pos((ax0 + ax1) / 2, sgn * by, zc) * Box(chan_l, bd + 2, bw + 1)
+            bp = Pos(ax0 + p["wall"] + bd / 2 + d["balance_travel"] / 2, sgn * by, zc) * Cylinder(bd / 2, bw)
+            balance = bp if balance is None else balance + bp
     lever = Pos(ax1 - 3, 0, az1 + 3) * Box(6, 50, 6)
     parts["anchor_block"] = anchor + lever
+    parts["balance_pulleys"] = balance
 
     # ---------------- hand-side geometry ----------------
     GT = p["glove_t"]
@@ -242,16 +272,16 @@ def build_parts(params=None):
         ya = side * (31.0 - 3.0 * (k % 2))
         e_pts = [(ax1, ya, mz + re_ + 2), (-8, ya * 0.7, 40), (15, ext_end_y[k], gz + pt + so)]
         j = k % 2
-        f_pts = [(ax1, side * (31.0 + 3.0 * j), mz - re_ - 2), (-22, side * (40.0 + 2 * j), 18),
-                 (-2, side * (36.0 + 2 * j), -16), (12, side * (24.0 + 4 * j), -gz - pt - so)]
+        f_pts = [(ax1, side * (31.0 + 3.0 * j), mz - re_ - 2), (ax1 + 5, side * (40.5 + 2 * j), 17),
+                 (3, side * (37.0 + 2 * j), -15), (14, side * (24.0 + 4 * j), -gz - pt - so)]
         sheath_paths += [("ext", k, plen(e_pts)), ("flex", k, plen(f_pts))]
         s = path(e_pts, so) + path(f_pts, so)
         sheaths = s if sheaths is None else sheaths + s
     parts["sheaths"] = sheaths
 
     # finger cuffs (guide on the proximal phalanx, anchor on the middle phalanx) and tendons
-    cuffs = tendons = None
-    cuff_tpu_v = cuff_liner_v = 0.0
+    cuffs = tendons = thimbles = None
+    cuff_tpu_v = cuff_liner_v = th_tpu_v = th_liner_v = 0.0
     tr_ = 1.0   # tendon drawn oversize so it reads at this scale
     ct2 = p["cuff_t"] + p["cuff_liner_t"]
     for i, fg in enumerate(d["finger_geom"]):
@@ -261,12 +291,21 @@ def build_parts(params=None):
             cuff_tpu_v += pi * ((r + ct2) ** 2 - (r + p["cuff_liner_t"]) ** 2) * w
             cuff_liner_v += pi * ((r + p["cuff_liner_t"]) ** 2 - r ** 2) * w
             cuffs = c if cuffs is None else cuffs + c
+        # N2: open-tip fingertip thimble, a padded band on the distal phalanx from the DIP clearance to
+        # the tip; the extensor tendon continues past the anchor cuff to it so the two share the load
+        tw, tx = fg["thimble_w"], fg["thimble_x"]
+        rt = r + p["cuff_liner_t"] + p["thimble_t"]
+        th = Pos(tx, y, 0) * along_x(Cylinder(rt, tw) - Cylinder(r, tw + 1))
+        thimbles = th if thimbles is None else thimbles + th
+        th_tpu_v += pi * (rt ** 2 - (r + p["cuff_liner_t"]) ** 2) * tw
+        th_liner_v += pi * ((r + p["cuff_liner_t"]) ** 2 - r ** 2) * tw
         h = r + ct2 + tr_
-        t = (path([(40, ext_end_y[i] * 1.1, gz + pt + 1), (fg["guide_x"], y, h), (fg["anchor_x"], y, h)], tr_)
+        t = (path([(40, ext_end_y[i] * 1.1, gz + pt + 1), (fg["guide_x"], y, h), (fg["anchor_x"], y, h), (tx, y, h)], tr_)
              + path([(30, y * 0.9, -gz - pt - 1), (fg["guide_x"], y, -h), (fg["anchor_x"], y, -h)], tr_))
         tendons = t if tendons is None else tendons + t
     parts["finger_cuffs"] = cuffs
     parts["tendons"] = tendons
+    parts["thimbles"] = thimbles
 
     # 17 thumb abduction spacer
     s_ring = 34.0
@@ -277,6 +316,8 @@ def build_parts(params=None):
 
     sub["finger_cuff_tpu_mm3"] = cuff_tpu_v
     sub["finger_cuff_liner_mm3"] = cuff_liner_v
+    sub["thimble_tpu_mm3"] = th_tpu_v
+    sub["thimble_liner_mm3"] = th_liner_v
     return {"parts": parts, "context": context, "sheath_paths": sheath_paths, "d": d, "sub": sub}
 
 
@@ -284,7 +325,7 @@ def build_parts(params=None):
 BOM_LINE = {"forearm_cuff": 1, "pack_base": 2, "gearmotors": 3, "spools": 4, "cells": 5, "controller": 6,
             "drivers": 7, "pack_lid": 8, "estop": 9, "anchor_block": 10, "sheaths": 11, "glove": 12,
             "dorsal_plate": 13, "palmar_plate": 14, "finger_cuffs": 15, "tendons": 16, "thumb_spacer": 17,
-            "charger": 18, "idlers": 20}
+            "charger": 18, "idlers": 20, "thimbles": 21, "balance_pulleys": 22}
 
 
 def build(params=None):
@@ -306,7 +347,7 @@ def export(out=None):
     export_step(Compound(children=[copy.copy(v) for v in parts.values()] + [copy.copy(m["context"])]),
                 str(out / "step" / "flexhand-on-forearm.step"))
     for name in ("pack_base", "pack_lid", "spools", "anchor_block", "forearm_cuff", "dorsal_plate",
-                 "palmar_plate", "finger_cuffs", "thumb_spacer"):
+                 "palmar_plate", "finger_cuffs", "thumb_spacer", "thimbles"):
         export_step(parts[name], str(out / "step" / f"flexhand-{name.replace('_', '-')}.step"))
         export_stl(parts[name], str(out / "stl" / f"flexhand-{name.replace('_', '-')}.stl"))
     return m

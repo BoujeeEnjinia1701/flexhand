@@ -43,6 +43,8 @@ SPEC = [  # (key, label, color, exploded offset in right-hand coordinates)
     ("thumb_spacer", "Thumb spacer", "#A78BFA", (0, 35, -20)),
     ("charger", "USB-C charger", "#7C3AED", (0, 0, 70)),
     ("idlers", "Idler bearings (4)", "#9CA3AF", (30, 0, 75)),
+    ("thimbles", "Fingertip thimbles (4)", "#2DD4BF", (75, 0, 0)),
+    ("balance_pulleys", "Balance pulleys (4)", "#F59E0B", (30, 0, 105)),
 ]
 
 parts = [Part(label, mirror(P[k], Plane.XZ), color, model.BOM_LINE[k], (e[0], -e[1], e[2]))
@@ -57,13 +59,14 @@ if __name__ == "__main__":
         key_figures=["2 gearmotors drive 4 fingers; thumb held passively",
                      f"30 N extensor tendon force per finger; {R['T_peak']:.2f} N m peak at the spool",
                      f"About {R['cycles_per_h']:.0f} cycles per hour at design load (FXH-CAL-001)",
+                     f"Balance pulleys: 40 N limit per finger; thimbles: {max(r['p'] for r in R['cuffs']):.0f} kPa worst",
                      f"About {R['sessions']:.1f} sessions of 60 min per 18 Wh charge",
                      f"Pack about {R['m_pack']:.0f} g, hand parts about {R['m_hand']:.0f} g",
                      f"About ${R['bom_total']:.0f} in parts (BOM, indicative)"],
         scale_figure=False, context=context,
         # the cutaway shows the motor pack only; the hand-side parts have nothing inside
         cut_exclude=("Forearm cuff", "Bowden sheaths (8)", "Base glove", "Dorsal plate", "Palmar plate",
-                     "Finger cuffs (8)", "Tendons (8)", "Thumb spacer"),
+                     "Finger cuffs (8)", "Tendons (8)", "Thumb spacer", "Fingertip thimbles (4)"),
         flow={"title": "energy per 60 min session at design load (Wh, estimates from FXH-CAL-001)", "unit": "Wh",
               "stages": [("2S Li-ion pack", round(R["E_session_Wh"], 2)),
                          ("Motors (electrical)", round(R["E_motor_Wh"], 2)),

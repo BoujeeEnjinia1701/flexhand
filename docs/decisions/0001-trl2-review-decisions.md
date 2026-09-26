@@ -3,7 +3,7 @@ doc_id: FXH-DDR-001
 title: FlexHand TRL 2 review decisions
 project: FlexHand
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record Amish's 2026-09-25 decisions on the TRL 2 review points; list open items and new items from FXH-CAL-001
+- version: "0.2"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002)
 ---
 
 # 0001: TRL 2 review decisions
 
 - **Date:** 2026-09-25
-- **Status:** accepted (items D1 to D8); items O1 and N1 to N5 remain proposed
+- **Status:** accepted (items D1 to D8; items N1 to N5 accepted on 2026-09-25, see FXH-DDR-002); item O1 remains proposed
 
 ## Context
 
@@ -58,17 +62,17 @@ Items that remain open (no recommendation was made, so they stay "Proposed, awai
 
 - **O1.** First clinical co-design partner: a stroke unit occupational therapy team, a community rehabilitation service or a university rehabilitation lab. No recommendation; portfolio guidance is that community designs pick co-design partners per area later. Proposed, awaiting Amish.
 
-New items raised by FXH-CAL-001 at TRL 3 (not part of the 2026-09-25 decision):
+New items raised by FXH-CAL-001 at TRL 3. Amish accepted all recommendations later on 2026-09-25 ("i accept all your recommendations, go with them across all repos"); the changes are recorded in FXH-DDR-002:
 
-- **N1.** Severity band and R2 wording. Options: (a) reword R2 to "mild flexor tone (MAS 1 to 1+)" and keep 30 N; (b) raise the design load toward moderate tone (MAS 2 to 3 needs about 80 to 150 N), which needs larger motors and makes R7 worse. Recommendation: (a) for the first build. Proposed, awaiting Amish.
-- **N2.** Cuff pressure (R11). Options: (a) add a fingertip thimble that shares the extensor load with the middle-phalanx cuff (about 23 to 40 kPa); (b) a lower force limit on the little finger; (c) review the 50 kPa limit with a therapist. Recommendation: (a). Proposed, awaiting Amish.
-- **N3.** Per-finger force limit (R3). Current sensing sees the sum of a finger pair, so one finger could carry up to 80 N before a 40 N per finger limit trips. Options: (a) a balance pulley in the anchor block so both tendons of a pair carry equal tension; (b) set the pair limit to 40 N total; (c) rely on the 60 N breakaway. Recommendation: (a). Proposed, awaiting Amish.
-- **N4.** Pack mass (R7), about 675 g against 450 g. Options: (a) ball-detent breakaways instead of magnets (about 40 g lighter); (b) a lighter, perforated cuff shell; (c) a relaxed target agreed with a therapist (see D1); (d) move the cells to a pouch on the forearm support. Recommendation: (a) and (b), then (c). Proposed, awaiting Amish.
-- **N5.** Stroke-time range (R5). The fastest extension at design load is about 3.3 s against the 3 s lower limit. Recommendation: relax the lower limit to 4 s at design load, which is also gentler; R4 still holds for strokes up to 5 s. Proposed, awaiting Amish.
+- **N1.** Severity band and R2 wording. Options: (a) reword R2 to "mild flexor tone (MAS 1 to 1+)" and keep 30 N; (b) raise the design load toward moderate tone (MAS 2 to 3 needs about 80 to 150 N), which needs larger motors and makes R7 worse. Recommendation: (a) for the first build. Decided by Amish, 2026-09-25: go with recommendation (FXH-DDR-002).
+- **N2.** Cuff pressure (R11). Options: (a) add a fingertip thimble that shares the extensor load with the middle-phalanx cuff (about 23 to 40 kPa); (b) a lower force limit on the little finger; (c) review the 50 kPa limit with a therapist. Recommendation: (a). Decided by Amish, 2026-09-25: go with recommendation (FXH-DDR-002).
+- **N3.** Per-finger force limit (R3). Current sensing sees the sum of a finger pair, so one finger could carry up to 80 N before a 40 N per finger limit trips. Options: (a) a balance pulley in the anchor block so both tendons of a pair carry equal tension; (b) set the pair limit to 40 N total; (c) rely on the 60 N breakaway. Recommendation: (a). Decided by Amish, 2026-09-25: go with recommendation (FXH-DDR-002).
+- **N4.** Pack mass (R7), about 675 g against 450 g. Options: (a) ball-detent breakaways instead of magnets (about 40 g lighter); (b) a lighter, perforated cuff shell; (c) a relaxed target agreed with a therapist (see D1); (d) move the cells to a pouch on the forearm support. Recommendation: (a) and (b), then (c). Decided by Amish, 2026-09-25: go with recommendation (FXH-DDR-002); (c) waits on O1.
+- **N5.** Stroke-time range (R5). The fastest extension at design load is about 3.3 s against the 3 s lower limit. Recommendation: relax the lower limit to 4 s at design load, which is also gentler; R4 still holds for strokes up to 5 s. Decided by Amish, 2026-09-25: go with recommendation (FXH-DDR-002).
 
 ## Consequences
 
 - FXH-PRB-001, FXH-PRC-001 and FXH-REQ-001 move to v0.3: the decided choices are no longer "proposed", and the requirement status comes from FXH-CAL-001.
 - The TRL 3 layout places the gearmotors along the forearm with the spools at the front and idlers turning the tendons forward; this narrows the pack to 76 mm (FXH-DWG-001).
-- R7 and R11 are not met; R2, R3 and R5 are at risk. None of the new items N1 to N5 is applied to the design until Amish decides it.
+- R7 and R11 are not met; R2, R3 and R5 are at risk. Items N1 to N5 were applied to the design after Amish accepted them (FXH-DDR-002).
 - TRL 4 work (test articles, bench tests, build procedures) is on hold by Amish's instruction.

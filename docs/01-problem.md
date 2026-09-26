@@ -3,7 +3,7 @@ doc_id: FXH-PRB-001
 title: FlexHand problem statement
 project: FlexHand
 doc_type: Problem statement
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -21,6 +21,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record decisions of FXH-DDR-001 (passive motion only, design load); complete the passive-mobilization citation; severity band finding from FXH-CAL-001
+- version: "0.4"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002); first severity band set to mild flexor tone
 ---
 
 # FlexHand problem statement
@@ -47,7 +51,7 @@ A caution sits at the center of this problem. Robotic passive mobilization has b
 
 | User | Need | Context |
 | --- | --- | --- |
-| Stroke survivor with moderate hand impairment (subacute or chronic) | Many gentle, repeatable finger movements a day without waiting for a therapist | Home, seated with the forearm resting on a table or pillow; 30 to 60 min sessions, one to three a day |
+| Stroke survivor with moderate hand impairment and mild flexor tone (MAS 1 to 1+) (subacute or chronic) | Many gentle, repeatable finger movements a day without waiting for a therapist | Home, seated with the forearm resting on a table or pillow; 30 to 60 min sessions, one to three a day |
 | Care partner | Put the device on and take it off quickly and safely; know what to do if something goes wrong | Home |
 | Occupational or physical therapist | Set range-of-motion, speed and force limits; see how many cycles were done | Clinic visit, then remote review |
 | Researcher or open hardware community | A documented, reproducible platform to study dose and control strategies | University labs, makerspaces |
@@ -72,6 +76,6 @@ A caution sits at the center of this problem. Robotic passive mobilization has b
 ## Open questions
 
 - Which clinical partner to co-design with first (a stroke unit occupational therapy team, a community rehabilitation service, or a university rehabilitation lab)? Proposed, awaiting Amish.
-- Which severity band to design for first? The 30 N design load was kept (FXH-DDR-001, D5), and the check against published finger stiffness in FXH-CAL-001 shows it covers mild flexor tone (MAS 1 to 1+), not moderate tone. Recommendation: design for mild tone first and reword R2 to match (FXH-DDR-001, N1). Proposed, awaiting Amish.
-
 Decided on 2026-09-25 by Amish (FXH-DDR-001): passive motion only for this design, with active assist recorded as a later option (D3). The pitch is unchanged.
+
+Decided on 2026-09-25 by Amish (FXH-DDR-002, N1): the first severity band is mild flexor tone (MAS 1 to 1+), which the 30 N design load covers according to the published finger stiffness check in FXH-CAL-001. Moderate and severe tone need roughly 80 to 150 N per finger and are left for a later design.

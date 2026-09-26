@@ -1,4 +1,4 @@
-"""FlexHand sizing calculations (FXH-CAL-001).
+"""FlexHand sizing calculations (FXH-CAL-001 v0.2, decisions of FXH-DDR-002 applied).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number quoted in docs/04-calcs/01-sizing.md, tagged [A1], [B2] and so on.
@@ -25,6 +25,8 @@ COMPLIANCE = 5.0                 # mm, cuff and liner take-up at design load, ad
 MU, BEND = 0.10, pi              # sheath friction coefficient and total bend (rad), neutral wrist
 MU_HI, BEND_HI = 0.15, 1.5 * pi  # pessimistic case: worn liner, flexed wrist
 ETA_IDLER = 0.95                 # one idler bearing per tendon line
+ETA_BALANCE = 0.95               # N3 (DDR-002): one floating balance pulley per spool line
+STROKE_MIN_DESIGN = 4.0          # s, N5 (DDR-002): lower stroke-time limit at design load (R5)
 DWELL = 1.0                      # s at each end
 # Gearmotor: Pololu 4869, 227:1 25D MP 12 V with 48 CPR encoder (datasheet at 12 V)
 V_RATED, I_STALL, I_NL, RPM_NL, T_STALL = 12.0, 1.8, 0.10, 35.0, 24 * 0.0980665   # T in N·m
@@ -44,7 +46,8 @@ P_LIMIT = 50.0           # kPa, R11
 RHO_PETG, RHO_TPU, RHO_PA12, RHO_EVA, RHO_LINER = 1.27, 1.21, 1.01, 0.07, 0.20
 FILL_BLOCK = 0.40        # infill share for the solid-looking anchor block
 MASS = {"cell": 45.0, "bms": 5.0, "controller": 3.0, "driver": 3.0, "charger": 4.0, "estop": 20.0,
-        "idler": 1.5, "coupling": 7.0, "slack_spring": 1.0, "strap": 8.0, "wiring": 15.0, "fasteners": 10.0,
+        "idler": 1.5, "balance": 1.5, "coupling": 2.0,   # N4: ball-detent breakaway (magnetic was 7.0 g)
+        "coupling_magnetic": 7.0, "slack_spring": 1.0, "strap": 8.0, "wiring": 15.0, "fasteners": 10.0,
         "glove": 40.0, "sheath_g_per_m": 25.0, "ferrule": 0.5, "tendon_g_per_m": 0.45}
 BYTES_PER_SESSION, FLASH_LOG_BYTES = 32, 1_000_000
 
@@ -97,8 +100,8 @@ def compute():
              k_cover=F_DESIGN * (R_PIP / 1000) / radians(ROM_PIP))
 
     # ---- C. Transmission and torque (R2) ----
-    eta = exp(-MU * BEND) * ETA_IDLER
-    eta_hi = exp(-MU_HI * BEND_HI) * ETA_IDLER
+    eta = exp(-MU * BEND) * ETA_IDLER * ETA_BALANCE
+    eta_hi = exp(-MU_HI * BEND_HI) * ETA_IDLER * ETA_BALANCE
     F_spool = FINGERS_PER_MOTOR * F_DESIGN / eta
     T_peak = F_spool * r_eff
     T_peak_hi = FINGERS_PER_MOTOR * F_DESIGN / eta_hi * r_eff
@@ -116,7 +119,8 @@ def compute():
     R.update(t_ext=se["t"], t_flex=sf["t"], t_ext_hi=se_hi["t"], cycle=cycle, cycles_per_min=60 / cycle,
              cycles_per_h=3600 / cycle, rpm_nl_bus=w_nl * 60 / (2 * pi), v_tendon_nl=w_nl * r_eff * 1000,
              t_noload=travel / (w_nl * r_eff * 1000), mcp_speed=ROM_MCP / se["t"], pip_speed=ROM_PIP / se["t"],
-             max_stroke_for_R4=(3600 / 300 - 2 * DWELL) / 2)
+             max_stroke_for_R4=(3600 / 300 - 2 * DWELL) / 2,
+             cycles_per_h_min=3600 / (2 * STROKE_MIN_DESIGN + 2 * DWELL))
     # RMS spool torque over a cycle (hold at extension counted at peak torque)
     num = sum(T * T * dt for T, dt in se["tq"] + sf["tq"]) + (T_peak ** 2) * DWELL
     R["T_rms"] = (num / cycle) ** 0.5
@@ -124,9 +128,13 @@ def compute():
     # ---- E. Force limit (R3) ----
     T_lim_pair = FINGERS_PER_MOTOR * 40.0 / eta * r_eff
     I_lim = I_NL + T_lim_pair / kt
-    f_est_lo, f_est_hi = 40.0 * eta_hi / eta, 40.0 * exp(-0.05 * pi) * ETA_IDLER / eta
+    f_est_lo, f_est_hi = 40.0 * eta_hi / eta, 40.0 * exp(-0.05 * pi) * ETA_IDLER * ETA_BALANCE / eta
+    # N3: the balance pulley keeps both tendons of a pair at the same tension, so the pair limit is also
+    # the per-finger limit (was: one finger up to the whole pair force, 80 N, with the partner slack)
     R.update(I_lim=I_lim, T_lim_pair=T_lim_pair, I_peak=I_NL + T_peak / kt,
-             F_single_at_limit=FINGERS_PER_MOTOR * 40.0, f_est_lo=f_est_lo, f_est_hi=f_est_hi)
+             F_single_at_limit=T_lim_pair / r_eff * eta / FINGERS_PER_MOTOR,
+             F_single_no_balance=FINGERS_PER_MOTOR * 40.0, f_est_lo=f_est_lo, f_est_hi=f_est_hi,
+             balance_travel=d["balance_travel"], travel_free=FINGERS_PER_MOTOR * travel)
 
     # ---- F. Energy (R6) ----
     I_hold = I_NL + T_peak / kt
@@ -162,31 +170,39 @@ def compute():
         "Emergency stop": MASS["estop"],
         "Anchor block, 8 couplings, 8 springs": (v(parts["anchor_block"]) * RHO_PETG * FILL_BLOCK
                                                  + 8 * MASS["coupling"] + 8 * MASS["slack_spring"]),
+        "Balance pulleys (4)": 4 * MASS["balance"],
         "Wiring and fasteners": MASS["wiring"] + MASS["fasteners"],
         "Sheaths, half": m_sheaths / 2,
     }
-    tendon_len = 8 * 0.40
+    tendon_len = 8 * 0.40 + 4 * 0.03          # extensors run on about 30 mm to the thimble
     hand = {
         "Base glove (bought)": MASS["glove"],
         "Dorsal and palmar plates (TPU)": (v(parts["dorsal_plate"]) + v(parts["palmar_plate"])) * RHO_TPU,
         "Finger cuffs (8, TPU)": sub["finger_cuff_tpu_mm3"] / 1000 * RHO_TPU,
         "Cuff liners": sub["finger_cuff_liner_mm3"] / 1000 * RHO_LINER,
+        "Fingertip thimbles (4, TPU)": sub["thimble_tpu_mm3"] / 1000 * RHO_TPU,
+        "Thimble liners": sub["thimble_liner_mm3"] / 1000 * RHO_LINER,
         "Thumb spacer (TPU)": v(parts["thumb_spacer"]) * RHO_TPU,
         "Tendons": tendon_len * MASS["tendon_g_per_m"],
         "Sheaths, half": m_sheaths / 2,
     }
     R.update(mass_pack=pack, mass_hand=hand, m_pack=sum(pack.values()), m_hand=sum(hand.values()),
              sheath_len=sheath_len, m_sheaths=m_sheaths, m_motors=2 * M_MOTOR,
-             m_couplings=8 * MASS["coupling"])
+             m_couplings=8 * MASS["coupling"], m_couplings_saved=8 * (MASS["coupling_magnetic"] - MASS["coupling"]),
+             m_cuff_perf_saved=(v(sub["cuff_shell_solid"]) - v(sub["cuff_shell"])) * RHO_PETG,
+             cuff_open_frac=1 - v(sub["cuff_shell"]) / v(sub["cuff_shell_solid"]))
 
     # ---- H. Cuff pressure (R11) and fit (R10) ----
     rows = []
     names = ["Index", "Middle", "Ring", "Little"]
+    # N2: the extensor load is shared by the middle-phalanx anchor cuff and the fingertip thimble;
+    # assumed shared in proportion to contact area (equal mean pressure), to check at TRL 4
     for nm, fg in zip(names, d["finger_geom"]):
         area = fg["anchor_w"] * fg["arc"]
         rows.append(dict(name=nm, lm=fg["lm"], usable=fg["usable"], w=fg["anchor_w"], arc=fg["arc"],
-                         p=F_DESIGN / area * 1000, p20=F_DESIGN / (20 * fg["arc"]) * 1000,
-                         w_needed=F_DESIGN / (P_LIMIT / 1000) / fg["arc"]))
+                         tw=fg["thimble_w"], ld=fg["ld"],
+                         p_cuff=F_DESIGN / area * 1000, p20=F_DESIGN / (20 * fg["arc"]) * 1000,
+                         p=F_DESIGN / ((fg["anchor_w"] + fg["thimble_w"]) * fg["arc"]) * 1000))
     R["cuffs"] = rows
     R["p12"] = F_DESIGN / (12 * 25) * 1000                       # TRL 2 basis: 12 mm x 25 mm
     R["hand_length"] = d["hand_length"]
@@ -195,14 +211,12 @@ def compute():
         k = hl / d["hand_length"]
         lit = d["finger_geom"][3]
         usable = lit["lm"] * k - 2 * d["joint_clear"]
+        tw = min(d["thimble_w_max"], lit["ld"] * k - d["joint_clear"])
         arc = lit["arc"] * k
-        sizes[sz] = dict(k=k, little_usable=usable, little_p=F_DESIGN / (min(20, usable) * arc) * 1000)
+        sizes[sz] = dict(k=k, little_usable=usable, little_tw=tw,
+                         little_p_cuff=F_DESIGN / (min(20, usable) * arc) * 1000,
+                         little_p=F_DESIGN / ((min(20, usable) + tw) * arc) * 1000)
     R["sizes"] = sizes
-    # thimble option: add a distal-phalanx contact of the same arc (proposed, not modeled)
-    for r, fg in zip(rows, d["finger_geom"]):
-        thimble_w = min(20.0, fg["ld"] - d["joint_clear"])
-        r["p_thimble"] = F_DESIGN / ((r["w"] + thimble_w) * r["arc"]) * 1000
-    R["p_little_thimble"] = rows[3]["p_thimble"]
 
     # ---- I. Stop (R9) ----
     C_bulk, dV = 100e-6, V_BUS
@@ -226,19 +240,21 @@ def compute():
 def status_table(R):
     c = {r["name"]: r for r in R["cuffs"]}
     worst = max(r["p"] for r in R["cuffs"])
+    worst_all = max(max(r["p"] for r in R["cuffs"]), max(s["little_p"] for s in R["sizes"].values()))
+    st = lambda ok, bad="not met": "met" if ok else bad
     return [
         ("R1", "Finger range (tendon excursion)", f"{R['ext']:.1f} mm needed; {R['travel']:.1f} mm stroke", "25 mm for MCP 70°, PIP 90°", "met"),
-        ("R2", "Extend against flexor tone", f"{R['T_peak']:.3f} N·m peak, {R['T_rms']:.3f} N·m RMS at the spool", f"30 N per finger; gearbox {T_CONT:.2f} N·m continuous, {T_INT:.2f} N·m intermittent", "at risk"),
-        ("R3", "Limit force on the hand", f"{R['I_lim']:.2f} A trip for 40 N per finger, sensed per finger pair", "40 N per finger (software); 60 N breakaway", "at risk"),
-        ("R4", "Repetition dose", f"{R['cycles_per_h']:.0f} cycles per hour", "300 or more per 60 min", "met"),
-        ("R5", "Slow, smooth, adjustable stroke", f"fastest {R['t_ext']:.1f} s at design load, {R['t_noload']:.1f} s unloaded", "3 to 15 s stroke", "at risk"),
+        ("R2", "Extend against mild flexor tone", f"30 N covers {R['F_mas1p']:.0f} N needed at MAS 1+; {R['T_peak']:.3f} N·m peak, {R['T_rms']:.3f} N·m RMS at the spool", f"30 N per finger (MAS 1 to 1+); gearbox {T_CONT:.2f} N·m continuous, {T_INT:.2f} N·m intermittent", "at risk" if R['T_peak'] > T_CONT else "met"),
+        ("R3", "Limit force on the hand", f"{R['I_lim']:.2f} A trip; balance pulley holds each finger to {R['F_single_at_limit']:.0f} N; friction spread {R['f_est_lo']:.0f} to {R['f_est_hi']:.0f} N", "40 N per finger (software); 60 N breakaway", "at risk"),
+        ("R4", "Repetition dose", f"{R['cycles_per_h']:.0f} cycles per hour at full speed; {R['cycles_per_h_min']:.0f} at {STROKE_MIN_DESIGN:.0f} s strokes", "300 or more per 60 min", st(R['cycles_per_h_min'] >= 300)),
+        ("R5", "Slow, smooth, adjustable stroke", f"fastest {R['t_ext']:.1f} s at design load ({R['t_ext_hi']:.1f} s pessimistic), {R['t_noload']:.1f} s unloaded", f"{STROKE_MIN_DESIGN:.0f} to 15 s at design load", st(R['t_ext_hi'] <= STROKE_MIN_DESIGN, "at risk")),
         ("R6", "Sessions per charge", f"{R['sessions']:.1f} sessions ({R['E_session_Wh']:.2f} Wh each)", "3 or more", "met"),
-        ("R7", "Mass", f"hand {R['m_hand']:.0f} g; pack {R['m_pack']:.0f} g", "hand 120 g or less; pack 450 g or less", "not met"),
+        ("R7", "Mass", f"hand {R['m_hand']:.0f} g; pack {R['m_pack']:.0f} g", "hand 120 g or less; pack 450 g or less", st(R['m_hand'] <= 120 and R['m_pack'] <= 450)),
         ("R8", "Donning and removal time", "not calculable", "5 min on, 1 min off", "not verifiable at TRL 3"),
         ("R9", "Stop and release", f"power cut in about {R['t_stop_ms']:.0f} ms; release by design", "100 ms; release in 10 s", "not verifiable at TRL 3"),
         ("R10", "Fit adult hands", "S, M, L glove sizes scaled from the model", "hand length 170 to 205 mm", "met"),
-        ("R11", "Cuff contact pressure", f"{worst:.0f} kPa worst (little finger); index {c['Index']['p']:.0f}, middle {c['Middle']['p']:.0f}, ring {c['Ring']['p']:.0f}", "50 kPa or less", "not met"),
-        ("R12", "Parts cost", f"${R['bom_total']:.2f}", f"${R['budget']:.0f} or less", "met"),
+        ("R11", "Cuff contact pressure", f"cuff and thimble: {worst:.0f} kPa worst on the medium hand (little finger); index {c['Index']['p']:.0f}, middle {c['Middle']['p']:.0f}, ring {c['Ring']['p']:.0f}; {worst_all:.0f} kPa worst over S to L", "50 kPa or less", st(worst_all <= P_LIMIT)),
+        ("R12", "Parts cost", f"${R['bom_total']:.2f}", f"${R['budget']:.0f} or less", st(R['bom_total'] <= R['budget'])),
         ("R13", "Session log", f"about {R['log_days']:,.0f} days of summaries in 1 MB of flash", "time, cycles, peak current; locked limits", "not verifiable at TRL 3"),
     ]
 
@@ -251,7 +267,7 @@ def main():
     p(f"[A2] stroke with {COMPLIANCE:.0f} mm compliance {R['travel']:.1f} mm = {R['spool_turns']:.2f} spool turns; one-layer groove capacity about {R['groove_cap']:.0f} mm per line")
     p(f"[B1] tendon force to extend fully: MAS 1+ finger {R['F_mas1p']:.1f} N; MAS 3 finger {R['F_mas3']:.1f} N")
     p(f"[B2] 30 N covers PIP stiffness up to {R['k_cover']:.3f} N·m/rad ({R['k_cover'] / K_MAS1P[1]:.1f} x the MAS 1+ value)")
-    p(f"[C1] transmission efficiency {R['eta']:.3f} (mu {MU}, {degrees(BEND):.0f}° bend, idler {ETA_IDLER}); pessimistic {R['eta_hi']:.3f}")
+    p(f"[C1] transmission efficiency {R['eta']:.3f} (mu {MU}, {degrees(BEND):.0f}° bend, idler {ETA_IDLER}, balance pulley {ETA_BALANCE}); pessimistic {R['eta_hi']:.3f}")
     p(f"[C2] spool tension {R['F_spool']:.1f} N; r_eff {R['T_peak'] / R['F_spool'] * 1000:.1f} mm; peak torque {R['T_peak']:.3f} N·m ({R['T_peak'] / T_CONT * 100:.0f} % of continuous, {R['T_peak'] / T_INT * 100:.0f} % of intermittent); pessimistic {R['T_peak_hi']:.3f} N·m")
     p(f"[C3] motor model at {V_BUS} V: R {R['Rm']:.2f} ohm, kt {R['kt']:.3f} N·m/A, ke {R['ke']:.3f} V·s/rad, stall {R['T_stall_bus']:.2f} N·m (peak is {R['T_peak'] / R['T_stall_bus'] * 100:.0f} % of stall)")
     p(f"[C4] RMS spool torque over a cycle {R['T_rms']:.3f} N·m ({R['T_rms'] / T_CONT * 100:.0f} % of continuous)")
@@ -259,9 +275,11 @@ def main():
     p(f"[D2] extension {R['t_ext']:.2f} s (pessimistic friction {R['t_ext_hi']:.2f} s); flexion {R['t_flex']:.2f} s; dwell 2 x {DWELL:.0f} s; cycle {R['cycle']:.2f} s")
     p(f"[D3] {R['cycles_per_min']:.2f} cycles per min, {R['cycles_per_h']:.0f} per hour; R4 holds for strokes up to {R['max_stroke_for_R4']:.1f} s")
     p(f"[D4] joint speed at fastest extension: MCP {R['mcp_speed']:.1f} °/s, PIP {R['pip_speed']:.1f} °/s")
+    p(f"[D5] at the {STROKE_MIN_DESIGN:.0f} s lower stroke limit (N5): {R['cycles_per_h_min']:.0f} cycles per hour")
     p(f"[E1] 40 N per finger on a pair = {R['T_lim_pair']:.3f} N·m, trip current {R['I_lim']:.3f} A; peak design current {R['I_peak']:.3f} A")
-    p(f"[E2] one finger can carry up to {R['F_single_at_limit']:.0f} N before the pair limit trips; the 60 N breakaway acts first")
+    p(f"[E2] with the balance pulley each finger carries half the spool line: {R['F_single_at_limit']:.0f} N per finger at the trip (without it one finger could carry {R['F_single_no_balance']:.0f} N)")
     p(f"[E3] friction spread: a 40 N current setting means {R['f_est_lo']:.0f} to {R['f_est_hi']:.0f} N at the fingers (mu 0.15 flexed wrist to mu 0.05)")
+    p(f"[E4] balance pulley free travel {R['balance_travel']:.0f} mm against the {R['travel']:.1f} mm stroke; a free finger could move up to {R['travel_free']:.1f} mm if its partner is blocked, so each finger tendon carries a stop bead set to its own range")
     p(f"[F1] per motor per cycle: extension {R['e_ext']:.2f} J, flexion {R['e_flex']:.2f} J, hold {R['e_hold']:.2f} J ({R['I_hold']:.2f} A)")
     p(f"[F2] per 60 min session: motors {R['E_motor_Wh']:.2f} Wh, shafts {R['E_shaft_Wh']:.2f} Wh, fingers {R['E_finger_Wh']:.2f} Wh, controller {R['E_ctrl_Wh']:.2f} Wh; total {R['E_session_Wh']:.2f} Wh (average {R['P_avg']:.2f} W, {R['I_avg']:.2f} A)")
     p(f"[F3] pack {R['pack_Wh']:.0f} Wh, usable {R['usable_Wh']:.1f} Wh: {R['sessions']:.1f} sessions per charge")
@@ -269,17 +287,17 @@ def main():
     for k, val in R["mass_pack"].items():
         p(f"       {k:40s} {val:6.1f}")
     p(f"[G2] forearm pack total {R['m_pack']:.0f} g (motors {R['m_motors']:.0f} g, couplings {R['m_couplings']:.0f} g); sheaths {R['sheath_len']:.2f} m, {R['m_sheaths']:.0f} g")
+    p(f"[G5] N4 savings: ball-detent couplings {R['m_couplings_saved']:.0f} g; perforated cuff shell {R['m_cuff_perf_saved']:.1f} g ({R['cuff_open_frac'] * 100:.0f} % open)")
     p("[G3] hand-side mass by part (g):")
     for k, val in R["mass_hand"].items():
         p(f"       {k:40s} {val:6.1f}")
     p(f"[G4] hand-side total {R['m_hand']:.0f} g")
     p(f"[H1] TRL 2 basis, 12 mm x 25 mm patch: {R['p12']:.0f} kPa")
-    p("[H2] anchor cuffs on the middle phalanx (medium hand):")
+    p("[H2] anchor cuff on the middle phalanx plus fingertip thimble (medium hand):")
     for r in R["cuffs"]:
-        p(f"       {r['name']:7s} phalanx {r['lm']:.1f} mm, usable {r['usable']:.1f} mm, cuff {r['w']:.1f} mm x arc {r['arc']:.1f} mm -> {r['p']:.0f} kPa (a 20 mm cuff would give {r['p20']:.0f} kPa; 50 kPa needs {r['w_needed']:.1f} mm)")
+        p(f"       {r['name']:7s} middle phalanx {r['lm']:.1f} mm, cuff {r['w']:.1f} mm; distal {r['ld']:.1f} mm, thimble {r['tw']:.1f} mm; arc {r['arc']:.1f} mm -> {r['p']:.0f} kPa (cuff alone {r['p_cuff']:.0f} kPa; a 20 mm cuff alone {r['p20']:.0f} kPa)")
     for sz, s in R["sizes"].items():
-        p(f"[H3] size {sz} (scale {s['k']:.2f}): little finger usable {s['little_usable']:.1f} mm, {s['little_p']:.0f} kPa")
-    p("[H4] with a fingertip thimble sharing the load: " + ", ".join(f"{r['name'].lower()} {r['p_thimble']:.0f} kPa" for r in R["cuffs"]))
+        p(f"[H3] size {sz} (scale {s['k']:.2f}): little finger cuff {min(20, s['little_usable']):.1f} mm + thimble {s['little_tw']:.1f} mm -> {s['little_p']:.0f} kPa (cuff alone {s['little_p_cuff']:.0f} kPa)")
     p(f"[I1] stop: bulk capacitor hold-up {R['t_holdup_ms']:.1f} ms + contact {R['t_bounce_ms']:.0f} ms + run-down 5 ms = about {R['t_stop_ms']:.0f} ms")
     p(f"[J1] BOM {R['bom_lines']} lines, total ${R['bom_total']:.2f} against budget ${R['budget']:.0f} ({R['bom_total'] / R['budget'] * 100:.0f} %)")
     p(f"[K1] session log: {BYTES_PER_SESSION} B per session, 3 sessions a day: {R['log_days']:,.0f} days in {FLASH_LOG_BYTES / 1e6:.0f} MB")
