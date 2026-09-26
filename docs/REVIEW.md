@@ -195,3 +195,18 @@ TRL 4 remains on hold by Amish's instruction. No build, test, purchasing, PCB or
 ### Recommended next step
 
 Name a clinical co-design partner (O1) so that the pack-mass target and the pressure limit can be reviewed with a therapist. The design is otherwise complete at TRL 3.
+
+## Session 2026-09-26: sources strengthened
+
+Amish asked for the weaker sources to be fixed. README sections "Concept rationale" to "What sparked the idea" were checked link by link; every link now in those sections was fetched and supports its claim.
+
+| Where | Old source | New source |
+| --- | --- | --- |
+| By country or region, India | None (income group and urban concentration of the workforce uncited) | Handa et al., *Current Physical Medicine and Rehabilitation Reports*, 2023 (WHO STARS review): stroke units clustered in metropolitan cities and tertiary centers, nearly absent at primary and secondary facilities |
+| By country or region, Brazil | None (public system, ageing population and university groups uncited) | Silva et al., *Arquivos de Neuro-Psiquiatria*, 2024 (2019 National Health Survey): 24.6 % reported access to rehabilitation; 73.4 % of those with activity limitations had no physiotherapy |
+| By country or region, Canada | Canadian Medical Hall of Fame (kept) | Same source; the uncited claim about rural distances was removed so the row states only what the source supports |
+| Burning platform, therapy dose | Lang et al., 2009 (journal page, kept) | Added the open copy at Marquette University's repository, which was fetched and confirms 312 sessions and 32 repetitions; "hundreds" made specific as 400 to 600 repetitions per session in animal studies |
+| Burning platform, dexterity at six months | Kwakkel et al., *Stroke*, 2003 | Removed from the README: the journal and PubMed pages refused automated access in this session, so the 38 % figure could not be re-verified. It remains in `docs/01-problem.md` (a peer-reviewed source, not a weak one) and can return to the README once checked. |
+| What sparked the idea | Canadian Medical Hall of Fame plus Salter et al., JBJS 1980 (PubMed) | Canadian Medical Hall of Fame (the official laureate page, which confirms 1978, the Hospital for Sick Children and the immobilization reasoning). The PubMed link was dropped because the page could not be read in this session; the uncited line about bedside, single-joint machines was removed. `INSPIRATIONS.md` line updated to match. |
+
+Kept and re-verified: IHME news release on the GBD 2021 stroke analysis in *The Lancet Neurology* (11.9 million new strokes, 93.8 million survivors, 70 % and 86 % rises, more than three-quarters in low- and middle-income countries); WHO rehabilitation fact sheet (fewer than 10 skilled practitioners per million in many low- and middle-income settings); CDC stroke facts (more than 795,000 strokes a year; a leading cause of serious long-term disability). No budget change; `docs/01-problem.md` cites no weak source for these claims and is unchanged.

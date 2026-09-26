@@ -20,7 +20,7 @@ FlexHand is open and garage-buildable because the users who most need low-cost d
 
 Stroke is common, rising and concentrated where rehabilitation is thinnest. The Global Burden of Disease study counted 11.9 million new strokes and 93.8 million people living after a stroke in 2021, up 70 % and 86 % since 1990, with more than three-quarters of those affected living in low- and middle-income countries ([IHME, on the GBD 2021 stroke analysis in *The Lancet Neurology*, 2024](https://www.healthdata.org/news-events/newsroom/news-releases/lancet-neurology-air-pollution-high-temperatures-and-metabolic)). In many of those settings there are fewer than 10 skilled rehabilitation practitioners per million people ([WHO rehabilitation fact sheet](https://www.who.int/news-room/fact-sheets/detail/rehabilitation)).
 
-Even where therapists are available, the dose is small. An observational study of 312 therapy sessions found an average of 32 repetitions of upper-limb functional movement per session, against the hundreds used in animal models of recovery ([Lang et al., *Archives of Physical Medicine and Rehabilitation*, 2009](https://www.archives-pmr.org/article/S0003-9993(09)00353-0/abstract)). Hand function is slow to return: in one cohort with a flaccid arm soon after stroke, only about 38 % had regained some dexterity at six months ([Kwakkel et al., *Stroke*, 2003](https://www.ahajournals.org/doi/full/10.1161/01.STR.0000087172.16305.CD)).
+Even where therapists are available, the dose is small. An observational study of 312 therapy sessions found an average of 32 repetitions of upper-limb functional movement per session, against the 400 to 600 repetitions per session used in animal studies of motor skill learning ([Lang et al., *Archives of Physical Medicine and Rehabilitation*, 2009](https://www.archives-pmr.org/article/S0003-9993(09)00353-0/abstract); [open copy, Marquette University](https://epublications.marquette.edu/cgi/viewcontent.cgi?httpsredir=1&article=1073&context=phys_therapy_fac)).
 
 ## Where it could be used
 
@@ -39,15 +39,15 @@ Even where therapists are available, the dose is small. An observational study o
 | Country or region | Why it matters there |
 | --- | --- |
 | United States | More than 795,000 people have a stroke each year, and stroke is a leading cause of serious long-term disability ([CDC](https://www.cdc.gov/stroke/data-research/facts-stats/index.html)); home programs could extend short outpatient courses. |
-| Canada | Continuous passive motion was conceived at the Hospital for Sick Children in Toronto ([Canadian Medical Hall of Fame](https://www.cdnmedhall.ca/laureates/robertsalter)); long distances between rural homes and rehabilitation centers favor home devices. |
+| Canada | Continuous passive motion was conceived at the Hospital for Sick Children in Toronto and has since been translated into clinical use around the world ([Canadian Medical Hall of Fame](https://www.cdnmedhall.ca/laureates/robertsalter)); an open device lets research groups in the country where the idea began build on it. |
 | China | An upper-middle-income country among the low- and middle-income countries that carry more than three-quarters of the global stroke burden ([IHME](https://www.healthdata.org/news-events/newsroom/news-releases/lancet-neurology-air-pollution-high-temperatures-and-metabolic)); a large domestic electronics and motor supply base suits locally built open devices. |
-| India | A lower-middle-income country in the same group; supervised home dose could stretch a rehabilitation workforce that is mostly found in hospitals and cities. |
+| India | A WHO Systematic Assessment of Rehabilitation Situation review found that stroke units are clustered in metropolitan cities and tertiary centers and nearly absent at primary and secondary facilities ([Handa et al., *Current Physical Medicine and Rehabilitation Reports*, 2023](https://link.springer.com/article/10.1007/s40141-023-00418-2)); supervised home dose could reach people far from those centers. |
 | Sub-Saharan Africa (for example Nigeria or Kenya) | Many low- and middle-income settings have fewer than 10 skilled rehabilitation practitioners per million people ([WHO](https://www.who.int/news-room/fact-sheets/detail/rehabilitation)), so each therapist's time must go further. |
-| Brazil | A public health system serving a large, ageing population, with university engineering and rehabilitation groups able to build and study open devices. |
+| Brazil | In the 2019 National Health Survey, only 24.6 % of people who had had a stroke reported access to rehabilitation, and 73.4 % of those with activity limitations had received no physiotherapy ([Silva et al., *Arquivos de Neuro-Psiquiatria*, 2024](https://pmc.ncbi.nlm.nih.gov/articles/PMC11661889/)); a low-cost device that local university groups can build and study fits that gap. |
 
 ## What sparked the idea
 
-The idea traces back to continuous passive motion, the concept Robert Salter developed in 1978 at the Hospital for Sick Children in Toronto after seeing how immobilization after surgery prolonged pain and recovery ([Canadian Medical Hall of Fame](https://www.cdnmedhall.ca/laureates/robertsalter); [Salter et al., *Journal of Bone and Joint Surgery*, 1980](https://pubmed.ncbi.nlm.nih.gov/7440603/)). His concept has since been translated into clinical use around the world, but continuous passive motion machines are typically bedside or clinic units built around a single joint such as the knee. FlexHand asks what that principle looks like as a light, open, wearable device that moves four fingers at home, within limits a therapist sets.
+The idea traces back to continuous passive motion, the concept Robert Salter developed in 1978 at the Hospital for Sick Children in Toronto after seeing how immobilization after surgery prolonged pain and recovery ([Canadian Medical Hall of Fame](https://www.cdnmedhall.ca/laureates/robertsalter)). His concept has since been translated into clinical applications around the world. FlexHand asks what that principle looks like as a light, open, wearable device that moves four fingers at home, within limits a therapist sets.
 
 ## Problem
 
@@ -96,6 +96,12 @@ The priced bill of materials is in [bom/bom.csv](bom/bom.csv). The parametric mo
 ## Documentation
 
 Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID (FXH-PRC-001 for the precis), a version and a revision history. Branded PDFs are built with `python .kit/render.py` and attached to GitHub Releases when a document is tagged, for example `FXH-PRC-001/v1.0`.
+
+## Credits
+
+Designed by Amish Chadha. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for roles. To cite this design, use [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository").
+
+AI assistance (Claude) was used to accelerate concept renders, prototype documentation and first-pass sizing calculations. Design direction and all decisions are Amish Chadha's, recorded in this repository's decision records (`docs/decisions/`).
 
 ## Licenses
 
