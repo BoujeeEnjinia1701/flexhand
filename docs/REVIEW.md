@@ -210,3 +210,33 @@ Amish asked for the weaker sources to be fixed. README sections "Concept rationa
 | What sparked the idea | Canadian Medical Hall of Fame plus Salter et al., JBJS 1980 (PubMed) | Canadian Medical Hall of Fame (the official laureate page, which confirms 1978, the Hospital for Sick Children and the immobilization reasoning). The PubMed link was dropped because the page could not be read in this session; the uncited line about bedside, single-joint machines was removed. `INSPIRATIONS.md` line updated to match. |
 
 Kept and re-verified: IHME news release on the GBD 2021 stroke analysis in *The Lancet Neurology* (11.9 million new strokes, 93.8 million survivors, 70 % and 86 % rises, more than three-quarters in low- and middle-income countries); WHO rehabilitation fact sheet (fewer than 10 skilled practitioners per million in many low- and middle-income settings); CDC stroke facts (more than 795,000 strokes a year; a leading cause of serious long-term disability). No budget change; `docs/01-problem.md` cites no weak source for these claims and is unchanged.
+
+## Session 2026-09-26: product appearance model and photoreal renders
+
+Amish chose this repo for the first batch of product renders on 2026-09-26. This session added an appearance model for photoreal renders; the render images themselves (`media/render-hero.png`, `media/render-exploded.png`) are produced separately from it.
+
+### What was done
+
+- `cad/src/product_model.py` (new): `product_parts()` returns 50 parts (49 device parts in the shell and internal groups plus the shared clay forearm and hand as context), with `TITLE` and three `RENDER_VIEWS` (hero, exploded and a thumb-side detail view). It imports `PARAMS`, `derived()` and `build_parts()` from `model.py`; `model.py`, the BOM and the other documents are unchanged. It adds:
+  - a motor pack with filleted corners, a parting line between base and lid, four lid screws, side grip ribs, a USB-C port at the charger and a raised "FLEXHAND" marking with a teal accent line;
+  - a clear window in the lid over the spools, so the spools, tendon windings and idlers show from outside;
+  - an emergency stop with a yellow collar and knurled red mushroom cap, a teal start and pause button and a lit status LED;
+  - a filleted anchor block with a seam, hinge lugs and a ribbed teal quick-release lever, with the balance pulleys inside;
+  - gearmotors split into encoder cap, can and gearbox; two-flange spools with tendon windings; idler and balance bearings with shields; tendon runs from the spools around the idlers to the exit slots; cells with end caps; circuit boards on an electronics tray;
+  - a perforated forearm cuff with a foam liner, hook-and-loop straps (fabric), buckles and teal pull tabs;
+  - swept Bowden sheaths with metal ferrules at both ends and sheath stops on the plates;
+  - a knit fingerless glove (fabric) with a wrist hem and knuckle binding, TPU dorsal and palmar plates, padded finger cuffs with liners and tendon eyelets, fingertip thimbles with tip tabs, a thumb spacer and the tendons along the fingers.
+- `README.md`: hero image now points to `media/render-hero.png`; the links line starts with the exploded render.
+
+Every part is a valid solid and tessellates at the render tolerance. Previews from the kit renderer (without the clear window) were checked for fit on the clay hand.
+
+### Differences from model.py (Proposed, awaiting Amish)
+
+1. **Forearm cuff section.** `model.py` models the forearm as a round cone (radius 29 to 38 mm), while the shared clay forearm is elliptical and flatter. In the appearance model the cuff shell, liner and straps follow the clay forearm with the `model.py` thicknesses (4 mm liner, 2 mm shell), axial extent, hole pattern and strap positions; the pack saddle ribs are trimmed to meet it. Recommendation: keep `model.py` as is for sizing (the round cone is a conservative envelope) and consider an elliptical forearm section when the cuff is fitted at a later TRL.
+2. **Hand-side soft parts on the clay hand.** `model.py` puts the finger cuffs, thimbles and tendons on straight fingers along X and the glove and plates on a box palm. Here they sit on the clay hand's relaxed, slightly curled fingers and rounded palm. Cuff and thimble widths, wall and liner thicknesses, the plate plan sizes and the sheath end positions in plan are as `model.py`; the heights of the sheath ends follow the clay palm surface (within about 4 mm). Recommendation: accept for renders only; no change to `model.py`.
+3. **Features that are not in the BOM.** The clear spool window, the start and pause button, the status LED light pipe and the "FLEXHAND" marking are appearance proposals. The precis mentions user buttons and the BOM mentions an LED window in the lid, but neither defines them. Recommendation: keep the LED window and one start and pause button; decide on the clear spool window with the enclosure design, since it shows tendon wear but adds a part.
+4. **Strap routing.** In `model.py` the straps sit under the cuff liner; here they pass over the cuff shell on top and on the skin underneath, which is how a hook-and-loop strap would hold a half shell. Recommendation: adopt this routing in the concept description when the cuff is next revised.
+
+### TRL
+
+This is an appearance model only: no tolerances, fabrication detail, PCB layouts or build information. `trl` stays 3, and TRL 4 remains on hold by Amish's instruction.
