@@ -1,4 +1,4 @@
-"""FlexHand sizing calculations (FXH-CAL-001 v0.2, decisions of FXH-DDR-002 applied).
+"""FlexHand sizing calculations (FXH-CAL-001 v0.3: decisions of FXH-DDR-002 and the constructable design of FXH-DDR-003).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number quoted in docs/04-calcs/01-sizing.md, tagged [A1], [B2] and so on.
@@ -44,10 +44,12 @@ K_MAS3 = (0.631, 0.753)      # N·m/rad, MCP and PIP, subject with MAS 3
 P_LIMIT = 50.0           # kPa, R11
 # Densities (g/cm3) and bought-part masses (g)
 RHO_PETG, RHO_TPU, RHO_PA12, RHO_EVA, RHO_LINER = 1.27, 1.21, 1.01, 0.07, 0.20
+RHO_STEEL, RHO_BRASS = 7.85, 8.5
 FILL_BLOCK = 0.40        # infill share for the solid-looking anchor block
 MASS = {"cell": 45.0, "bms": 5.0, "controller": 3.0, "driver": 3.0, "charger": 4.0, "estop": 20.0,
         "idler": 1.5, "balance": 1.5, "coupling": 2.0,   # N4: ball-detent breakaway (magnetic was 7.0 g)
-        "coupling_magnetic": 7.0, "slack_spring": 1.0, "strap": 8.0, "wiring": 15.0, "fasteners": 10.0,
+        "coupling_magnetic": 7.0, "slack_spring": 1.0, "strap": 8.0, "wiring": 15.0, "regulator": 3.0,
+        "stop_bead": 0.1,
         "glove": 40.0, "sheath_g_per_m": 25.0, "ferrule": 0.5, "tendon_g_per_m": 0.45}
 BYTES_PER_SESSION, FLASH_LOG_BYTES = 32, 1_000_000
 
@@ -154,40 +156,47 @@ def compute():
 
     # ---- G. Mass (R7) ----
     v = lambda s: s.volume / 1000.0          # cm3
+    C = m["c"]
     sheath_len = sum(Lp for _, _, Lp in m["sheath_paths"]) * d["sheath_slack"] / 1000   # m
     m_sheaths = sheath_len * MASS["sheath_g_per_m"] + 16 * MASS["ferrule"]
+    steel = sum(v(C[k]) for k in ("cuff_screws", "motor_screws", "tray_screws", "lid_screws", "cover_screws",
+                                    "anchor_screws", "idler_pins", "balance_pins"))
+    m_fix = steel * RHO_STEEL + v(C["inserts"]) * RHO_BRASS
     pack = {
         "Forearm cuff shell (PETG)": v(sub["cuff_shell"]) * RHO_PETG,
         "Cuff liner (EVA foam)": v(sub["cuff_liner"]) * RHO_EVA,
         "Straps (2)": 2 * MASS["strap"],
-        "Pack base (PETG)": v(parts["pack_base"]) * RHO_PETG,
-        "Pack lid (PETG)": v(parts["pack_lid"]) * RHO_PETG,
+        "Pack base (PETG)": v(C["pack_base"]) * RHO_PETG,
+        "Pack lid (PETG)": v(C["pack_lid"]) * RHO_PETG,
+        "Electronics tray (PETG)": v(C["tray"]) * RHO_PETG,
         "Gearmotors (2)": 2 * M_MOTOR,
-        "Spools (2, PA12)": v(parts["spools"]) * RHO_PA12,
+        "Spools (2, PA12)": v(C["spools"]) * RHO_PA12,
         "Idler bearings (4)": 4 * MASS["idler"],
         "Cells (2) and BMS": N_CELLS * MASS["cell"] + MASS["bms"],
-        "Controller, drivers, charger": MASS["controller"] + 2 * MASS["driver"] + MASS["charger"],
+        "Controller, drivers, charger, regulator": MASS["controller"] + 2 * MASS["driver"] + MASS["charger"] + MASS["regulator"],
         "Emergency stop": MASS["estop"],
-        "Anchor block, 8 couplings, 8 springs": (v(parts["anchor_block"]) * RHO_PETG * FILL_BLOCK
-                                                 + 8 * MASS["coupling"] + 8 * MASS["slack_spring"]),
+        "Anchor block, release plate, cover, pucks": (v(C["anchor_body"]) * FILL_BLOCK + v(C["gate"]) + v(C["cover"])
+                                                       + v(C["pucks"])) * RHO_PETG,
+        "Couplings (8) and slack springs (4)": 8 * MASS["coupling"] + 4 * MASS["slack_spring"],
         "Balance pulleys (4)": 4 * MASS["balance"],
-        "Wiring and fasteners": MASS["wiring"] + MASS["fasteners"],
+        "Wiring": MASS["wiring"],
+        "Screws, inserts and pins": m_fix,
         "Sheaths, half": m_sheaths / 2,
     }
     tendon_len = 8 * 0.40 + 4 * 0.03          # extensors run on about 30 mm to the thimble
     hand = {
         "Base glove (bought)": MASS["glove"],
-        "Dorsal and palmar plates (TPU)": (v(parts["dorsal_plate"]) + v(parts["palmar_plate"])) * RHO_TPU,
-        "Finger cuffs (8, TPU)": sub["finger_cuff_tpu_mm3"] / 1000 * RHO_TPU,
-        "Cuff liners": sub["finger_cuff_liner_mm3"] / 1000 * RHO_LINER,
-        "Fingertip thimbles (4, TPU)": sub["thimble_tpu_mm3"] / 1000 * RHO_TPU,
-        "Thimble liners": sub["thimble_liner_mm3"] / 1000 * RHO_LINER,
-        "Thumb spacer (TPU)": v(parts["thumb_spacer"]) * RHO_TPU,
-        "Tendons": tendon_len * MASS["tendon_g_per_m"],
+        "Dorsal and palmar plates with stop blocks (TPU)": (v(C["dorsal_plate"]) + v(C["palmar_plate"])) * RHO_TPU,
+        "Finger cuffs (8, TPU)": v(C["finger_cuffs"]) * RHO_TPU,
+        "Cuff liners": v(C["cuff_liners"]) * RHO_LINER,
+        "Fingertip thimbles (4, TPU)": v(C["thimbles"]) * RHO_TPU,
+        "Thimble liners": v(C["thimble_liners"]) * RHO_LINER,
+        "Thumb spacer (TPU)": v(C["thumb_spacer"]) * RHO_TPU,
+        "Tendons and stop beads": tendon_len * MASS["tendon_g_per_m"] + 8 * MASS["stop_bead"],
         "Sheaths, half": m_sheaths / 2,
     }
     R.update(mass_pack=pack, mass_hand=hand, m_pack=sum(pack.values()), m_hand=sum(hand.values()),
-             sheath_len=sheath_len, m_sheaths=m_sheaths, m_motors=2 * M_MOTOR,
+             sheath_len=sheath_len, m_sheaths=m_sheaths, m_motors=2 * M_MOTOR, m_fix=m_fix,
              m_couplings=8 * MASS["coupling"], m_couplings_saved=8 * (MASS["coupling_magnetic"] - MASS["coupling"]),
              m_cuff_perf_saved=(v(sub["cuff_shell_solid"]) - v(sub["cuff_shell"])) * RHO_PETG,
              cuff_open_frac=1 - v(sub["cuff_shell"]) / v(sub["cuff_shell_solid"]))
@@ -254,7 +263,8 @@ def status_table(R):
         ("R9", "Stop and release", f"power cut in about {R['t_stop_ms']:.0f} ms; release by design", "100 ms; release in 10 s", "not verifiable at TRL 3"),
         ("R10", "Fit adult hands", "S, M, L glove sizes scaled from the model", "hand length 170 to 205 mm", "met"),
         ("R11", "Cuff contact pressure", f"cuff and thimble: {worst:.0f} kPa worst on the medium hand (little finger); index {c['Index']['p']:.0f}, middle {c['Middle']['p']:.0f}, ring {c['Ring']['p']:.0f}; {worst_all:.0f} kPa worst over S to L", "50 kPa or less", st(worst_all <= P_LIMIT)),
-        ("R12", "Parts cost", f"${R['bom_total']:.2f}", f"${R['budget']:.0f} or less", st(R['bom_total'] <= R['budget'])),
+        ("R12", "Parts cost", f"USD {R['bom_total']:.2f}", f"value-engineering target USD {R['budget']:.0f}",
+         f"under the target by USD {R['budget'] - R['bom_total']:.2f}" if R['bom_total'] <= R['budget'] else f"over the target by USD {R['bom_total'] - R['budget']:.2f}"),
         ("R13", "Session log", f"about {R['log_days']:,.0f} days of summaries in 1 MB of flash", "time, cycles, peak current; locked limits", "not verifiable at TRL 3"),
     ]
 
@@ -285,8 +295,8 @@ def main():
     p(f"[F3] pack {R['pack_Wh']:.0f} Wh, usable {R['usable_Wh']:.1f} Wh: {R['sessions']:.1f} sessions per charge")
     p("[G1] forearm pack mass by part (g):")
     for k, val in R["mass_pack"].items():
-        p(f"       {k:40s} {val:6.1f}")
-    p(f"[G2] forearm pack total {R['m_pack']:.0f} g (motors {R['m_motors']:.0f} g, couplings {R['m_couplings']:.0f} g); sheaths {R['sheath_len']:.2f} m, {R['m_sheaths']:.0f} g")
+        p(f"       {k:48s} {val:6.1f}")
+    p(f"[G2] forearm pack total {R['m_pack']:.0f} g (motors {R['m_motors']:.0f} g, couplings {R['m_couplings']:.0f} g, screws, inserts and pins {R['m_fix']:.0f} g); sheaths {R['sheath_len']:.2f} m, {R['m_sheaths']:.0f} g")
     p(f"[G5] N4 savings: ball-detent couplings {R['m_couplings_saved']:.0f} g; perforated cuff shell {R['m_cuff_perf_saved']:.1f} g ({R['cuff_open_frac'] * 100:.0f} % open)")
     p("[G3] hand-side mass by part (g):")
     for k, val in R["mass_hand"].items():
@@ -299,7 +309,8 @@ def main():
     for sz, s in R["sizes"].items():
         p(f"[H3] size {sz} (scale {s['k']:.2f}): little finger cuff {min(20, s['little_usable']):.1f} mm + thimble {s['little_tw']:.1f} mm -> {s['little_p']:.0f} kPa (cuff alone {s['little_p_cuff']:.0f} kPa)")
     p(f"[I1] stop: bulk capacitor hold-up {R['t_holdup_ms']:.1f} ms + contact {R['t_bounce_ms']:.0f} ms + run-down 5 ms = about {R['t_stop_ms']:.0f} ms")
-    p(f"[J1] BOM {R['bom_lines']} lines, total ${R['bom_total']:.2f} against budget ${R['budget']:.0f} ({R['bom_total'] / R['budget'] * 100:.0f} %)")
+    p(f"[J1] BOM {R['bom_lines']} lines, estimated cost USD {R['bom_total']:.2f}; value-engineering target USD {R['budget']:.0f}; "
+      f"{'under' if R['bom_total'] <= R['budget'] else 'over'} the target by USD {abs(R['budget'] - R['bom_total']):.2f}")
     p(f"[K1] session log: {BYTES_PER_SESSION} B per session, 3 sessions a day: {R['log_days']:,.0f} days in {FLASH_LOG_BYTES / 1e6:.0f} MB")
     p("\nRequirement status:")
     for row in status_table(R):

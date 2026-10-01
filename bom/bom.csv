@@ -1,23 +1,26 @@
 Item,qty,spec,supplier,unit_cost_usd,make_buy,notes
-1 Forearm cuff,1,"3D-printed PETG half shell 2 mm perforated with 12 mm holes, 4 mm EVA foam liner perforated to match, two 38 mm hook-and-loop straps",Self (print); strap and foam from online retailer,10.00,make,Indicative; material and straps; perforation per FXH-DDR-002 (N4)
-2 Pack base,1,"3D-printed PETG, 160 x 76 mm, 2 mm walls, saddle ribs, two tendon exit slots",Self (print),4.00,make,Material cost only
+1 Forearm cuff,1,"3D-printed PETG half shell 2 mm perforated with 12 mm holes, six 3.4 mm holes for the pack screws; 4 mm EVA foam liner perforated to match, with 6.5 mm holes over the screw heads; two 38 mm hook-and-loop straps that pass under the pack between its ribs",Self (print); strap and foam from online retailer,10.00,make,Indicative; material and straps; perforation per FXH-DDR-002 (N4); screw holes and strap path per FXH-DDR-003
+2 Pack base,1,"3D-printed PETG, 168 x 76 mm, 2 mm walls; three saddle ribs with screw bosses, motor bulkhead and cradle, cell saddles, tray ledges, idler post and shelf, four lid bosses, tendon exit holes, USB-C opening",Self (print),6.00,make,Material cost only; features per FXH-DDR-003
 3 Gearmotor with encoder,2,"227:1 metal gearmotor 25D x 71L mm MP 12 V, 48 CPR encoder (Pololu 4869), run at 7.2 V",Pololu or distributor,53.95,buy,Pololu single-unit price checked 2026-09-25; D1 decided by Amish 2026-09-25
-4 Antagonistic spool,2,"Two-groove spool, 10 mm core, 20 mm flanges, 12 mm wide, 4 mm D-bore with set screw; printed PA12",Online print service or self,4.00,make,Indicative
-5 Li-ion pack 2S,1,"2 x 18650 cells, 2,500 mAh each, with 2S protection board; cells held in the pack base",Battery distributor,22.00,buy,Indicative; use cells and BMS from a reputable source
-6 Controller,1,"ESP32-S3 module (Seeed XIAO ESP32S3 class)",Seeed Studio or distributor,8.00,buy,Indicative
-7 Motor driver with current sense,2,"DRV8874 single H-bridge carrier with current-sense output (Pololu 4035 class)",Pololu or distributor,10.00,buy,Indicative
-8 Pack lid,1,"3D-printed PETG 2 mm with emergency stop opening and LED window",Self (print),3.00,make,Material cost only
-9 Emergency stop button,1,"16 mm latching mushroom switch, NC contact in the motor supply, 18 mm deep",Electronics distributor,6.00,buy,Indicative
-10 Sheath anchor block,1,"Printed block 44 mm long with 8 sheath stops, 4 balance pulley channels, 8 ball-detent breakaway couplings (4 mm steel ball and spring), 8 slack springs, 8 crimped tendon stop beads, quick-release lever",Self (print); balls springs and crimps from online retailer,18.00,make,Indicative; ball-detent couplings per FXH-DDR-002 (N4); breakaway force to be set at TRL 4
-11 Bowden sheath set,1,"2 m of 4 mm PTFE-lined shift housing cut to 8 lengths of about 100 mm, 16 ferrules",Bicycle parts retailer,11.00,buy,Indicative
+4 Antagonistic spool,2,"Two-groove spool, 10 mm core, 14 mm flanges, 4 mm hub with M3 set screw, 16 mm long, 4 mm D-bore; printed PA12",Online print service or self,4.00,make,Indicative; flange reduced from 20 mm to clear the idlers (FXH-DDR-003)
+5 Li-ion pack 2S,1,"2 x 18650 cells, 2,500 mAh each, with 2S protection board; cells sit in saddles in the pack base under the electronics tray",Battery distributor,22.00,buy,Indicative; use cells and BMS from a reputable source
+6 Controller,1,ESP32-S3 module (Seeed XIAO ESP32S3 class),Seeed Studio or distributor,8.00,buy,Indicative
+7 Motor driver with current sense,2,DRV8874 single H-bridge carrier with current-sense output (Pololu 4035 class),Pololu or distributor,10.00,buy,Indicative
+8 Pack lid,1,"3D-printed PETG 2 mm with emergency stop opening, LED window and four screw holes",Self (print),3.00,make,Material cost only
+9 Emergency stop button,1,"16 mm latching mushroom switch with bezel and panel nut, NC contact in the motor supply, 18 mm deep",Electronics distributor,6.00,buy,Indicative
+10 Sheath anchor block,1,"Printed block 53 x 88 x 31 mm with four tendon channels; release plate (3 mm, with pull loop) that slides out to free all sheaths; cover with four puck pockets; four sheath pucks; 8 ball-detent breakaway couplings (two 2 mm steel balls and a 0.4 mm spring-wire ring each, 6.8 mm body); 4 slack springs; 8 crimped tendon stop beads",Self (print); balls springs and crimps from online retailer,18.00,make,"Indicative; ball-detent couplings per FXH-DDR-002 (N4); release plate, pucks and channel layout per FXH-DDR-003; breakaway force to be set at TRL 4"
+11 Bowden sheath set,1,"2 m of 4 mm PTFE-lined shift housing cut to 8 lengths (4 of about 80 mm, 4 of about 145 to 165 mm), 16 ferrules",Bicycle parts retailer,11.00,buy,Indicative
 12 Base glove,1,"Fingerless breathable glove, sizes S, M, L",Online retailer,12.00,buy,Indicative
-13 Dorsal plate,1,"TPU 95A print, 50 x 60 x 2.5 mm, 4 extensor sheath stops",Self (print),2.00,make,Material cost only
-14 Palmar plate,1,"TPU 95A print, 34 x 60 x 2.5 mm, 4 flexor sheath stops",Self (print),2.00,make,Material cost only
-15 Finger cuff set,1,"4 guide cuffs 12 mm wide and 4 anchor cuffs 12 to 19 mm wide, TPU 95A with 2 mm padded liner",Self (print); liner foam from online retailer,6.00,make,Material cost only; R11 not met (see FXH-CAL-001)
+13 Dorsal plate,1,"TPU 95A print, 50 x 60 x 2.5 mm plate with a sheath stop block for the 4 extensor sheaths and stitching holes",Self (print),2.00,make,Material cost only
+14 Palmar plate,1,"TPU 95A print, 34 x 60 x 2.5 mm plate with a sheath stop block for the 4 flexor sheaths and stitching holes",Self (print),2.00,make,Material cost only
+15 Finger cuff set,1,"4 guide cuffs 12 mm wide and 4 anchor cuffs 12 to 19 mm wide, TPU 95A padded saddles with thin side bands and tendon eyelets, 2 mm padded liner, 6 mm hook-and-loop closures",Self (print); liner foam from online retailer,7.00,make,Material cost only; saddle shape per FXH-DDR-003
 16 Tendon line,1,"0.8 mm braided UHMWPE line, 10 m spool",Fishing or outdoor retailer,8.00,buy,Indicative
-17 Thumb spacer,1,"TPU 95A ring and web block",Self (print),2.00,make,Material cost only
+17 Thumb spacer,1,"TPU 95A ring and web block, the block stitched to the glove",Self (print),2.00,make,Material cost only
 18 USB-C charger,1,"2S Li-ion charger module with USB-C input, mounted in the pack",Online retailer,8.00,buy,Indicative
-19 Wiring and consumables,1,"Wire, connectors, fasteners, heat shrink, adhesive",Electronics distributor and hardware store,20.00,buy,Indicative; not modeled
+19 Wiring and consumables,1,"Wire, connectors, heat shrink, adhesive, 100 uF bulk capacitor, foam pad",Electronics distributor and hardware store,16.00,buy,Indicative; not modeled; fixings moved to line 24
 20 Idler bearing,4,"623ZZ-class ball bearing 3 x 10 x 4 mm on a 3 mm pin, tendon idler",Bearing supplier or online retailer,1.00,buy,Indicative
 21 Fingertip thimble set,1,"4 open-tip thimbles 13 to 19 mm wide on the distal phalanges, TPU 95A 2 mm with 2 mm padded liner",Self (print); liner foam from online retailer,4.00,make,Material cost only; FXH-DDR-002 (N2)
 22 Balance pulley bearing,4,"693ZZ-class ball bearing 3 x 8 x 4 mm on a 3 mm pin, floating balance pulley",Bearing supplier or online retailer,1.00,buy,Indicative; FXH-DDR-002 (N3)
+23 Electronics tray,1,"3D-printed PETG 2 mm plate, 37.5 x 71 mm, on ledges over the cells",Self (print),1.00,make,Material cost only; new in FXH-DDR-003
+24 Fixing kit,1,"18 brass M3 heat-set inserts 5 mm long; 6 M3 x 8 button-head, 4 M3 x 6 countersunk, 4 M3 x 8 pan-head, 4 M3 x 8 cap and 4 M3 x 16 cap screws; 4 M2.2 x 8 self-tapping screws; 8 steel pins 3 mm (4 x 8 mm, 4 x 6.5 mm); cable ties",Hardware store or online retailer,10.00,buy,Indicative; new in FXH-DDR-003
+25 5 V regulator,1,"Step-down regulator module, 6 to 9 V in, 5 V 1 A out, for the controller",Electronics distributor,4.00,buy,Indicative; new in FXH-DDR-003 (the controller cannot take the pack voltage)

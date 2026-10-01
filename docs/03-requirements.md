@@ -3,9 +3,9 @@ doc_id: FXH-REQ-001
 title: FlexHand requirements
 project: FlexHand
 doc_type: Requirements
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,11 +25,15 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002); R2 reworded to mild tone, R5 lower limit 4 s at design load, status from FXH-CAL-001 v0.2
+- version: "0.5"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Status from FXH-CAL-001 v0.3 for the constructable design (FXH-DDR-003); R12 reported against the value-engineering target
 ---
 
 # FlexHand requirements
 
-These requirements are checked by calculation in FXH-CAL-001 v0.2. Seven are met on paper, two are at risk (R2 and R3), one is not met (R7, forearm pack mass) and three cannot be verified until TRL 4. On 2026-09-25 Amish accepted the recommendations raised by the TRL 3 calculations (FXH-DDR-002): R2 now names mild flexor tone (N1), and the lower end of the R5 stroke-time range is 4 s at design load (N5). The fingertip thimble (N2), the balance pulleys (N3) and the lighter couplings and perforated cuff (N4) are in the design. The 450 g pack target stays until a therapist has reviewed it, which waits on the choice of a clinical co-design partner (FXH-DDR-001, D1 and O1).
+These requirements are checked by calculation in FXH-CAL-001 v0.3, for the constructable design of FXH-DDR-003. Seven are met on paper, two are at risk (R2 and R3), one is not met (R7, forearm pack mass) and three cannot be verified until TRL 4. On 2026-09-25 Amish accepted the recommendations raised by the TRL 3 calculations (FXH-DDR-002): R2 now names mild flexor tone (N1), and the lower end of the R5 stroke-time range is 4 s at design load (N5). The fingertip thimble (N2), the balance pulleys (N3) and the lighter couplings and perforated cuff (N4) are in the design. The 450 g pack target stays until a therapist has reviewed it, which waits on the choice of a clinical co-design partner (FXH-DDR-001, D1 and O1).
 
 Table 1. Requirements and TRL 3 status.
 
@@ -41,12 +45,12 @@ Table 1. Requirements and TRL 3 status.
 | R4 | Deliver a high repetition dose | 300 or more full flexion and extension cycles in a 60 min session | Speed calculation | Met: 445 cycles per hour at full speed; 360 at the 4 s lower stroke limit; holds for strokes up to 5 s |
 | R5 | Move slowly and smoothly | Stroke time adjustable from 4 to 15 s at design load (N5), down to 3 s at lighter loads; joint speed 30 °/s or less; dwell at each end adjustable | Speed calculation; firmware sketch | Met: fastest stroke at design load 3.3 s (3.9 s with pessimistic friction; 2.6 s unloaded) |
 | R6 | Run several sessions per charge | 3 or more 60 min sessions at design load | Power budget | Met: 3.8 sessions at 3.80 Wh each |
-| R7 | Light enough to wear seated | Hand-side parts 120 g or less; forearm pack 450 g or less (pack target to be revisited with a therapist, D1) | Mass estimate, then weighing | **Not met:** hand 115 g (met); pack 639 g (was 675 g before N4) |
+| R7 | Light enough to wear seated | Hand-side parts 120 g or less; forearm pack 450 g or less (pack target to be revisited with a therapist, D1) | Mass estimate, then weighing | **Not met:** hand 117 g (met); pack 723 g in the constructable design (639 g in the concept, 675 g before N4) |
 | R8 | Quick to put on and take off | A care partner dons it in 5 min or less and removes it in 1 min or less | Design review with users | Not verifiable at TRL 3; at risk on flexed, spastic fingers |
 | R9 | Stop and release on demand | Physical stop cuts motor power within 100 ms; tendons released by hand in 10 s or less without tools | Calculation; later bench test | Not verifiable at TRL 3: stop in about 11 ms by calculation; release time needs a bench test |
 | R10 | Fit most adult hands | Hand length 170 to 205 mm with three glove sizes and adjustable cuffs | Anthropometric check | Met on paper: sizes scaled 0.95, 1.00 and 1.15 from the model |
 | R11 | Keep contact pressure tolerable | Mean pressure under a finger cuff or thimble 50 kPa or less at design load (proposed limit, to be set with a therapist) | Contact area calculation | Met on paper: 23 to 40 kPa on the medium hand, 46 kPa worst on a small hand's little finger, with the fingertip thimble sharing the load (N2; was 46 to 84 kPa); load sharing assumed, to check at TRL 4 |
-| R12 | Low cost and buildable | Parts cost $500 or less; no custom PCB for the first build | Priced BOM | Met: $289.90 |
+| R12 | Low cost and buildable | Parts cost against the USD 500 value-engineering target (a control target, not a limit); no custom PCB for the first build | Priced BOM | Estimated cost USD 303.90, USD 196.10 under the target; no custom PCB |
 | R13 | Record what was done | Device logs session time, cycle count and peak motor current; therapist limits cannot be changed from the user controls | Design review | Not verifiable at TRL 3: storage ample (1 MB holds decades of summaries) |
 
 ## Assumptions

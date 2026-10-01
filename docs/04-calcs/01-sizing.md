@@ -3,9 +3,9 @@ doc_id: FXH-CAL-001
 title: FlexHand sizing calculations
 project: FlexHand
 doc_type: Calculation
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,17 +17,21 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002); balance pulleys, fingertip thimbles, ball-detent couplings, perforated cuff, R2 and R5 restated; all results recomputed
+- version: "0.3"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Constructable design (FXH-DDR-003); masses recomputed from the new parts, cost reported against the value-engineering target
 ---
 
 # FlexHand sizing calculations
 
-On paper, FlexHand now meets seven of its thirteen requirements, has two at risk, misses one and has three that cannot be verified at TRL 3. This version applies the decisions Amish accepted on 2026-09-25 (FXH-DDR-002): a fingertip thimble on each finger, a balance pulley on each spool line, ball-detent breakaway couplings, a perforated forearm cuff, R2 restated for mild flexor tone and a 4 s lower stroke limit at design load. The one miss is the forearm pack mass, about 639 g against 450 g (R7). The two at risk are the force requirement (R2), where the gearbox runs 25 % above its recommended continuous load at the peak, and the force limit (R3), where sheath friction spreads the force at a given current setting. Cuff pressure (R11) is now met on paper, at 40 kPa worst on the medium hand. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [C2], is the line of that script's output that carries it.
+On paper, FlexHand now meets seven of its thirteen requirements, has two at risk, misses one and has three that cannot be verified at TRL 3. This version applies the decisions Amish accepted on 2026-09-25 (FXH-DDR-002): a fingertip thimble on each finger, a balance pulley on each spool line, ball-detent breakaway couplings, a perforated forearm cuff, R2 restated for mild flexor tone and a 4 s lower stroke limit at design load. Version 0.3 recomputes the masses and cost for the constructable design of FXH-DDR-003. The one miss is the forearm pack mass, about 723 g against 450 g (R7). The two at risk are the force requirement (R2), where the gearbox runs 25 % above its recommended continuous load at the peak, and the force limit (R3), where sheath friction spreads the force at a given current setting. Cuff pressure (R11) is now met on paper, at 40 kPa worst on the medium hand. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [C2], is the line of that script's output that carries it.
 
 > **Safety:** FlexHand is a research and educational prototype, not a medical device. These are first-principles estimates for a paper proof of concept. They do not show that the device is safe to wear. R3, R9 and R11 are safety requirements; R11 is met only on paper under an assumed load sharing and R3 is at risk, so nothing may be worn on the strength of this note. See FXH-PRC-001, Safety.
 
 ## Scope and method
 
-The note checks every requirement in FXH-REQ-001 v0.4 against the design in FXH-PRC-001 v0.4 and the parametric model `cad/src/model.py`. The script imports the model, so the pack, spool, cuff and sheath dimensions used here are the ones in the STEP files and in drawing FXH-DWG-001. It also reads `bom/bom.csv` and `budget_usd` in `project.yaml`. Run it from the repo root with `python docs/04-calcs/sizing.py`.
+The note checks every requirement in FXH-REQ-001 v0.5 against the design in FXH-PRC-001 v0.5 and the parametric model `cad/src/model.py`. The script imports the model, so the pack, spool, cuff and sheath dimensions used here are the ones in the STEP files and in drawing FXH-DWG-001. It also reads `bom/bom.csv` and `budget_usd` in `project.yaml`. Run it from the repo root with `python docs/04-calcs/sizing.py`.
 
 The design case is one 60 min seated session on a medium adult hand (model hand length about 179 mm), with the forearm resting on a support and the wrist near neutral. Each motor drives one finger pair (D2): motor 1 the index and middle fingers, motor 2 the ring and little fingers. Each spool line runs to a floating balance pulley in the anchor block, which splits it into the two finger tendons of the pair (N3).
 
@@ -86,7 +90,7 @@ Heung and colleagues measured finger joint stiffness in people after stroke. To 
 - A 40 N per finger limit on a pair corresponds to 0.655 N·m at the spool and a trip current of 0.573 A. The peak design current is 0.455 A, so the limit sits about 26 % above normal running [E1].
 - With the balance pulley (N3), both tendons of a pair carry the same tension, so the pair limit holds each finger to 40 N. Without it, one finger could carry 80 N while its partner is slack [E2].
 - Sheath friction varies with wrist posture and wear. A current limit set for 40 N means 27 to 47 N at the fingers across friction coefficients of 0.15 to 0.05 [E3].
-- The floating pulley has 32 mm of free travel in its channel, more than the 29.8 mm stroke. If one finger of a pair is blocked, the pulley lets the other move up to 59.6 mm, twice its range. Each finger tendon therefore carries a crimped stop bead that meets its sheath stop at the end of that finger's set range [E4]. The encoder sees only the pulley position.
+- The floating pulley has 30 mm of free travel in its channel, more than the 29.8 mm stroke. If one finger of a pair is blocked, the pulley lets the other move up to 59.6 mm, twice its range. Each finger tendon therefore carries a crimped stop bead that meets its sheath stop at the end of that finger's set range [E4]. The encoder sees only the pulley position.
 - **R3 is at risk:** the per-finger limit now holds in principle, but friction spreads the force estimate from about 32 % below to 18 % above the set value, and the breakaway force and stop beads cannot be verified until TRL 4.
 
 ## F. Energy (R6)
@@ -98,37 +102,40 @@ Heung and colleagues measured finger joint stiffness in people after stroke. To 
 
 ## G. Mass (R7)
 
-Table 2. Forearm pack mass [G1], [G2].
+Table 2. Forearm pack mass of the constructable design [G1], [G2].
 
 | Part | Mass |
 | --- | --- |
-| Forearm cuff, perforated: PETG shell 50.9 g, EVA liner 3.8 g, two straps 16.0 g | 70.7 g |
-| Pack base 79.4 g, lid 30.2 g (PETG) | 109.6 g |
+| Forearm cuff, perforated: PETG shell 51.9 g, EVA liner 4.0 g, two straps 16.0 g | 71.9 g |
+| Pack base 105.3 g (with bulkhead, cradle, saddles and posts), lid 31.6 g, electronics tray 6.7 g (PETG) | 143.6 g |
 | Gearmotors (2) | 214.0 g |
-| Spools 4.0 g, idler bearings 6.0 g | 10.0 g |
+| Spools 2.8 g, idler bearings 6.0 g | 8.8 g |
 | Cells (2) and BMS | 95.0 g |
-| Controller, drivers and charger | 13.0 g |
+| Controller, drivers, charger and 5 V regulator | 16.0 g |
 | Emergency stop | 20.0 g |
-| Anchor block (44 mm) with 8 ball-detent couplings and 8 slack springs | 62.7 g |
+| Anchor block (53 mm, 40 % infill), release plate, cover and pucks | 71.2 g |
+| 8 ball-detent couplings and 4 slack springs | 20.0 g |
 | Balance pulleys (4) | 6.0 g |
-| Wiring and fasteners | 25.0 g |
-| Half of the sheaths (0.69 m in total, 25 g) | 12.7 g |
-| **Forearm pack** | **639 g (1.41 lb)** |
+| Wiring | 15.0 g |
+| Screws, inserts and pins (from the model's volumes) | 27.0 g |
+| Half of the sheaths (0.85 m in total, 29 g) | 14.7 g |
+| **Forearm pack** | **723 g (1.59 lb)** |
 
 Table 3. Hand-side mass [G3], [G4].
 
 | Part | Mass |
 | --- | --- |
 | Base glove (bought) | 40.0 g |
-| Dorsal and palmar plates (TPU) | 15.2 g |
-| Finger cuffs (8, TPU) and liners | 25.2 + 2.7 g |
-| Fingertip thimbles (4, TPU) and liners | 11.7 + 1.6 g |
-| Thumb spacer, tendons | 4.2 + 1.5 g |
-| Half of the sheaths | 12.7 g |
-| **Hand side** | **115 g** |
+| Dorsal and palmar plates with sheath stop blocks (TPU) | 21.0 g |
+| Finger cuffs (8, TPU) and liners | 21.7 + 1.7 g |
+| Fingertip thimbles (4, TPU) and liners | 10.3 + 1.0 g |
+| Thumb spacer, tendons and stop beads | 4.0 + 2.3 g |
+| Half of the sheaths | 14.7 g |
+| **Hand side** | **117 g** |
 
-- N4 savings: ball-detent couplings save 40 g against the magnetic couplings, and 12 mm perforations (33 % open) save 25.2 g of cuff shell [G5]. The longer anchor block and the balance pulleys add back about 32 g, and the shorter sheaths save about 4 g.
-- **R7 is not met:** the hand side (115 g, up from 103 g with the thimbles) is within 120 g, but the forearm pack is about 639 g against 450 g (675 g in v0.1). The gearmotors alone are 214 g. The remaining step in N4, a pack target agreed with a therapist, waits on the choice of a clinical co-design partner (O1).
+- N4 savings: ball-detent couplings save 40 g against the magnetic couplings, and 12 mm perforations (33 % open) save 25.4 g of cuff shell [G5].
+- The constructable design (FXH-DDR-003) adds about 84 g to the pack against v0.2: the motor bulkhead, cradle, cell saddles, tray posts and raised floor (pack base 105 g, was 79 g), the longer anchor block with its release plate, cover and pucks (71 g printed, was 39 g), screws, inserts and pins counted from the model (27 g, against 10 g allowed before), the tray (7 g) and the regulator (3 g). Four slack springs replace eight (4 g less).
+- **R7 is not met:** the hand side (117 g) is within 120 g, but the forearm pack is about 723 g against 450 g (639 g in v0.2). The gearmotors alone are 214 g. The remaining step in N4, a pack target agreed with a therapist, waits on the choice of a clinical co-design partner (O1); savings worth trying are listed in the design decisions register.
 
 ## H. Cuff contact pressure (R11) and fit (R10)
 
@@ -152,13 +159,13 @@ Table 4. Anchor cuff plus thimble pressure at 30 N, medium hand [H2].
 ## I. Stop and release (R9)
 
 - The stop switch opens the motor supply. The 100 µF bulk capacitance keeps the motors turning for about 0.8 ms, contact opening takes up to about 5 ms and the rotor runs down in about 5 ms, so motion stops in about 11 ms against 100 ms [I1].
-- The gearboxes hold the fingers where they stop. The tool-free release lever must free all tendons in 10 s or less; this is a design intent that cannot be checked until TRL 4.
+- The gearboxes hold the fingers where they stop. The tool-free release (a pull-out plate on the anchor block, FXH-DDR-003) must free all tendons in 10 s or less; this is a design intent that cannot be checked until TRL 4.
 - **R9 is not verifiable at TRL 3,** although the stop time is met by calculation.
 
 ## J. Cost (R12)
 
-- The BOM has 22 lines, all priced, for $289.90 against the $500 budget (58 %) [J1]. The thimbles (line 21) and balance pulley bearings (line 22) add $8.00. Only the gearmotor price was checked with the supplier; the rest are indicative.
-- **R12 is met.** No custom PCB is needed: the controller and drivers are carrier modules.
+- Value-engineering target: USD 500 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 303.90 (USD 196.10 under the target) [J1]. The BOM has 25 lines, all priced; FXH-DDR-003 added the tray (line 23), a fixing kit (line 24) and a 5 V regulator (line 25) and repriced lines 2, 15 and 19. Only the gearmotor price was checked with the supplier; the rest are indicative.
+- **R12: under the value-engineering target by USD 196.10.** No custom PCB is needed: the controller and drivers are carrier modules.
 
 ## K. Session log (R13)
 
@@ -172,7 +179,7 @@ Table 5. Requirement status at TRL 3, not met first.
 
 | ID | Requirement | Value | Target | Status |
 | --- | --- | --- | --- | --- |
-| R7 | Mass | Hand 115 g; pack 639 g | Hand 120 g or less; pack 450 g or less | **Not met** |
+| R7 | Mass | Hand 117 g; pack 723 g | Hand 120 g or less; pack 450 g or less | **Not met** |
 | R2 | Extend against mild flexor tone | 30 N delivered, 18 N needed at MAS 1+; 0.492 N·m peak (125 % of continuous rating), 0.269 N·m RMS | 30 N per finger (MAS 1 to 1+) | At risk |
 | R3 | Limit force on the hand | 0.57 A pair trip; balance pulleys hold each finger to 40 N; friction spread 27 to 47 N | 40 N per finger (software); 60 N breakaway | At risk |
 | R1 | Finger range | 24.8 mm needed; 29.8 mm stroke | MCP 70°, PIP 90° | Met |
@@ -181,14 +188,25 @@ Table 5. Requirement status at TRL 3, not met first.
 | R6 | Sessions per charge | 3.8 (3.80 Wh each) | 3 or more | Met |
 | R10 | Fit adult hands | S, M, L sizes at 0.95, 1.00 and 1.15 scale | Hand length 170 to 205 mm | Met |
 | R11 | Cuff contact pressure | 23 to 40 kPa (medium hand); 46 kPa worst (small hand, little finger) | 50 kPa or less | Met on paper |
-| R12 | Parts cost | $289.90 | $500 or less | Met |
+| R12 | Parts cost | USD 303.90 | Value-engineering target USD 500 | Under the target by USD 196.10 |
 | R8 | Donning and removal | Not calculable | 5 min on, 1 min off | Not verifiable at TRL 3 |
 | R9 | Stop and release | Power cut in about 11 ms; release by design | 100 ms; 10 s release | Not verifiable at TRL 3 |
 | R13 | Session log | About 10,417 days of summaries in 1 MB | Time, cycles, peak current; locked limits | Not verifiable at TRL 3 |
 
 ## Changes to earlier estimates
 
-Table 6. Changes from v0.1 to v0.2 (FXH-DDR-002).
+Table 6. Changes from v0.2 to v0.3 (FXH-DDR-003, constructable design).
+
+| Quantity | v0.2 | v0.3 | Cause |
+| --- | --- | --- | --- |
+| Forearm pack mass | 639 g | 723 g | Bulkhead, cradle, tray, longer anchor block, release plate, fixings counted from the model |
+| Hand-side mass | 115 g | 117 g | Sheath stop blocks on the plates; saddle cuffs |
+| Balance pulley free travel | 32 mm | 30 mm | Couplings and springs now share the channel |
+| Parts cost | USD 289.90 | USD 303.90 | BOM lines 23 to 25 added, 2, 15 and 19 repriced |
+
+Forces, speeds, energy and pressures are unchanged: the spool radius, motors, cells, transmission and cuff contact areas are as in v0.2.
+
+Table 7. Changes from v0.1 to v0.2 (FXH-DDR-002).
 
 | Quantity | v0.1 | v0.2 | Cause |
 | --- | --- | --- | --- |
@@ -200,7 +218,7 @@ Table 6. Changes from v0.1 to v0.2 (FXH-DDR-002).
 | Forearm pack mass | 675 g | 639 g | Ball-detent couplings, perforated cuff (N4); longer anchor block |
 | Hand-side mass | 103 g | 115 g | Thimbles (N2) |
 | Worst cuff pressure | 84 kPa (96 kPa small hand) | 40 kPa (46 kPa small hand) | Thimbles (N2) |
-| Parts cost | $281.90 | $289.90 | BOM lines 21 and 22 |
+| Parts cost | USD 281.90 | USD 289.90 | BOM lines 21 and 22 |
 | R2, R5 targets | Moderate tone; 3 to 15 s | Mild tone; 4 to 15 s at design load | N1, N5 |
 
 Earlier, from TRL 2 to v0.1: peak torque rose from 0.41 N·m (idler loss and line radius added), pack mass from about 510 g (datasheet motor mass, magnets, housing), and the gearmotors were turned to lie along the forearm with idlers, giving a 160 by 76 mm pack.

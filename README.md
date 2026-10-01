@@ -2,19 +2,19 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1386351853.svg)](https://zenodo.org/badge/latestdoi/1386351853) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/flexhand/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/flexhand/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/flexhand/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/flexhand)
 
-**Area:** BioMedical · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** about $500 USD · **Difficulty:** 4 of 5
+**Area:** BioMedical · **TRL:** 3 of 9 (proof of concept on paper) · **Value-engineering target:** USD 500 (estimated cost USD 304) · **Difficulty:** 4 of 5
 
 Soft-actuated finger exoskeleton for continuous passive motion, driven by tendons from a wrist-mounted motor pack.
 
 ![FlexHand: tendon-driven finger exoskeleton for continuous passive motion, product render](media/render-hero.png)
 
-[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/FXH-DWG-001.pdf) · [Sizing calculations](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
+[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement (PDF)](cad/drawings/FXH-DWG-001.pdf) · [Sizing calculations](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
-Repetition is the scarce input in hand rehabilitation after stroke, and the scarce resource that delivers it is therapist time. A device that moves the fingers slowly through a therapist-set range, hundreds of times per session, can add dose at home without adding therapist hours. Tendons pulled through Bowden sheaths from a forearm pack keep the hand side light (about 115 g) and put the motors, cells and electronics where their mass matters least, which is why FlexHand uses tendons rather than a pneumatic glove or motors on the hand.
+Repetition is the scarce input in hand rehabilitation after stroke, and the scarce resource that delivers it is therapist time. A device that moves the fingers slowly through a therapist-set range, hundreds of times per session, can add dose at home without adding therapist hours. Tendons pulled through Bowden sheaths from a forearm pack keep the hand side light (about 117 g) and put the motors, cells and electronics where their mass matters least, which is why FlexHand uses tendons rather than a pneumatic glove or motors on the hand.
 
-FlexHand is open and garage-buildable because the users who most need low-cost dose are least served by clinic-bound robotic gloves. Two off-the-shelf gearmotors, carrier-board electronics, 3D-printed TPU and PETG parts and bicycle shift housing keep the parts cost near $290 and let a research group, a clinic workshop or a makerspace build, inspect and adapt it. Openness also lets others check the safety layers (current limit, breakaway couplings, hardware stop and tool-free release) rather than trusting them. It is a research and educational prototype, not a medical device.
+FlexHand is open and garage-buildable because the users who most need low-cost dose are least served by clinic-bound robotic gloves. Two off-the-shelf gearmotors, carrier-board electronics, 3D-printed TPU and PETG parts and bicycle shift housing keep the parts cost near USD 304 and let a research group, a clinic workshop or a makerspace build, inspect and adapt it. Openness also lets others check the safety layers (current limit, breakaway couplings, hardware stop and tool-free release) rather than trusting them. It is a research and educational prototype, not a medical device.
 
 ## Burning platform
 
@@ -59,19 +59,25 @@ Problem statement: [docs/01-problem.md](docs/01-problem.md)
 
 Soft-actuated finger exoskeleton for continuous passive motion, driven by tendons from a wrist-mounted motor pack.
 
-A fingerless glove carries TPU cuffs on the four fingers. Two gearmotors lying along the forearm in a strapped-on pack each turn a two-groove spool that pulls the flexor tendons of a finger pair while paying out the extensor tendons, through Bowden sheaths that cross the wrist. A floating balance pulley shares each spool line equally between the two fingers of a pair, and an open-tip fingertip thimble shares the extensor load with the finger cuff. The TRL 3 calculations give about 445 finger cycles per hour at full speed, about 3.8 sessions of 60 min per charge, cuff pressures of 40 kPa or less on a medium hand and $289.90 in parts. One requirement is not met (forearm pack mass, about 639 g against 450 g), and two are at risk (gearbox rating and force-limit friction spread); see the [sizing calculations](docs/04-calcs/01-sizing.md) and the [review note](docs/REVIEW.md).
+A fingerless glove carries TPU cuffs on the four fingers. Two gearmotors lying along the forearm in a strapped-on pack each turn a two-groove spool that pulls the flexor tendons of a finger pair while paying out the extensor tendons, through Bowden sheaths that cross the wrist. A floating balance pulley shares each spool line equally between the two fingers of a pair, and an open-tip fingertip thimble shares the extensor load with the finger cuff. The TRL 3 calculations give about 445 finger cycles per hour at full speed, about 3.8 sessions of 60 min per charge, cuff pressures of 40 kPa or less on a medium hand and an estimated USD 303.90 in parts, USD 196.10 under the USD 500 value-engineering target. One requirement is not met (forearm pack mass, about 723 g against 450 g), and two are at risk (gearbox rating and force-limit friction spread); see the [sizing calculations](docs/04-calcs/01-sizing.md) and the [review note](docs/REVIEW.md).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
 ## Key components
 
 - Two 25 mm 227:1 gearmotors with encoders, antagonistic spools and idlers
-- Bowden sheaths and UHMWPE tendons, with balance pulleys, ball-detent breakaway couplings, stop beads and a quick-release
+- Bowden sheaths and UHMWPE tendons, with balance pulleys, ball-detent breakaway couplings, stop beads and a pull-out release plate
 - Fingerless glove, TPU finger cuffs and fingertip thimbles, dorsal and palmar plates, thumb spacer
 - Motor drivers with current sensing for force limiting
-- ESP32-S3 controller, 2S Li-ion pack, emergency stop
+- ESP32-S3 controller with a 5 V regulator, 2S Li-ion pack, emergency stop
 
 The priced bill of materials is in [bom/bom.csv](bom/bom.csv). The parametric model is `cad/src/model.py` (STEP and STL in `cad/step` and `cad/stl`).
+
+## Building the prototype
+
+![FlexHand prototype: every component, pulled apart and numbered in build order](docs/05-build-plan/overview.png)
+
+The [prototype build plan](docs/05-build-plan.md) shows how to make each of the 26 components and put them together in 15 illustrated steps, with first checks and safety stops; it is a plan, not a record of a build. Drawing it made the design constructable: the pack is now screwed to the cuff, the motors sit in a printed bulkhead, the electronics sit on a tray, and a longer anchor block holds the balance pulleys and breakaway couplings, with a pull-out plate as the tool-free release ([FXH-DDR-003](docs/decisions/0003-design-for-construction.md)). Decisions still open are kept in the [design decisions register](docs/06-design-decisions.md).
 
 ## Safety
 
@@ -99,7 +105,7 @@ Controlled documents follow the portfolio [documentation standard](.kit/STANDARD
 
 ## Credits
 
-Designed by Amish Chadha. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for roles. To cite this design, use [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository").
+Designed by Amish Chadha, with contributions from Dr. Geeti Chadha. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for roles. To cite this design, use [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository").
 
 AI assistance (Claude) was used to accelerate concept renders, prototype documentation and first-pass sizing calculations. Design direction and all decisions are Amish Chadha's, recorded in this repository's decision records (`docs/decisions/`).
 

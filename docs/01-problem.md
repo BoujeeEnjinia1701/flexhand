@@ -3,9 +3,9 @@ doc_id: FXH-PRB-001
 title: FlexHand problem statement
 project: FlexHand
 doc_type: Problem statement
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002); first severity band set to mild flexor tone
+- version: "0.5"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Parts cost stated as a value-engineering target
 ---
 
 # FlexHand problem statement
@@ -58,7 +62,7 @@ A caution sits at the center of this problem. Robotic passive mobilization has b
 
 ## Constraints
 
-- Garage-buildable prototype for about $500 USD in parts, using off-the-shelf motors and modules and 3D-printed parts.
+- Garage-buildable prototype, with a value-engineering target of USD 500 in parts (a control target, not a limit), using off-the-shelf motors and modules and 3D-printed parts.
 - Wearable during a seated session: the hand side must be light and the actuators must sit on the forearm, not the hand.
 - Fits a range of adult hands without custom molding.
 - Safe with users who may have reduced sensation, spasticity and limited ability to remove the device themselves.

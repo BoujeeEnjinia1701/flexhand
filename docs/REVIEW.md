@@ -246,3 +246,65 @@ This is an appearance model only: no tolerances, fabrication detail, PCB layouts
 - Kit 1.5.0 synced: STANDARDS v1.5 (sections 12 to 15: product renders, storefront images and image quality, public release, authorship and signing), `.kit/cards.py`, `.kit/image_qc.py`, `.kit/release_gate.py`, issue templates, and the `/render-product` and `/release` commands. `CLAUDE.md` now matches `.kit/CLAUDE.md`.
 - Every `media/render-*.png` recaptioned from its original render with the new layout: the title, concept label and repository sit in a band above the render and the view note in a band below it, each line wrapped to the image width, so no text overlaps other text or the render or runs off the image. `media/card.png` and `media/social-preview.png` regenerated with the same rules.
 - `python .kit/image_qc.py` and `python .kit/release_gate.py` pass. trl stays 3.
+
+## Session 2026-10-01: design for construction and prototype build plan (kit 1.7.0)
+
+Amish approved the build plan format on 2026-09-30 and asked for it to be extended to every repo, with outstanding decisions kept in a separate design decisions register. This session installed kit 1.7.0, made the FlexHand design constructable under his 2026-09-30 instruction ("If you are realising that the design cannot be built as per concept - fix the design assumptions to match and be physically feasible as you draw the illustrations."), and wrote the illustrated build plan. Nothing was built or tested; TRL 4 stays on hold.
+
+### What was done
+
+- Kit 1.7.0 installed (`.kit/`, `.claude/commands/`); `CLAUDE.md` matches `.kit/CLAUDE.md`.
+- `cad/src/model.py` rewritten as a constructable model, part by part, with `python cad/src/model.py --check`: 203 constructability checks (no overlaps, nothing inside the forearm or hand, every joint touching, clearances, the release plate's path). All pass. STEP and STL re-exported.
+- `docs/decisions/0003-design-for-construction.md` (FXH-DDR-003 v0.1, Draft): every change, with its reason; open for Amish's review.
+- `cad/src/build_plan_media.py`: overview, 16 making sketches (`cad/drawings/FXH-DWG-101` to `116`), 10 joint close-ups, 15 assembly step pictures and a block-level wiring picture in `docs/05-build-plan/`.
+- `docs/05-build-plan.md` (FXH-BLD-001 v0.1) and `docs/06-design-decisions.md` (FXH-DEC-001 v0.1), both new.
+- `docs/04-calcs/sizing.py` and `01-sizing.md` (FXH-CAL-001 v0.3): masses recomputed from the new parts; cost reported against the value-engineering target. `docs/02-concept.md` (v0.5), `docs/03-requirements.md` (v0.5) and `docs/01-problem.md` (v0.5) updated to match.
+- `bom/bom.csv`: lines 1, 2, 4, 5, 8 to 11, 13 to 15, 17, 19 and 20 updated; lines 23 (electronics tray), 24 (fixing kit) and 25 (5 V regulator) added. `bom/bom-notes.md` updated.
+- `cad/src/sheets.py` and `cad/drawings/FXH-DWG-001`: Rev P3. Concept media regenerated with `cad/src/concept_media.py`.
+- `project.yaml`: `design_state: constructable`; the build plan, the register and FXH-DDR-003 added to `trl_evidence`; `budget_usd` unchanged. `README.md`: links line and a "Building the prototype" section.
+
+### Design changes made for construction (FXH-DDR-003)
+
+1. Pack screwed to the cuff: floor raised 4 mm; three ribs on the solid strips between cuff holes, six M3 screws up through the shell into heat-set inserts; liner holes over the screw heads.
+2. Straps over the shell and through the gap under the pack between its ribs (they were inside the liner).
+3. Gearmotors held by a printed 3 mm bulkhead (two M3 screws into each gearbox face) and a cradle with cable ties; motor axes 13.5 mm from centre (was 15).
+4. Spool flanges 14 mm (were 20, which the idlers cut into), a set-screw hub; idlers on 3 mm pins in a printed floor post and wall shelf.
+5. Rear bay: cells in saddles, an electronics tray on four posts holding them down, boards laid out without overlap, a USB-C opening, a 6 mm cable gap behind the motors, and a 5 V regulator for the controller (a missing part).
+6. Anchor block 53 mm long (was 44), 88 mm wide, full pack height, with four 15 by 7 mm channels in line with the tendon exits, holding each line's slack spring, balance pulley (30 mm travel) and two couplings; screwed to the pack front wall.
+7. Tool-free release made real: sheath pucks press on a red pull-out release plate between the block and a cover; pulling it out slackens all eight tendons (the lever had no mechanism).
+8. Pack 168 mm long, moved 16 to 24 mm toward the elbow; cuff moved 20 mm, same length; the block stops 7 mm short of the wrist.
+9. Four slack springs (one per spool line) instead of eight; stop beads at the hand end, against the stop blocks.
+10. Finger cuffs and thimbles as padded saddles with thin side bands, eyelets, end tabs and a hook-and-loop closure; fingers held slightly spread by the glove so neighbouring cuffs clear.
+11. Sheath stop blocks on the dorsal and palmar plates; plates stitched to the glove; sheaths re-routed so none passes through the wrist, the glove or another sheath.
+12. Thumb spacer block moved to the web space, shaped to the thumb and stitched to the glove; glove given a thumb opening.
+13. Fixing kit listed (BOM line 24).
+14. Breakaway coupling detent: two 2 mm balls and a spring-wire ring in a 6.8 mm body (a 4 mm ball and spring could not fit two couplings side by side).
+
+### Key results (FXH-CAL-001 v0.3)
+
+- Forearm pack about 723 g (was 639 g): **R7 still not met**, now further from 450 g. Hand side 117 g (met).
+- Value-engineering target: USD 500. Estimated cost of the constructable design: USD 303.90 (USD 196.10 under the target).
+- Forces, speeds, energy, pressures and requirement counts unchanged: 1 not met (R7), 2 at risk (R2, R3), 7 met, 3 not verifiable at TRL 3.
+
+### Proposed, awaiting Amish
+
+Listed in `docs/06-design-decisions.md`: accept the design-for-construction changes; confirm the pull-out release plate in place of the lever; confirm with a therapist that the glove may hold the fingers slightly spread; the pack-mass target (723 g against 450 g); the clinical co-design partner (O1). Eight items to confirm when parts are bought are listed there too.
+
+### Safety
+
+- The release changed form (pull-out plate instead of a lever); its pull force and 10 s release time are TRL 4 bench checks, and it is listed for Amish's confirmation.
+- The build plan's safety stops keep everything on a bench and a hand form; nothing may be worn.
+- Not a medical device; every document still says so.
+
+### Stale media (made on Amish's Mac)
+
+`media/render-hero.png`, `media/render-exploded.png`, `media/render-detail.png`, `media/card.png` and `media/social-preview.png` still show the concept's pack, anchor block, lever and full-ring cuffs; `cad/src/product_model.py` follows the concept too. They need regenerating on the Mac.
+
+### Kit problems found
+
+- build123d's SVG exporter, used by `.kit/drawing.py`, raises an AssertionError on a projected elliptical arc whose ends coincide (here on the swept sheaths). `.kit/` was not edited; `cad/src/svg_patch.py` skips such arcs, as build123d already does for arcs shorter than 1e-6, and is imported by `sheets.py`, `concept_media.py` and `build_plan_media.py`. The kit should carry the fix.
+- The mirrored constructable pack base raised a Standard_DomainError in hidden-line projection, so the concept media and FXH-DWG-001 now show the right-hand device as modelled (the media were a mirrored left hand before), matching the build plan.
+
+### Recommended next step
+
+Review FXH-DDR-003 and the register (items 2 to 5). TRL 4 remains on hold.
