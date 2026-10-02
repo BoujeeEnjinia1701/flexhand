@@ -3,9 +3,9 @@ doc_id: FXH-CAL-001
 title: FlexHand sizing calculations
 project: FlexHand
 doc_type: Calculation
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,6 +21,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Constructable design (FXH-DDR-003); masses recomputed from the new parts, cost reported against the value-engineering target
+- version: "0.4"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'R9 target wording in the requirement table follows the decision of 2026-10-02 (release pull force agreed with the therapist); no result changed'
 ---
 
 # FlexHand sizing calculations
@@ -190,7 +194,7 @@ Table 5. Requirement status at TRL 3, not met first.
 | R11 | Cuff contact pressure | 23 to 40 kPa (medium hand); 46 kPa worst (small hand, little finger) | 50 kPa or less | Met on paper |
 | R12 | Parts cost | USD 303.90 | Value-engineering target USD 500 | Under the target by USD 196.10 |
 | R8 | Donning and removal | Not calculable | 5 min on, 1 min off | Not verifiable at TRL 3 |
-| R9 | Stop and release | Power cut in about 11 ms; release by design | 100 ms; 10 s release | Not verifiable at TRL 3 |
+| R9 | Stop and release | Power cut in about 11 ms; release by design | 100 ms; 10 s release at a pull force agreed with the therapist | Not verifiable at TRL 3 |
 | R13 | Session log | About 10,417 days of summaries in 1 MB | Time, cycles, peak current; locked limits | Not verifiable at TRL 3 |
 
 ## Changes to earlier estimates

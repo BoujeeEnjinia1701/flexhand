@@ -3,9 +3,9 @@ doc_id: FXH-PRB-001
 title: FlexHand problem statement
 project: FlexHand
 doc_type: Problem statement
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Parts cost stated as a value-engineering target
+- version: "0.6"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Open question on the first clinical partner answered by the decision of 2026-10-02 (FXH-DEC-001)'
 ---
 
 # FlexHand problem statement
@@ -79,7 +83,7 @@ A caution sits at the center of this problem. Robotic passive mobilization has b
 
 ## Open questions
 
-- Which clinical partner to co-design with first (a stroke unit occupational therapy team, a community rehabilitation service, or a university rehabilitation lab)? Proposed, awaiting Amish.
+- Which clinical partner to co-design with first (a stroke unit occupational therapy team, a community rehabilitation service, or a university rehabilitation lab)? Decided 2026-10-02 (FXH-DEC-001): a university rehabilitation lab attached to a stroke service, introduced through the OpenRatio network; first candidate to approach: Shirley Ryan AbilityLab in Chicago, or a university rehabilitation program nearer Irving.
 Decided on 2026-09-25 by Amish (FXH-DDR-001): passive motion only for this design, with active assist recorded as a later option (D3). The pitch is unchanged.
 
 Decided on 2026-09-25 by Amish (FXH-DDR-002, N1): the first severity band is mild flexor tone (MAS 1 to 1+), which the 30 N design load covers according to the published finger stiffness check in FXH-CAL-001. Moderate and severe tone need roughly 80 to 150 N per finger and are left for a later design.

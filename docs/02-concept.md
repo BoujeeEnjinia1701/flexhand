@@ -3,9 +3,9 @@ doc_id: FXH-PRC-001
 title: FlexHand design precis
 project: FlexHand
 doc_type: Design precis
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: "Constructable design (FXH-DDR-003): pack, motor, electronics, anchor block and release changes; mass and cost from FXH-CAL-001 v0.3; cost against the value-engineering target"
+- version: "0.6"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Decisions of 2026-10-02 (FXH-DEC-001): co-design partner; design for construction accepted; release pass mark, finger spread check and pack mass added to the safety section'
 ---
 
 # FlexHand design precis
@@ -129,7 +133,7 @@ Amish decided D1 to D8 on 2026-09-25 (FXH-DDR-001) by accepting the TRL 2 recomm
 - **Passive motion only (D3).** An active-assist mode triggered by the user's own effort is recorded as a later option; it is not part of this design.
 - **Anchor cuffs as wide as the phalanx allows (D4), plus a fingertip thimble (N2).** The 20 mm cuff recommended at TRL 2 does not fit on any middle phalanx with clearance for PIP flexion. The extensor tendon runs on past the anchor cuff to an open-tip thimble on the distal phalanx, so the two share the load and the worst pressure falls from 84 to 40 kPa. The thimble is open at the tip to keep the fingertip free and to save mass.
 - **Balance pulleys (N3).** A floating pulley on each spool line makes both fingers of a pair carry equal tension, so the current limit acts per finger (worst case 40 N, was 80 N). It costs about 5 % in efficiency and lengthens the anchor block from 12 to 44 mm (53 mm in the constructable design, which also holds the couplings and springs). A stop bead on each finger tendon keeps a free finger within its range when its partner is held back.
-- **Lighter pack parts (N4).** Ball-detent breakaways and a perforated cuff save about 65 g. The pack is still about 723 g in the constructable design (639 g before the fixings, bulkhead, tray and longer anchor block were added); the 450 g target is to be reviewed with a therapist once a co-design partner is chosen (O1).
+- **Lighter pack parts (N4).** Ball-detent breakaways and a perforated cuff save about 65 g. The pack is still about 723 g in the constructable design (639 g before the fixings, bulkhead, tray and longer anchor block were added); the 450 g target stays under review with the co-design therapist, who treats the pack's load on a weak arm and shoulder as a safety question, and the listed mass savings (about 30 to 60 g) are tried before TRL 4 (decided 2026-10-02, FXH-DEC-001).
 - **Mild tone first, 4 s lower stroke limit (N1, N5).** R2 names mild flexor tone (MAS 1 to 1+), which the 30 N design load covers. The lower stroke limit at design load is 4 s, which the drive reaches even with pessimistic friction and which is gentler on the joints.
 - **Thumb passive (D6).** A spacer holds the thumb abducted.
 - **Force limiting in three layers.** Firmware current limit, a mechanical breakaway coupling on each tendon, and a hardware stop switch with a manual tendon release.
@@ -141,7 +145,9 @@ Amish decided D1 to D8 on 2026-09-25 (FXH-DDR-001) by accepting the TRL 2 recomm
 
 - **Joint injury.** Forcing a spastic or contracted finger can injure joints, tendons or skin. Range limits and force limits are set by a therapist, start low, and are enforced in firmware with a mechanical breakaway as backup. Movement is slow (30 °/s or less; about 28 °/s at the PIP at the fastest setting) to avoid provoking a stretch reflex. The balance pulleys hold both fingers of a pair to the same tension, but sheath friction still spreads the real force from about 27 to 47 N at a 40 N setting (R3 at risk). If one finger is held back, the balance pulley lets its partner move further; the stop bead on each tendon must be set to that finger's range before use.
 - **Reduced sensation.** Many users cannot feel pressure or pain in the affected hand. Check the skin under every cuff before and after each session, and stop at any redness that does not fade within 30 min. R11 is met only on paper, under an assumed load sharing between cuff and thimble, so this design must not be worn until pressure has been mapped on a bench.
-- **Entrapment.** The gearboxes hold their position when unpowered. If power fails with the fingers flexed, the hand stays closed until the tendons are released. The release plate and a care partner within reach are required.
+- **Entrapment.** The gearboxes hold their position when unpowered. If power fails with the fingers flexed, the hand stays closed until the tendons are released. The release plate and a care partner within reach are required. Its pass mark is set before the TRL 4 test: all tendons slack in 10 s or less, with a pull force the co-design therapist agrees a care partner can apply with one hand; a cam lever driving the same plate is the fallback.
+- **Finger spread.** The cuffs hold the fingers slightly spread, which spastic fingers may resist. Nothing is worn until the co-design therapist has checked the spread on a range of hands with mild tone; if it raises tone or causes discomfort, the cuffs change to single saddles that fit fingers at rest.
+- **Pack mass.** The forearm pack (about 723 g) loads a weak arm and shoulder; the co-design therapist reviews it as a safety question before anything is worn.
 - **Pinch points and moving parts.** Spools, idlers and tendons are inside the pack; keep the lid closed while powered. Keep hair and loose clothing away from the tendon path.
 - **Lithium-ion cells.** Use a protected 2S pack, charge only when not worn, on a non-combustible surface, and stop using a pack that is swollen, damaged or hot.
 - **Electrical.** The pack runs at 8.4 V or less; there is no mains connection while worn.
@@ -149,10 +155,10 @@ Amish decided D1 to D8 on 2026-09-25 (FXH-DDR-001) by accepting the TRL 2 recomm
 
 ## Constructable design
 
-Drawing the build plan showed parts of the concept that could not be made or fixed as drawn. FXH-DDR-003 records the changes made under Amish's 2026-09-30 instruction to make the design physically buildable: the pack is screwed to the cuff, the motors are held by a printed bulkhead, the electronics sit on a tray with a 5 V regulator added, the anchor block is 53 mm long with room for its pulleys, couplings and springs, the quick release is a pull-out plate, and the finger cuffs are padded saddles that fit side by side. What FlexHand does is unchanged.
+Drawing the build plan showed parts of the concept that could not be made or fixed as drawn. FXH-DDR-003 records the changes made under Amish's 2026-09-30 instruction to make the design physically buildable: the pack is screwed to the cuff, the motors are held by a printed bulkhead, the electronics sit on a tray with a 5 V regulator added, the anchor block is 53 mm long with room for its pulleys, couplings and springs, the quick release is a pull-out plate, and the finger cuffs are padded saddles that fit side by side. What FlexHand does is unchanged. Amish accepted these changes on 2026-10-02, with the release pass mark and the finger spread check above.
 
 ## Open questions
 
-Open decisions are listed in the design decisions register (`docs/06-design-decisions.md`, FXH-DEC-001), among them the first clinical co-design partner (O1) and the review of the design-for-construction changes.
+Open decisions are listed in the design decisions register (`docs/06-design-decisions.md`, FXH-DEC-001), All of them were decided on 2026-10-02. The first clinical co-design partner is a university rehabilitation lab attached to a stroke service, introduced through the OpenRatio network; first candidate to approach: Shirley Ryan AbilityLab in Chicago, or a university rehabilitation program nearer Irving.
 
 Concept media: [blueprint sheet](../media/concept-blueprint.pdf), [interactive 3D model](../media/viewer.html). General arrangement: [FXH-DWG-001](../cad/drawings/FXH-DWG-001.pdf).

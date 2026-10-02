@@ -3,9 +3,9 @@ doc_id: FXH-DDR-003
 title: FlexHand design for construction
 project: FlexHand
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,12 +13,16 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Changes that make the concept physically buildable, with the reason for each; made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Accepted by Amish on 2026-10-02, including the recommendations for A1 to A3 with their conditions'
 ---
 
 # 0003: Design for construction
 
 - **Date:** 2026-10-01
-- **Status:** Draft. The changes in Tables 1 and 2 were made under Amish's 2026-09-30 instruction to make the design physically buildable; they are open for his review. The items in Table 3 are proposed, awaiting Amish, and are listed in the design decisions register (`docs/06-design-decisions.md`).
+- **Status:** accepted. Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." This covers every change in Tables 1 and 2 and the recommendations for A1 to A3 in Table 3, now decided as recommended, with the conditions below, and recorded in the design decisions register (FXH-DEC-001).
 
 ## Context
 
@@ -57,17 +61,18 @@ The changes keep what FlexHand does: two gearmotors on the forearm, antagonistic
 | Documents | FXH-CAL-001 v0.3, FXH-PRC-001 v0.5, FXH-REQ-001 v0.5: masses, cost wording, pack size and the release updated. No requirement changed status. | Follows the model. |
 | Forces, speeds, energy, pressure | Unchanged: the spool radius, strokes, motors, cells, transmission and cuff contact areas are as before [A1] to [F3], [H2], [H3]. | |
 
-*Table 3. Proposed, awaiting Amish.*
+*Table 3. Proposed, then accepted by Amish as recommended on 2026-10-02, with the conditions added in the recommendation column.*
 
 | # | Question | Options | Recommendation |
 | --- | --- | --- | --- |
-| A1 | The tool-free release is now a pull-out plate with a finger loop, not a lever (C7). It changes the form of a safety feature, so Amish should confirm it. | (a) the pull-out plate, with its pull force and release time measured at TRL 4 against R9's 10 s; (b) a cam lever that drives the same plate out (more parts, lower pull force). | (a); move to (b) only if the measured pull force is too high for a care partner. |
-| A2 | The cuffs need the fingers held slightly spread (C10). Spastic fingers may resist being spread. | (a) accept, and ask the co-design therapist (O1) to check it; (b) single-saddle cuffs that fit fingers at rest, with higher pressure (R11 at risk on the little finger). | (a). |
-| A3 | The pack is now about 723 g against the 450 g target of R7 (639 g before). | (a) keep the target under review with a therapist as already decided (N4 (c), waiting on O1) and weigh at TRL 4; (b) look for mass now (see the value-engineering savings in the register). | (a), with the savings in the register tried before TRL 4. |
+| A1 | The tool-free release is now a pull-out plate with a finger loop, not a lever (C7). It changes the form of a safety feature, so Amish should confirm it. | (a) the pull-out plate, with its pull force and release time measured at TRL 4 against R9's 10 s; (b) a cam lever that drives the same plate out (more parts, lower pull force). | (a); move to (b) only if the measured pull force is too high for a care partner. Accepted 2026-10-02, with the pass mark set before the TRL 4 test: released in 10 s or less (R9) with a pull force that the co-design therapist agrees, before the test, a care partner can apply with one hand. |
+| A2 | The cuffs need the fingers held slightly spread (C10). Spastic fingers may resist being spread. | (a) accept, and ask the co-design therapist (O1) to check it; (b) single-saddle cuffs that fit fingers at rest, with higher pressure (R11 at risk on the little finger). | (a). Accepted 2026-10-02 with a condition: nothing is worn until the co-design therapist has checked the spread on a range of hands with mild tone; switch to (b) if the spread raises tone or discomfort. |
+| A3 | The pack is now about 723 g against the 450 g target of R7 (639 g before). | (a) keep the target under review with a therapist as already decided (N4 (c), waiting on O1) and weigh at TRL 4; (b) look for mass now (see the value-engineering savings in the register). | (a), with the savings in the register tried before TRL 4. Accepted 2026-10-02; the therapist review treats the pack mass as a safety question (load on a weak arm and shoulder). The listed savings come to about 30 to 60 g and cannot close the 273 g gap on their own. |
 
 ## Consequences
 
 - `design_state: constructable` in `project.yaml`. The build plan FXH-BLD-001 shows every component and step in pictures generated from the model (`cad/src/build_plan_media.py`).
 - Requirement status is unchanged in count: 1 not met (R7, now 723 g), 2 at risk (R2, R3), 7 met, 3 not verifiable at TRL 3 (FXH-CAL-001 v0.3). R12 is reported against the value-engineering target.
 - The photoreal renders (`media/render-*.png`), `media/card.png`, `media/social-preview.png` and the appearance model `cad/src/product_model.py` still show the concept's pack, anchor block, lever and cuffs; they need updating on Amish's Mac, where Blender is.
+- With A1 to A3 accepted: the release plate's pass mark is set before the TRL 4 test (10 s or less, with a pull force the co-design therapist agrees a care partner can apply one-handed), the cam lever being the fallback; nothing is worn until the therapist has checked the finger spread; the pack target stays under therapist review as a safety question. The build plan's release check and safety stop S6 carry these conditions (FXH-BLD-001 v0.2).
 - Bought parts must be checked against the model when bought (gearbox face holes and shaft length, stop button depth, cell size, board sizes); these are listed in the design decisions register.

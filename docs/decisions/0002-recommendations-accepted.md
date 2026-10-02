@@ -3,9 +3,9 @@ doc_id: FXH-DDR-002
 title: FlexHand recommendations accepted
 project: FlexHand
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record Amish's acceptance of the TRL 3 recommendations (N1 to N5) and the changes made to the repo
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'O1 (first clinical co-design partner) decided by Amish on 2026-10-02'
 ---
 
 # 0002: Recommendations accepted
 
 - **Date:** 2026-09-25
-- **Status:** accepted (items N1 to N5); item O1 remains proposed, awaiting Amish
+- **Status:** accepted (items N1 to N5); item O1 decided by Amish on 2026-10-02 (FXH-DEC-001)
 
 ## Context
 
@@ -40,7 +44,7 @@ Budget and pitch: no recommendation changed either. `budget_usd` stays at $500; 
 
 ## Still open
 
-- **O1.** First clinical co-design partner: a stroke unit occupational therapy team, a community rehabilitation service or a university rehabilitation lab. No recommendation was made. Proposed, awaiting Amish. The therapist review of the pack-mass target (D1, N4 (c)) and of the 50 kPa pressure limit waits on this choice.
+- **O1.** First clinical co-design partner: a stroke unit occupational therapy team, a community rehabilitation service or a university rehabilitation lab. No recommendation was made. Decided by Amish, 2026-10-02, as recommended in FXH-DEC-001: a university rehabilitation lab attached to a stroke service, introduced through the OpenRatio network; first candidate to approach: Shirley Ryan AbilityLab in Chicago, or a university rehabilitation program nearer Irving. The therapist review of the pack-mass target (D1, N4 (c)) and of the 50 kPa pressure limit waits on this choice.
 
 ## Consequences
 

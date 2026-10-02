@@ -3,9 +3,9 @@ doc_id: FXH-DDR-001
 title: FlexHand TRL 2 review decisions
 project: FlexHand
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,12 +17,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'O1 (first clinical co-design partner) decided by Amish on 2026-10-02'
 ---
 
 # 0001: TRL 2 review decisions
 
 - **Date:** 2026-09-25
-- **Status:** accepted (items D1 to D8; items N1 to N5 accepted on 2026-09-25, see FXH-DDR-002); item O1 remains proposed
+- **Status:** accepted (items D1 to D8; items N1 to N5 accepted on 2026-09-25, see FXH-DDR-002); item O1 decided by Amish on 2026-10-02 (FXH-DEC-001)
 
 ## Context
 
@@ -58,9 +62,9 @@ Table 1. Items with a recommendation in the TRL 2 review.
 
 Budget and pitch: the TRL 2 review made no recommendation to change either, so `budget_usd` stays at $500 and the pitch and problem lines are unchanged.
 
-Items that remain open (no recommendation was made, so they stay "Proposed, awaiting Amish"):
+Items that remained open (no recommendation was made, so they stayed "Proposed, awaiting Amish" until Amish decided them on 2026-10-02):
 
-- **O1.** First clinical co-design partner: a stroke unit occupational therapy team, a community rehabilitation service or a university rehabilitation lab. No recommendation; portfolio guidance is that community designs pick co-design partners per area later. Proposed, awaiting Amish.
+- **O1.** First clinical co-design partner: a stroke unit occupational therapy team, a community rehabilitation service or a university rehabilitation lab. No recommendation; portfolio guidance is that community designs pick co-design partners per area later. Decided by Amish, 2026-10-02, as recommended in FXH-DEC-001: a university rehabilitation lab attached to a stroke service, introduced through the OpenRatio network; first candidate to approach: Shirley Ryan AbilityLab in Chicago, or a university rehabilitation program nearer Irving.
 
 New items raised by FXH-CAL-001 at TRL 3. Amish accepted all recommendations later on 2026-09-25 ("i accept all your recommendations, go with them across all repos"); the changes are recorded in FXH-DDR-002:
 

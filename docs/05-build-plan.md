@@ -3,9 +3,9 @@ doc_id: FXH-BLD-001
 title: FlexHand prototype build plan
 project: FlexHand
 doc_type: Build plan
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,6 +13,10 @@ revisions:
     date: '2026-10-01'
     author: Amish Chadha
     change: First build plan; design made constructable (FXH-DDR-003)
+  - version: "0.2"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: 'Release check pass mark and safety stop S6 carry the safety decisions of 2026-10-02 (FXH-DEC-001); no design change'
 ---
 
 # FlexHand prototype build plan
@@ -534,7 +538,7 @@ These are the checks a TRL 4 test report would record; this plan only lists them
 | Check | Requirement | How | Pass when |
 | --- | --- | --- | --- |
 | Tendon stroke | R1 | Run each motor end to end with no load; measure the tendon travel at the hand plate | At least 29.8 mm on every tendon |
-| Release | R9 | With 40 N on each finger of the finger model, pull the release plate | All eight tendons slack within 10 s, by hand, with no tools; pull force recorded |
+| Release | R9 | With 40 N on each finger of the finger model, pull the release plate | All eight tendons slack within 10 s, by hand, with no tools, at a pull force no higher than the one agreed with the co-design therapist before the test as one a care partner can apply with one hand; pull force recorded |
 | Stop button | R9 | Press it during a stroke | Both motors stop at once; the controller logs the stop |
 | Breakaway | R3 | Pull each coupling apart on a spring balance | About 60 N, the value recorded for each |
 | Force limit | R3 | Block one finger of the model; raise the load on the other | The motor stops at the set current; neither finger passes 40 N |
@@ -556,7 +560,7 @@ Stop at each point. Carry on only when everything listed is true.
 - **S3. Before first power.** The lid is on; the anchor block's channels have no lines in them; a current-limited bench supply at 7.4 V and 1 A stands in for the cells; the stop button cuts the motors at once.
 - **S4. Before any tendon is loaded.** The release plate slides out freely; every coupling's force has been set; the force limit is set in firmware at its lowest value; the stop beads are crimped; a person who knows the release is within reach.
 - **S5. Charging.** Only with the pack off any arm or form, on the charging spot, attended; stop if a cell passes 45 °C or the pack swells.
-- **S6. Before anything is worn by a person (outside this plan).** Not part of this build. Wearing needs the TRL 4 bench results, a supervising therapist, informed consent and, in a research setting, ethics review.
+- **S6. Before anything is worn by a person (outside this plan).** Not part of this build. Wearing needs the TRL 4 bench results, a supervising therapist, informed consent and, in a research setting, ethics review, and the co-design therapist's check of the finger spread on a range of hands with mild tone (single-saddle cuffs if the spread raises tone or discomfort) and of the pack's load on a weak arm and shoulder.
 
 ## 7. Tools, skills and workspace
 

@@ -308,3 +308,32 @@ Listed in `docs/06-design-decisions.md`: accept the design-for-construction chan
 ### Recommended next step
 
 Review FXH-DDR-003 and the register (items 2 to 5). TRL 4 remains on hold.
+
+## Session 2026-10-02: open-decision recommendations approved
+
+Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." This approves the recommendation for every open decision in the design decisions register. 5 decisions were recorded: each moved to Decisions made, dated 2026-10-02, with the approved recommendation and its record. trl stays 3; no build or test work was done, and the CAD model, BOM quantities and prices, and pictures were not changed.
+
+### Documents changed
+
+- `docs/06-design-decisions.md` (FXH-DEC-001 v0.2): the five open decisions moved to Decisions made; Open decisions now reads none; value engineering states that the listed mass savings cannot close the R7 gap
+- `docs/decisions/0003-design-for-construction.md` (FXH-DDR-003 v0.2): status accepted with Amish's words; A1 to A3 accepted with their conditions (release pass mark, no wearing before the spread check, pack mass as a safety question)
+- `docs/decisions/0001-trl2-review-decisions.md` (FXH-DDR-001 v0.3): O1 (first clinical co-design partner) decided
+- `docs/decisions/0002-recommendations-accepted.md` (FXH-DDR-002 v0.2): O1 decided
+- `docs/03-requirements.md` (FXH-REQ-001 v0.6): R9 release pull force agreed with the therapist before the test; R7 pack target reviewed as a safety question; safety note adds the spread check; no status changed
+- `docs/04-calcs/01-sizing.md` (FXH-CAL-001 v0.4): R9 target wording in the requirement table; no result changed
+- `docs/02-concept.md` (FXH-PRC-001 v0.6): safety section adds the release pass mark, the finger spread check and the pack mass; partner named; design for construction accepted
+- `docs/01-problem.md` (FXH-PRB-001 v0.6): open question on the first clinical partner answered
+- `docs/05-build-plan.md` (FXH-BLD-001 v0.2): release check pass mark and safety stop S6 carry the safety conditions; no open decision added
+- PDFs regenerated with `python3 .kit/render.py`; superseded PDF versions removed by the render.
+
+### Follow-up actions to carry approved decisions into the design
+
+1. Decision 2 (pictures): Regenerate the photoreal renders, `media/card.png` and `media/social-preview.png` from `cad/src/product_model.py` to show the accepted construction (screwed pack, anchor block, release plate, saddle cuffs), on Amish's Mac
+2. Decision 5 (model): Try the listed mass savings in the model before TRL 4: plastic or aluminium screws for the lid, tray and cover, lower infill and thinner ribs in the pack base, and a lighter anchor block
+3. Decision 5 (calcs): Re-run `sizing.py` and update FXH-CAL-001 section G with the result of the savings tried; R7 stays not met unless the therapist review changes the target
+4. Decision 5 (bom): Update `bom/bom.csv` for any fixings changed by the savings (plastic or aluminium screws)
+
+### Points found in the review
+
+- The value-engineering savings for mass (about 8 g of screws, 10 to 20 g of infill, a lighter anchor block) cannot close a 273 g gap to R7; the register should say so plainly.
+- Kit bug noted in the review: build123d's SVG export fails on closed elliptical arcs; the local svg_patch workaround should move into the kit.
