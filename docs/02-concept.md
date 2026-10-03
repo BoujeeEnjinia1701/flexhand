@@ -3,7 +3,7 @@ doc_id: FXH-PRC-001
 title: FlexHand design precis
 project: FlexHand
 doc_type: Design precis
-version: "0.6"
+version: "0.7"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -33,11 +33,15 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: 'Decisions of 2026-10-02 (FXH-DEC-001): co-design partner; design for construction accepted; release pass mark, finger spread check and pack mass added to the safety section'
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Mass savings tried: pack 712 g, cost USD 304.90; R7 still not met"
 ---
 
 # FlexHand design precis
 
-FlexHand is a fingerless glove with tendon cuffs on the four fingers, driven through Bowden sheaths by two gearmotors in a pack strapped to the forearm. Each motor turns a two-groove spool that pulls a flexor line while paying out the matching extensor line, and a floating balance pulley splits each line between the two fingers of a pair, so one motor moves a pair of fingers both ways with equal tension in each. The extensor load on each finger is shared by a cuff on the middle phalanx and an open-tip thimble on the fingertip. The TRL 3 calculations (FXH-CAL-001 v0.3) give about 445 finger cycles per hour at full speed, about 3.8 sessions of 60 min per charge and cuff pressures of 40 kPa or less on a medium hand. Value-engineering target: USD 500. Estimated cost of the constructable design: USD 303.90 (USD 196.10 under the target). The design misses one requirement: the forearm pack is about 723 g against 450 g (R7). The design is constructable (FXH-DDR-003) and its build is planned in FXH-BLD-001 (`docs/05-build-plan.md`). The force requirement and the force limit are at risk (R2, R3).
+FlexHand is a fingerless glove with tendon cuffs on the four fingers, driven through Bowden sheaths by two gearmotors in a pack strapped to the forearm. Each motor turns a two-groove spool that pulls a flexor line while paying out the matching extensor line, and a floating balance pulley splits each line between the two fingers of a pair, so one motor moves a pair of fingers both ways with equal tension in each. The extensor load on each finger is shared by a cuff on the middle phalanx and an open-tip thimble on the fingertip. The TRL 3 calculations (FXH-CAL-001 v0.3) give about 445 finger cycles per hour at full speed, about 3.8 sessions of 60 min per charge and cuff pressures of 40 kPa or less on a medium hand. Value-engineering target: USD 500. Estimated cost of the constructable design: USD 304.90 (USD 195.10 under the target). The design misses one requirement: the forearm pack is about 712 g against 450 g (R7). The design is constructable (FXH-DDR-003) and its build is planned in FXH-BLD-001 (`docs/05-build-plan.md`). The force requirement and the force limit are at risk (R2, R3).
 
 ![Hero render](../media/hero.png)
 
@@ -117,10 +121,10 @@ Table 2. Key numbers.
 | Repetitions | 445 per hour at full speed; 360 at 4 s strokes [D3], [D5] | R4 met |
 | Energy per session | 3.80 Wh; 3.8 sessions per 18 Wh charge [F2], [F3] | R6 met |
 | Mass on the hand | 117 g [G4] | R7 hand part met |
-| Mass of forearm pack | 723 g [G2] | **R7 not met** |
+| Mass of forearm pack | 712 g [G2] | **R7 not met** |
 | Cuff and thimble contact pressure | 23 to 40 kPa medium hand; 46 kPa worst on a small hand [H2], [H3] | R11 met on paper |
 | Stop time | About 11 ms [I1] | R9 not verifiable at TRL 3 |
-| Parts cost | USD 303.90 [J1] | R12: USD 196.10 under the USD 500 value-engineering target |
+| Parts cost | USD 304.90 [J1] | R12: USD 195.10 under the USD 500 value-engineering target |
 
 ## Key design choices
 
@@ -133,7 +137,7 @@ Amish decided D1 to D8 on 2026-09-25 (FXH-DDR-001) by accepting the TRL 2 recomm
 - **Passive motion only (D3).** An active-assist mode triggered by the user's own effort is recorded as a later option; it is not part of this design.
 - **Anchor cuffs as wide as the phalanx allows (D4), plus a fingertip thimble (N2).** The 20 mm cuff recommended at TRL 2 does not fit on any middle phalanx with clearance for PIP flexion. The extensor tendon runs on past the anchor cuff to an open-tip thimble on the distal phalanx, so the two share the load and the worst pressure falls from 84 to 40 kPa. The thimble is open at the tip to keep the fingertip free and to save mass.
 - **Balance pulleys (N3).** A floating pulley on each spool line makes both fingers of a pair carry equal tension, so the current limit acts per finger (worst case 40 N, was 80 N). It costs about 5 % in efficiency and lengthens the anchor block from 12 to 44 mm (53 mm in the constructable design, which also holds the couplings and springs). A stop bead on each finger tendon keeps a free finger within its range when its partner is held back.
-- **Lighter pack parts (N4).** Ball-detent breakaways and a perforated cuff save about 65 g. The pack is still about 723 g in the constructable design (639 g before the fixings, bulkhead, tray and longer anchor block were added); the 450 g target stays under review with the co-design therapist, who treats the pack's load on a weak arm and shoulder as a safety question, and the listed mass savings (about 30 to 60 g) are tried before TRL 4 (decided 2026-10-02, FXH-DEC-001).
+- **Lighter pack parts (N4).** Ball-detent breakaways and a perforated cuff save about 65 g. The pack is still about 712 g in the constructable design (723 g before the savings of 2026-10-02, 639 g before the fixings, bulkhead, tray and longer anchor block were added); the 450 g target stays under review with the co-design therapist, who treats the pack's load on a weak arm and shoulder as a safety question, and the listed mass savings were tried on 2026-10-02 (FXH-DEC-001) and took off 11 g, so the gap to the target is still 262 g.
 - **Mild tone first, 4 s lower stroke limit (N1, N5).** R2 names mild flexor tone (MAS 1 to 1+), which the 30 N design load covers. The lower stroke limit at design load is 4 s, which the drive reaches even with pessimistic friction and which is gentler on the joints.
 - **Thumb passive (D6).** A spacer holds the thumb abducted.
 - **Force limiting in three layers.** Firmware current limit, a mechanical breakaway coupling on each tendon, and a hardware stop switch with a manual tendon release.
@@ -147,7 +151,7 @@ Amish decided D1 to D8 on 2026-09-25 (FXH-DDR-001) by accepting the TRL 2 recomm
 - **Reduced sensation.** Many users cannot feel pressure or pain in the affected hand. Check the skin under every cuff before and after each session, and stop at any redness that does not fade within 30 min. R11 is met only on paper, under an assumed load sharing between cuff and thimble, so this design must not be worn until pressure has been mapped on a bench.
 - **Entrapment.** The gearboxes hold their position when unpowered. If power fails with the fingers flexed, the hand stays closed until the tendons are released. The release plate and a care partner within reach are required. Its pass mark is set before the TRL 4 test: all tendons slack in 10 s or less, with a pull force the co-design therapist agrees a care partner can apply with one hand; a cam lever driving the same plate is the fallback.
 - **Finger spread.** The cuffs hold the fingers slightly spread, which spastic fingers may resist. Nothing is worn until the co-design therapist has checked the spread on a range of hands with mild tone; if it raises tone or causes discomfort, the cuffs change to single saddles that fit fingers at rest.
-- **Pack mass.** The forearm pack (about 723 g) loads a weak arm and shoulder; the co-design therapist reviews it as a safety question before anything is worn.
+- **Pack mass.** The forearm pack (about 712 g) loads a weak arm and shoulder; the co-design therapist reviews it as a safety question before anything is worn.
 - **Pinch points and moving parts.** Spools, idlers and tendons are inside the pack; keep the lid closed while powered. Keep hair and loose clothing away from the tendon path.
 - **Lithium-ion cells.** Use a protected 2S pack, charge only when not worn, on a non-combustible surface, and stop using a pack that is swollen, damaged or hot.
 - **Electrical.** The pack runs at 8.4 V or less; there is no mains connection while worn.

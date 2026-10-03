@@ -44,7 +44,7 @@ K_MAS3 = (0.631, 0.753)      # N·m/rad, MCP and PIP, subject with MAS 3
 P_LIMIT = 50.0           # kPa, R11
 # Densities (g/cm3) and bought-part masses (g)
 RHO_PETG, RHO_TPU, RHO_PA12, RHO_EVA, RHO_LINER = 1.27, 1.21, 1.01, 0.07, 0.20
-RHO_STEEL, RHO_BRASS = 7.85, 8.5
+RHO_STEEL, RHO_BRASS, RHO_ALU = 7.85, 8.5, 2.70   # aluminium for the lid and cover screws (2026-10-02 savings)
 FILL_BLOCK = 0.40        # infill share for the solid-looking anchor block
 MASS = {"cell": 45.0, "bms": 5.0, "controller": 3.0, "driver": 3.0, "charger": 4.0, "estop": 20.0,
         "idler": 1.5, "balance": 1.5, "coupling": 2.0,   # N4: ball-detent breakaway (magnetic was 7.0 g)
@@ -159,9 +159,11 @@ def compute():
     C = m["c"]
     sheath_len = sum(Lp for _, _, Lp in m["sheath_paths"]) * d["sheath_slack"] / 1000   # m
     m_sheaths = sheath_len * MASS["sheath_g_per_m"] + 16 * MASS["ferrule"]
-    steel = sum(v(C[k]) for k in ("cuff_screws", "motor_screws", "tray_screws", "lid_screws", "cover_screws",
+    steel = sum(v(C[k]) for k in ("cuff_screws", "motor_screws", "tray_screws",
                                     "anchor_screws", "idler_pins", "balance_pins"))
-    m_fix = steel * RHO_STEEL + v(C["inserts"]) * RHO_BRASS
+    alu = sum(v(C[k]) for k in ("lid_screws", "cover_screws"))        # aluminium M3 screws, light loads only
+    m_fix = steel * RHO_STEEL + alu * RHO_ALU + v(C["inserts"]) * RHO_BRASS
+    m_fix_steel_all = (steel + alu) * RHO_STEEL + v(C["inserts"]) * RHO_BRASS
     pack = {
         "Forearm cuff shell (PETG)": v(sub["cuff_shell"]) * RHO_PETG,
         "Cuff liner (EVA foam)": v(sub["cuff_liner"]) * RHO_EVA,
@@ -196,7 +198,7 @@ def compute():
         "Sheaths, half": m_sheaths / 2,
     }
     R.update(mass_pack=pack, mass_hand=hand, m_pack=sum(pack.values()), m_hand=sum(hand.values()),
-             sheath_len=sheath_len, m_sheaths=m_sheaths, m_motors=2 * M_MOTOR, m_fix=m_fix,
+             sheath_len=sheath_len, m_sheaths=m_sheaths, m_motors=2 * M_MOTOR, m_fix=m_fix, m_fix_saved=m_fix_steel_all - m_fix,
              m_couplings=8 * MASS["coupling"], m_couplings_saved=8 * (MASS["coupling_magnetic"] - MASS["coupling"]),
              m_cuff_perf_saved=(v(sub["cuff_shell_solid"]) - v(sub["cuff_shell"])) * RHO_PETG,
              cuff_open_frac=1 - v(sub["cuff_shell"]) / v(sub["cuff_shell_solid"]))
@@ -298,6 +300,13 @@ def main():
         p(f"       {k:48s} {val:6.1f}")
     p(f"[G2] forearm pack total {R['m_pack']:.0f} g (motors {R['m_motors']:.0f} g, couplings {R['m_couplings']:.0f} g, screws, inserts and pins {R['m_fix']:.0f} g); sheaths {R['sheath_len']:.2f} m, {R['m_sheaths']:.0f} g")
     p(f"[G5] N4 savings: ball-detent couplings {R['m_couplings_saved']:.0f} g; perforated cuff shell {R['m_cuff_perf_saved']:.1f} g ({R['cuff_open_frac'] * 100:.0f} % open)")
+    # G6: mass savings tried on 2026-10-02 (FXH-DEC-001 decision 5), against FXH-CAL-001 v0.3 figures
+    B0 = {"Pack base (PETG)": 105.3, "Anchor block, release plate, cover, pucks": 71.2, "total": 723.0}
+    sv_base = B0["Pack base (PETG)"] - R["mass_pack"]["Pack base (PETG)"]
+    sv_anchor = B0["Anchor block, release plate, cover, pucks"] - R["mass_pack"]["Anchor block, release plate, cover, pucks"]
+    p(f"[G6] savings tried: aluminium lid and cover screws {R['m_fix_saved']:.1f} g; pack base ribs 4 to 3 mm {sv_base:.1f} g; "
+      f"anchor block larger lightening pocket {sv_anchor:.1f} g; total {R['m_fix_saved'] + sv_base + sv_anchor:.1f} g "
+      f"(pack {R['m_pack']:.0f} g against {B0['total']:.0f} g before; R7 target 450 g, gap {R['m_pack'] - 450:.0f} g)")
     p("[G3] hand-side mass by part (g):")
     for k, val in R["mass_hand"].items():
         p(f"       {k:40s} {val:6.1f}")

@@ -337,3 +337,25 @@ Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." 
 
 - The value-engineering savings for mass (about 8 g of screws, 10 to 20 g of infill, a lighter anchor block) cannot close a 273 g gap to R7; the register should say so plainly.
 - Kit bug noted in the review: build123d's SVG export fails on closed elliptical arcs; the local svg_patch workaround should move into the kit.
+
+## Approved follow-ups carried out (2026-10-02)
+
+Amish approved all follow-up actions from the open-decision sign-off on 2026-10-02. Results for FlexHand (research and educational prototype, not a medical device):
+
+1. Decision 5, model: done. Three of the listed mass savings were tried in `cad/src/model.py`: saddle ribs in the pack base thinned from 4 to 3 mm (2.6 g), a larger lightening pocket in the anchor block (3.4 g), and aluminium M3 screws for the lid and the cover (5.4 g, in the calculation). Not done: aluminium or plastic screws for the electronics tray, because aluminium screws are not made in the M2.2 self-tapping size; lower infill in the pack base, because it is a print setting that saves little in 2 mm walls and is left to the TRL 4 prints. All 203 constructability checks pass. STEP and STL regenerated.
+2. Decision 5, calculations: done. `docs/04-calcs/sizing.py` re-run: pack 723 g to 712 g (11.4 g saved), still 262 g over the 450 g target. R7 stays not met; only the therapist review of the target can change that. FXH-CAL-001 section G records the savings tried (G6).
+3. Decision 5, BOM: done. Line 24 (fixing kit) now lists aluminium M3 screws for the lid (four M3 x 8) and the cover (four M3 x 16), USD 10 to USD 11. Basis: about USD 0.20 each from fastener retailers against about USD 0.05 for steel. Cost USD 303.90 to USD 304.90.
+4. Decision 2, pictures: done as far as it can be here. `cad/src/product_model.py` was rebuilt from the constructable model: three saddle ribs from the model, lid screws over the lid bosses, the anchor block at 88 mm wide with four channels and its pocket, the red pull-out release plate with finger loop, the sheath pucks, the cover with four screws, sheaths starting at the cover on the model's line heights, and saddle finger cuffs and thimbles with thin side bands. The old quick-release lever is gone. Render scenes exported to `/home/claude/renders/flexhand`. The photoreal renders, `media/card.png` and `media/social-preview.png` are made on Amish's Mac next.
+
+Requirement status changes: none (R7 not met at 712 g; R12 under the target by USD 195.10).
+
+Documents changed: FXH-CAL-001 v0.5, FXH-PRC-001 v0.7, FXH-REQ-001 v0.7, FXH-BLD-001 v0.3 (aluminium lid and cover screws snug only, 712 g), FXH-DEC-001 v0.3 (value engineering section), `README.md`. Drawings: FXH-DWG-001 now Rev P4; FXH-DWG-101 and 102 and the concept sheet regenerated.
+
+### Points for Amish
+
+- The appearance model's forearm cuff shell reports an invalid solid in `product_model.py`; it was so before this session and renders from the exported scene.
+
+
+## 2026-10-02: photoreal renders redone on the constructable design
+
+Rendered with Blender Cycles on Amish's Mac from the updated appearance model; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, exploded, detail. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.

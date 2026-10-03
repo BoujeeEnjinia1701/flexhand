@@ -3,7 +3,7 @@ doc_id: FXH-BLD-001
 title: FlexHand prototype build plan
 project: FlexHand
 doc_type: Build plan
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: 'Release check pass mark and safety stop S6 carry the safety decisions of 2026-10-02 (FXH-DEC-001); no design change'
+  - version: "0.3"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: 'Mass savings tried: aluminium lid and cover screws, thinner pack ribs, larger pocket in the anchor block; forearm unit estimate 712 g'
 ---
 
 # FlexHand prototype build plan
@@ -240,7 +244,7 @@ The pack's ribs sit on its top with six M3 x 8 button-head screws coming up from
 1. Print it flat, 168 by 76 by 2, top face down.
 2. Check the 19 mm stop button hole on the centre line, 51.2 from the elbow end, the 3 mm LED window over the controller, and the four 3.4 mm screw holes, 51 and 119 from the elbow end, 32.5 to each side of the centre line.
 
-**How it fits the parts next to it.** On the wall tops; four M3 x 8 pan-head screws into the lid bosses. The stop button goes through it from above, its bezel on the lid and its nut below.
+**How it fits the parts next to it.** On the wall tops; four aluminium M3 x 8 pan-head screws into the lid bosses, tightened only until snug because aluminium threads strip easily. The stop button goes through it from above, its bezel on the lid and its nut below.
 
 **Check before moving on.** The stop button's nut tightens with the bezel flat on the lid.
 
@@ -413,7 +417,7 @@ Each closes round its finger bone, 3 clear of each joint crease, slit on the sid
 1. Print it front face down: 7.6 by 88 by 31.
 2. Check the four pockets, 15 by 7 by 5.6, in the back face in front of each channel; the eight 4.5 mm sheath holes through the 2 mm front wall, 4 either side of each pocket's centre; and the four 5 mm spacer bosses, 3.4 long, with 3.4 mm screw holes, 30 to each side of centre at top and bottom.
 
-**How it fits the parts next to it.** Its spacers sit on the anchor block's front face, held by four M3 x 16 cap screws into the block's front inserts; the release plate slides in the gap between them (Figure 9).
+**How it fits the parts next to it.** Its spacers sit on the anchor block's front face, held by four aluminium M3 x 16 cap screws into the block's front inserts, tightened only until snug; the release plate slides in the gap between them (Figure 9).
 
 **Check before moving on.** The release plate slides through the gap without catching.
 
@@ -431,7 +435,7 @@ Buy to specification, not brand. Line numbers are those of the bill of materials
 - **Tendon line (line 16).** 0.8 mm braided UHMWPE line.
 - **Charger (line 18).** 2S lithium-ion charger module with USB-C input.
 - **Idler and pulley bearings (lines 20 and 22).** Four 623 bearings (3 by 10 by 4) and four 693 bearings (3 by 8 by 4).
-- **Fixing kit (line 24).** 18 brass M3 heat-set inserts 5 mm long; six M3 x 8 button-head, four M3 x 6 countersunk, four M3 x 8 pan-head, four M3 x 8 cap and four M3 x 16 cap screws; four M2.2 x 8 self-tapping screws; eight 3 mm steel pins (four 8 long, four 6.5 long); cable ties.
+- **Fixing kit (line 24).** 18 brass M3 heat-set inserts 5 mm long; six M3 x 8 button-head, four M3 x 6 countersunk, four aluminium M3 x 8 pan-head, four M3 x 8 cap and four aluminium M3 x 16 cap screws; four M2.2 x 8 self-tapping screws; eight 3 mm steel pins (four 8 long, four 6.5 long); cable ties.
 - **5 V regulator (line 25).** Step-down module, 6 to 9 V in, 5 V 1 A out.
 - **Straps and consumables (lines 1 and 19).** Two 38 mm hook-and-loop straps, 6 mm hook-and-loop strip, foam tape, a 1 mm foam pad, a 100 µF capacitor, wire, heat shrink, crimp sleeves for the stop beads, strong polyester thread.
 
@@ -503,7 +507,7 @@ Foam pad on the cells, tray onto its posts with four screws, then finish the wir
 
 ![Step 11](05-build-plan/step-11.png)
 
-Stop button through the lid, nut below; lid on with four M3 x 8 pan-head screws.
+Stop button through the lid, nut below; lid on with four aluminium M3 x 8 pan-head screws, snug only.
 
 ### Step 12: plates and thumb spacer onto the glove
 
@@ -527,7 +531,7 @@ Slide each sheath over its tendon, hand end into its stop block seat. Extensors 
 
 ![Step 15](05-build-plan/step-15.png)
 
-Pass each pair of tendons through a puck, seat the sheath ends in the puck, and tie each tendon to its coupling plug; click the plugs into the sockets. Slide the release plate into place, drop the pucks into the cover's pockets, and fit the cover with four M3 x 16 cap screws. With the motors at mid-stroke and the hand form's fingers half bent, take up the slack at each coupling plug, then set each stop bead at the end of its finger's range and crimp it. **Hold point:** safety stop S4.
+Pass each pair of tendons through a puck, seat the sheath ends in the puck, and tie each tendon to its coupling plug; click the plugs into the sockets. Slide the release plate into place, drop the pucks into the cover's pockets, and fit the cover with four aluminium M3 x 16 cap screws, snug only. With the motors at mid-stroke and the hand form's fingers half bent, take up the slack at each coupling plug, then set each stop bead at the end of its finger's range and crimp it. **Hold point:** safety stop S4.
 
 ## 5. First checks
 
@@ -546,7 +550,7 @@ These are the checks a TRL 4 test report would record; this plan only lists them
 | Stroke time and dose | R4, R5 | Time 20 cycles at design load on the model | Stroke adjustable from 4 to 15 s; 300 or more cycles an hour |
 | Extension force | R2 | Spring-loaded finger model at design load | 30 N reached at full extension; motor temperature recorded |
 | Sessions per charge | R6 | Run cycles on the model from a full charge | 3 or more hours of cycling |
-| Mass | R7 | Weigh the forearm unit and the hand parts | Hand parts 120 g or less (117 g estimated); forearm unit recorded (723 g estimated) |
+| Mass | R7 | Weigh the forearm unit and the hand parts | Hand parts 120 g or less (117 g estimated); forearm unit recorded (712 g estimated) |
 | Fit | R10 | Fit the glove and cuffs to hand forms of 170, 183 and 205 mm | Every cuff 3 mm clear of each crease; no two cuffs touch |
 | Cuff pressure | R11 | Pressure film under each cuff and thimble at design load on the model | Mean 50 kPa or less |
 | Session log | R13 | Run a session; read the log | Time, cycles and peak current recorded; limits cannot be changed from the user controls |

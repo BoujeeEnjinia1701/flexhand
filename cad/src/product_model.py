@@ -1,10 +1,10 @@
 """FlexHand product appearance model (build123d), TRL 3.
 
-Finished-product look for photoreal renders: a filleted motor pack with a parting line, lid screws,
+Finished-product look for photoreal renders: a filleted motor pack with a parting line, aluminium lid screws,
 a clear window over the spools, a guarded emergency stop, a start button and a lit status LED; a
-perforated forearm cuff with foam liner and hook-and-loop straps; a filleted sheath anchor block with
-a teal quick-release lever; swept Bowden sheaths with metal ferrules; a knit fingerless glove with
-TPU dorsal and palmar plates; padded finger cuffs, fingertip thimbles and a thumb spacer; and
+perforated forearm cuff with foam liner and hook-and-loop straps; a filleted sheath anchor block (four channels, cover with
+four screws and sheath pucks, red pull-out release plate with finger loop); swept Bowden sheaths with metal ferrules; a knit fingerless glove with
+TPU dorsal and palmar plates; padded saddle finger cuffs with thin side bands, fingertip thimbles and a thumb spacer; and
 visible tendon line. APPEARANCE MODEL ONLY: no tolerances, no fabrication detail.
 CONCEPT, NOT FOR FABRICATION.
 
@@ -28,7 +28,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parents[1] / ".kit"))
 
 from build123d import (Align, Axis, Box, Circle, Cylinder, Ellipse, Plane, Pos, RectangleRounded, Rot,  # noqa: E402
-                       SlotOverall, Solid, Spline, Text, Vector, extrude, fillet, loft, sweep)
+                       Polygon, SlotOverall, Solid, Spline, Text, Vector, extrude, fillet, loft, sweep)
 from model import PARAMS, build_parts, derived  # noqa: E402
 
 TITLE = "FlexHand: tendon-driven finger exoskeleton for continuous passive motion"
@@ -145,6 +145,24 @@ def _tube(pl, r_in, r_out, w):
     if r_in > 0:
         inner = Plane(origin=base.origin - base.z_dir * 1.0, x_dir=pl.x_dir, z_dir=pl.z_dir)
         ring = ring - Solid.make_cylinder(r_in, w + 2.0, inner)
+    return ring
+
+
+def _saddle(pl, ri, ro, w, ha, sbt=1.0):
+    """Finger cuff as built in model.py: padded dorsal and palmar saddles over the contact arc, joined by
+    thin side bands (FXH-DDR-003, C9). Cross-section plane pl, axis along its z."""
+    ring = _tube(pl, ri, ro, w)
+    ring = _fillet_try(ring, ring.edges(), [0.8, 0.5])
+    k = 3.0 * ro / max(sin(radians(ha)), 0.3)
+    base = Plane(origin=pl.origin - pl.z_dir * (w / 2 + 1.0), x_dir=pl.x_dir, z_dir=pl.z_dir)
+    outer = _tube(pl, ri + sbt, ro + 3.0, w + 2.0)
+    for sgn in (1, -1):
+        pts = [(0, 0), (k * cos(radians(ha)), sgn * k * sin(radians(ha))), (-k * cos(radians(ha)), sgn * k * sin(radians(ha)))]
+        wedge = extrude(base * Polygon(*pts, align=None), amount=w + 2.0)
+        try:
+            ring = ring - (wedge & outer)
+        except Exception:
+            pass
     return ring
 
 
@@ -290,8 +308,8 @@ def product_parts(P=PARAMS):
     base = _fillet_try(base, _top_edges(base), [0.8, 0.5])            # half of the parting-line groove
     base -= _prism(L - 2 * wl, W - 2 * wl, PACK_R - wl, fz, tz - fz + 2, x=xc)
     ribs = []
-    for xr in (x0 + 8, xc, x1 - 8):
-        rb = Pos(xr, 0, (box_bot + 20) / 2 + 0.01) * Box(4, W - 6, box_bot - 20)
+    for xr in P["rib_x"]:                                               # three saddle ribs as model.py (3 mm)
+        rb = Pos(xr, 0, (box_bot + 18) / 2 + 0.01) * Box(P["rib_t"], W - 6, box_bot - 18)
         ribs.append(rb)
     ribs = _union(ribs) - cuff_outer - strap_env
     base = base + ribs
@@ -323,7 +341,7 @@ def product_parts(P=PARAMS):
     lid -= Pos(P["estop_x"], 0, tz + lt_ / 2) * Cylinder(P["estop_d"] / 2 + 0.5, lt_ + 2)
     lid -= Pos(*BUTTON_XY, tz + lt_ / 2) * Cylinder(6.6, lt_ + 2)
     lid -= Pos(*LED_XY, tz + lt_ / 2) * Cylinder(1.8, lt_ + 2)
-    screw_xy = [(x0 + 5.0, sy * (W / 2 - 5.0)) for sy in (1, -1)] + [(x1 - 5.0, sy * (W / 2 - 5.0)) for sy in (1, -1)]
+    screw_xy = [(lx_, sy * P["lid_boss_y"]) for lx_ in P["lid_boss_x"] for sy in (1, -1)]   # over the lid bosses
     for (sx_, sy_) in screw_xy:
         lid -= Pos(sx_, sy_, top - 0.4) * Cylinder(3.1, 0.9)
         lid -= Pos(sx_, sy_, tz + lt_ / 2) * Cylinder(1.7, lt_ + 2)
@@ -337,7 +355,8 @@ def product_parts(P=PARAMS):
     # thin accent line along the lid, ulnar side (marking)
     add("Pack lid (PETG)", lid, C_LID, "plastic", 8, "shell", (0, 0, 110))
     stripe = _prism(L - 30, 1.6, 0.8, top, 0.3, x=xc + 5, y=-(W / 2 - 6.0))
-    stripe -= Pos(x1 - 5.0, -(W / 2 - 5.0), top) * Cylinder(3.6, 2.0)
+    for lx_ in P["lid_boss_x"]:
+        stripe -= Pos(lx_, -P["lid_boss_y"], top) * Cylinder(3.6, 2.0)
     add("Lid accent line", stripe, C_ACCENT, "painted", 8, "shell", (0, 0, 110))
     glass = _prism(wx1 - wx0 + 2.6, 2 * wy + 2.6, wr + 1.3, top - 0.8, 0.6, x=(wx0 + wx1) / 2)
     add("Spool window (clear)", glass, C_WINDOW, "clear", 8, "shell", (0, 0, 122))
@@ -355,7 +374,7 @@ def product_parts(P=PARAMS):
         h -= Pos(sx_, sy_, top + 0.2) * Rot(0, 0, 15) * Box(2.2, 2.2, 1.0)
         h += Pos(sx_, sy_, top - 0.9 - 4.0) * Cylinder(1.5, 8.0)
         screws.append(h)
-    add("Lid screws (4)", _union(screws), C_METAL, "metal", 19, "shell", (0, 0, 150))
+    add("Lid screws (4, aluminium)", _union(screws), C_METAL, "metal", 19, "shell", (0, 0, 150))
 
     # ================= emergency stop (BOM 9) =================
     ex = P["estop_x"]
@@ -373,33 +392,27 @@ def product_parts(P=PARAMS):
         head -= Pos(ex, 0, top + 9.0) * Rot(0, 0, a) * Pos(P["estop_cap_d"] / 2, 0, 0) * Box(1.2, 1.2, 3.2)
     add("Emergency stop mushroom", cap + head, C_RED, "plastic", 9, "shell", (0, 0, 175))
 
-    # ================= sheath anchor block (BOM 10) and lever =================
+    # ================= sheath anchor block (BOM 10): block, release plate, cover, pucks =================
     ax0, ax1 = x1, x1 + P["anchor_l"]
-    az0, az1 = fz, fz + P["anchor_h"]
-    anc = Pos((ax0 + ax1) / 2, 0, (az0 + az1) / 2) * Box(P["anchor_l"], W - 4, P["anchor_h"])
+    az0, az1 = box_bot, tz                         # full pack height, as model.py
+    AW = P["anchor_w"] / 2
+    by, bd, bw = P["balance_y"], P["balance_d"], P["balance_w"]
+    anc = Pos((ax0 + ax1) / 2, 0, (az0 + az1) / 2) * Box(P["anchor_l"], 2 * AW, az1 - az0)
     anc = _fillet_try(anc, anc.edges().filter_by(Axis.Z), [4.0, 3.0, 2.0])
     anc = _fillet_try(anc, _top_edges(anc), [1.5, 1.0])
-    by, bd, bw = P["balance_y"], P["balance_d"], P["balance_w"]
-    chan_l = P["anchor_l"] - 2 * wl
     for sgn in (1, -1):
-        for zc in (mz + 6.0, mz - 6.0):
-            anc -= Pos((ax0 + ax1) / 2, sgn * by, zc) * Box(chan_l, bd + 2, bw + 1)
-    # seam between the two halves of the block, and lever hinge lugs
-    anc -= Pos((ax0 + ax1) / 2, 0, mz) * (Box(P["anchor_l"] + 2, W, 0.6) - Box(P["anchor_l"] - 1.2, W - 5.2, 1.0))
-    for sy in (1, -1):
-        lug = Pos(ax1 - 3, sy * 28.0, az1 + 1.5) * Box(6.0, 4.0, 3.0)
-        anc += lug
-    add("Sheath anchor block", anc, C_LID, "plastic", 10, "shell", (45, 0, 0))
-    lever = Pos(ax1 - 3, 0, az1 + 3) * Box(6, 50, 6)
-    lever = _fillet_try(lever, lever.edges().filter_by(Axis.Y), [2.5, 1.5, 1.0])
-    lever = _fillet_try(lever, lever.edges().filter_by(Axis.Z), [1.0, 0.5])
-    for k in range(-3, 4):
-        lever -= Pos(ax1 - 3, 3.2 * k, az1 + 6.2) * Box(8.0, 1.0, 0.8)
-    lever += Pos(ax1 - 3, 0, az1 + 3) * Rot(90, 0, 0) * Cylinder(1.5, 60.0)
-    add("Quick-release lever", lever, C_ACCENT, "plastic", 10, "shell", (45, 0, 30))
+        for lz in D["line_z"]:
+            anc -= Pos((ax0 + ax1) / 2, sgn * by, lz) * Box(P["anchor_l"] + 2, P["chan_w"], P["chan_h"])
+    anc -= Pos((ax0 + ax1) / 2, 0, az0 + (az1 - az0) / 2 - 1.5) * Box(P["anchor_l"] - 14.0, 2 * (by - P["chan_w"] / 2 - 2.0), az1 - az0 - 2.5)
+    add("Sheath anchor block (PETG)", anc, C_LID, "plastic", 10, "shell", (45, 0, 0))
+    Cm = M["c"]
+    add("Release plate with pull loop", Cm["gate"], C_RED, "plastic", 10, "shell", (62, 0, 0))
+    add("Sheath pucks (4)", Cm["pucks"], C_DARK, "plastic", 10, "shell", (78, 0, 0))
+    add("Anchor cover (PETG)", Cm["cover"], C_LID, "plastic", 10, "shell", (95, 0, 0))
+    add("Cover screws (4, aluminium)", Cm["cover_screws"], C_METAL, "metal", 24, "shell", (112, 0, 0))
     bal = []
     for sgn in (1, -1):
-        for zc in (mz + 6.0, mz - 6.0):
+        for zc in D["line_z"]:
             c = Pos(ax0 + wl + bd / 2 + D["balance_travel"] / 2, sgn * by, zc)
             ring = c * (Cylinder(bd / 2, bw) - Cylinder(bd / 2 - 1.0, bw + 1))
             bal.append(ring + c * Cylinder(bd / 2 - 1.0, bw - 0.4) + c * Cylinder(1.5, bw + 2.0))
@@ -529,15 +542,17 @@ def product_parts(P=PARAMS):
     ext_end_y = [21.0, 7.0, -7.0, -21.0]
     so = P["sheath_od"] / 2
     stops_d, stops_p, sheaths, ferrules, tend = [], [], [], [], []
-    ax_end = ax1
+    ax_end = D["anchor_front"]
+    order = [(1, 4.0), (1, -4.0), (-1, 4.0), (-1, -4.0)]
+    zu_, zl_ = D["line_z"]
     for k in range(4):
         side = 1 if k < 2 else -1
         j = k % 2
-        ya = side * (31.0 - 3.0 * j)
+        ya = order[k][0] * by + order[k][1]
         # extensor sheath: anchor block front face to the dorsal plate stop
         zt = surf_z(15.0, ext_end_y[k], 1, GT + pt)
         e_end = (15.0, ext_end_y[k], zt + so)
-        e_pts = [(ax_end, ya, mz + re_ + 2), (-8, ya * 0.7, 40), e_end]
+        e_pts = [(ax_end, ya, zu_), (-8, ya * 0.7, 40), e_end]
         sheaths.append(_swept(e_pts, SHEATH_R, (1, 0, -0.2), (1, 0, -0.35)))
         st = Pos(19.0, ext_end_y[k], zt + so - 0.5) * Box(9.0, 6.5, 2 * so + 1.0)
         st = _fillet_try(st, _top_edges(st), [1.5, 1.0])
@@ -545,7 +560,7 @@ def product_parts(P=PARAMS):
         # flexor sheath: around the side of the wrist to the palmar plate stop
         zb = surf_z(14.0, side * (24.0 + 4 * j), -1, GT + pt)
         f_end = (14.0, side * (24.0 + 4 * j), zb - so)
-        f_pts = [(ax_end, side * (31.0 + 3.0 * j), mz - re_ - 2), (ax_end + 5, side * (40.5 + 2 * j), 17),
+        f_pts = [(ax_end, ya, zl_), (ax_end + 5, side * (40.5 + 2 * j), 17),
                  (3, side * (37.0 + 2 * j), -15), f_end]
         sheaths.append(_swept(f_pts, SHEATH_R, (1, 0, -0.3), (1, 0, 0.3)))
         sp = Pos(18.0, f_end[1], zb - so + 0.5) * Box(8.0, 6.5, 2 * so + 1.0)
@@ -560,8 +575,8 @@ def product_parts(P=PARAMS):
     pplate = _union([pplate] + stops_p)
     add("Dorsal plate (TPU)", dplate, C_PLATE, "rubber", 13, "shell", (80, 0, 34))
     add("Palmar plate (TPU)", pplate, C_PLATE, "rubber", 14, "shell", (80, 0, -34))
-    add("Bowden sheaths (8)", _union(sheaths), C_SHEATH, "rubber", 11, "shell", (40, 0, 0))
-    add("Sheath ferrules (16)", _union(ferrules), C_METAL, "metal", 11, "shell", (40, 0, 0))
+    add("Bowden sheaths (8)", _union(sheaths), C_SHEATH, "rubber", 11, "shell", (112, 0, 0))
+    add("Sheath ferrules (16)", _union(ferrules), C_METAL, "metal", 11, "shell", (112, 0, 0))
 
     # finger cuffs (BOM 15), thimbles (BOM 21) and tendons (BOM 16) on the clay fingers
     cl_t, cu_t, th_t = P["cuff_liner_t"], P["cuff_t"], P["thimble_t"]
@@ -574,8 +589,7 @@ def product_parts(P=PARAMS):
             p, d, r, Ls = _on_seg(f, seg_i, (f["pts"][seg_i + 1] - f["pts"][seg_i]).length / 2)
             pl = _frame(p, d)
             rin = r + 0.3
-            ring = _tube(pl, rin + cl_t, rin + cl_t + wall, w)
-            ring = _fillet_try(ring, ring.edges(), [0.8, 0.5])
+            ring = _saddle(pl, rin + cl_t, rin + cl_t + wall, w, D["saddle_half_deg"], P["side_band_t"])
             cuffs.append(ring)
             liners.append(_tube(pl, rin, rin + cl_t, w - 0.6))
             ro = rin + cl_t + wall
@@ -590,8 +604,7 @@ def product_parts(P=PARAMS):
         p, d, r, Ls = _on_seg(f, 2, dist_len - tw / 2)
         pl = _frame(p, d)
         rin = r + 0.3
-        th = _tube(pl, rin + cl_t, rin + cl_t + th_t, tw)
-        th = _fillet_try(th, th.edges(), [0.8, 0.5])
+        th = _saddle(pl, rin + cl_t, rin + cl_t + th_t, tw, D["saddle_half_deg"], P["side_band_t"])
         thimbles.append(th)
         liners.append(_tube(pl, rin, rin + cl_t, tw - 0.6))
         ro = rin + cl_t + th_t

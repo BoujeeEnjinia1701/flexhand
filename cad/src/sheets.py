@@ -1,7 +1,7 @@
 """FlexHand drawing sheets.
 
 Run from the repo root:  python cad/src/sheets.py
-Builds FXH-DWG-001 (general arrangement, Rev P3) in cad/drawings/ from cad/src/model.py.
+Builds FXH-DWG-001 (general arrangement, Rev P4) in cad/drawings/ from cad/src/model.py.
 FXH-DWG-010 is the concept sheet made by cad/src/concept_media.py.
 """
 import copy
@@ -28,13 +28,14 @@ work = ROOT / "cad" / "drawings" / "_views"
 views = project_views(unit, work / "unit")
 iso = project_views(device, work / "device")["iso"]
 
-s = Sheet(project="FlexHand", title="Forearm unit general arrangement", dwg_no="FXH-DWG-001", rev="P3",
-          author="Amish Chadha", date="2026-10-01", scale=0.5, concept=True,
+s = Sheet(project="FlexHand", title="Forearm unit general arrangement", dwg_no="FXH-DWG-001", rev="P4",
+          author="Amish Chadha", date="2026-10-02", scale=0.5, concept=True,
           material="Pack and cuff PETG; plates and cuffs TPU 95A; bought parts per bom/bom.csv. "
                    "PRELIMINARY, NOT FOR FABRICATION",
           revisions=[("P1", "General arrangement for TRL 3 (FXH-CAL-001)", "2026-09-25", "AC"),
                      ("P2", "FXH-DDR-002: balance pulleys, 44 mm anchor block, perforated cuff, thimbles", "2026-09-25", "AC"),
-                     ("P3", "FXH-DDR-003: constructable design", "2026-10-01", "AC")])
+                     ("P3", "FXH-DDR-003: constructable design", "2026-10-01", "AC"),
+                     ("P4", "Mass savings tried: 3 mm saddle ribs, larger block pocket (FXH-DEC-001)", "2026-10-02", "AC")])
 s.add_ortho(views, ["front", "top", "right"])
 s.add_svg(iso, 276, 32, 140, 70, label="Isometric view, whole device",
           sublabel="Right-hand device as modelled; a left-hand device is its mirror image; not to scale")

@@ -33,7 +33,7 @@ PARAMS = {
     # perforated cuff shell and liner (N4): radial holes on a grid (x start, x end, x step; angles from dorsal)
     "cuff_hole_d": 12.0, "cuff_hole_x": (-232.0, -78.0, 17.0), "cuff_hole_ang": (-75.0, -50.0, -25.0, 0.0, 25.0, 50.0, 75.0),
     # pack saddle ribs sit on the solid webs between hole columns; two M3 screws per rib (C1)
-    "rib_x": (-223.5, -155.5, -87.5), "rib_t": 4.0, "rib_boss_y": 9.0, "rib_boss_d": 8.0,
+    "rib_x": (-223.5, -155.5, -87.5), "rib_t": 3.0, "rib_boss_y": 9.0, "rib_boss_d": 8.0,
     # ---- motor pack (items 2 to 10, 18, 20, 23, 25) ----
     "pack_x": (-239.0, -71.0),    # rear and front wall outer faces (C2)
     "pack_w": 76.0,               # outer width across the forearm
@@ -486,7 +486,7 @@ def components(params=None):
         bholes.append(_cyl_x(ax1 - 6, ax1 + 1, yy, zz, 2.0))                     # inserts for the cover screws
         inserts.append(_cyl_x(ax1 - 5, ax1, yy, zz, 2.0) - _cyl_x(ax1 - 6, ax1 + 1, yy, zz, 1.5))
     # lightening pocket, open underneath, between the two pairs of channels
-    pocket = _box(ax0 + 9.0, ax1 - 9.0, -(by - cw / 2 - 2.5), by - cw / 2 - 2.5, az0 - 1, az1 - 3.0)
+    pocket = _box(ax0 + 7.0, ax1 - 7.0, -(by - cw / 2 - 2.0), by - cw / 2 - 2.0, az0 - 1, az1 - 2.5)
     C["anchor_body"] = body - pocket - b.Compound(children=bholes)
     # release plate: slides out toward the thumb side when its loop is pulled; one horizontal slot per
     # row of tendons, open at the far edge, lets it slide off all eight tendons at once

@@ -2,7 +2,7 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1386351853.svg)](https://zenodo.org/badge/latestdoi/1386351853) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/flexhand/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/flexhand/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/flexhand/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/flexhand)
 
-**Area:** BioMedical · **TRL:** 3 of 9 (proof of concept on paper) · **Value-engineering target:** USD 500 (estimated cost USD 304) · **Difficulty:** 4 of 5
+**Area:** BioMedical · **TRL:** 3 of 9 (proof of concept on paper) · **Value-engineering target:** USD 500 (estimated cost USD 305) · **Difficulty:** 4 of 5
 
 Soft-actuated finger exoskeleton for continuous passive motion, driven by tendons from a wrist-mounted motor pack.
 
@@ -14,7 +14,7 @@ Soft-actuated finger exoskeleton for continuous passive motion, driven by tendon
 
 Repetition is the scarce input in hand rehabilitation after stroke, and the scarce resource that delivers it is therapist time. A device that moves the fingers slowly through a therapist-set range, hundreds of times per session, can add dose at home without adding therapist hours. Tendons pulled through Bowden sheaths from a forearm pack keep the hand side light (about 117 g) and put the motors, cells and electronics where their mass matters least, which is why FlexHand uses tendons rather than a pneumatic glove or motors on the hand.
 
-FlexHand is open and garage-buildable because the users who most need low-cost dose are least served by clinic-bound robotic gloves. Two off-the-shelf gearmotors, carrier-board electronics, 3D-printed TPU and PETG parts and bicycle shift housing keep the parts cost near USD 304 and let a research group, a clinic workshop or a makerspace build, inspect and adapt it. Openness also lets others check the safety layers (current limit, breakaway couplings, hardware stop and tool-free release) rather than trusting them. It is a research and educational prototype, not a medical device.
+FlexHand is open and garage-buildable because the users who most need low-cost dose are least served by clinic-bound robotic gloves. Two off-the-shelf gearmotors, carrier-board electronics, 3D-printed TPU and PETG parts and bicycle shift housing keep the parts cost near USD 305 and let a research group, a clinic workshop or a makerspace build, inspect and adapt it. Openness also lets others check the safety layers (current limit, breakaway couplings, hardware stop and tool-free release) rather than trusting them. It is a research and educational prototype, not a medical device.
 
 ## Burning platform
 
@@ -59,7 +59,7 @@ Problem statement: [docs/01-problem.md](docs/01-problem.md)
 
 Soft-actuated finger exoskeleton for continuous passive motion, driven by tendons from a wrist-mounted motor pack.
 
-A fingerless glove carries TPU cuffs on the four fingers. Two gearmotors lying along the forearm in a strapped-on pack each turn a two-groove spool that pulls the flexor tendons of a finger pair while paying out the extensor tendons, through Bowden sheaths that cross the wrist. A floating balance pulley shares each spool line equally between the two fingers of a pair, and an open-tip fingertip thimble shares the extensor load with the finger cuff. The TRL 3 calculations give about 445 finger cycles per hour at full speed, about 3.8 sessions of 60 min per charge, cuff pressures of 40 kPa or less on a medium hand and an estimated USD 303.90 in parts, USD 196.10 under the USD 500 value-engineering target. One requirement is not met (forearm pack mass, about 723 g against 450 g), and two are at risk (gearbox rating and force-limit friction spread); see the [sizing calculations](docs/04-calcs/01-sizing.md) and the [review note](docs/REVIEW.md).
+A fingerless glove carries TPU cuffs on the four fingers. Two gearmotors lying along the forearm in a strapped-on pack each turn a two-groove spool that pulls the flexor tendons of a finger pair while paying out the extensor tendons, through Bowden sheaths that cross the wrist. A floating balance pulley shares each spool line equally between the two fingers of a pair, and an open-tip fingertip thimble shares the extensor load with the finger cuff. The TRL 3 calculations give about 445 finger cycles per hour at full speed, about 3.8 sessions of 60 min per charge, cuff pressures of 40 kPa or less on a medium hand and an estimated USD 304.90 in parts, USD 195.10 under the USD 500 value-engineering target. One requirement is not met (forearm pack mass, about 712 g against 450 g), and two are at risk (gearbox rating and force-limit friction spread); see the [sizing calculations](docs/04-calcs/01-sizing.md) and the [review note](docs/REVIEW.md).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 

@@ -3,7 +3,7 @@ doc_id: FXH-DEC-001
 title: FlexHand design decisions register
 project: FlexHand
 doc_type: Design decisions register
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: 'Amish approved the recommendations for all five open decisions on 2026-10-02 (FXH-DDR-003 accepted); moved to decisions made; value engineering states that the mass savings cannot close the R7 gap'
+  - version: "0.3"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: 'Mass savings tried (11 g off the pack, 723 to 712 g); cost USD 304.90; R7 still not met'
 ---
 
 # FlexHand design decisions register
@@ -42,15 +46,15 @@ None. All open decisions were decided on 2026-10-02.
 
 ## Value engineering
 
-Value-engineering target: USD 500 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 303.90 (USD 196.10 under the target), from `bom/bom.csv` [J1]. Main cost drivers and savings worth trying:
+Value-engineering target: USD 500 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 304.90 (USD 195.10 under the target), from `bom/bom.csv` [J1]. Main cost drivers and savings worth trying:
 
 - **Gearmotors, USD 107.90 (36 %).** The largest line and 214 g of the pack's mass. Worth pricing a lighter 20 to 25 mm gearmotor class with encoder that still carries 0.49 N·m peak; any change reopens R2 and the torque calculation.
 - **Battery, stop button and electronic modules, about USD 68.** Standard modules; little to save in cost, but a single dual-channel driver board would save one board, its wiring and a few grams.
-- **Anchor block and its hardware, USD 18 plus fixings.** The printed parts are 71 g. A thinner-walled block with the channels as separate tubes, or printing it in a lighter material, is worth trying for mass.
-- **Fixing kit, USD 10, 27 g.** Plastic or aluminium screws where loads are small (lid, tray, cover) would save about 8 g.
-- **Pack base, 105 g.** Lower infill and thinner ribs could save 10 to 20 g; to check against the motor torque reaction.
+- **Anchor block and its hardware, USD 18 plus fixings.** The printed parts are now 68 g, 3.4 g less after a larger lightening pocket (tried on 2026-10-02). A thinner-walled block with the channels as separate tubes, or printing it in a lighter material, remains to try.
+- **Fixing kit, USD 11, 22 g.** Aluminium M3 screws now hold the lid and the cover (tried on 2026-10-02): 5.4 g saved for USD 1 more. The tray keeps steel self-tapping screws because aluminium ones are not made in that size.
+- **Pack base, 103 g.** Saddle ribs thinned from 4 to 3 mm saved 2.6 g (tried on 2026-10-02). Lower infill is a print setting that saves little in 2 mm walls and is left to the TRL 4 prints; the motor torque reaction is checked there.
 
-The mass savings above add up to about 30 to 60 g and cannot close the 273 g gap between the 723 g pack and R7's 450 g target. They are to be tried before TRL 4 (decided 2026-10-02), but the therapist review of the target, which also treats the pack's load on a weak arm and shoulder as a safety question, decides it.
+The savings tried on 2026-10-02 (decision 5) took 11.4 g off the pack, from 723 g to 712 g, and cannot close the 262 g gap to R7's 450 g target. R7 stays not met, and the therapist review of the target, which also treats the pack's load on a weak arm and shoulder as a safety question, decides it.
 
 ## Decisions made
 
